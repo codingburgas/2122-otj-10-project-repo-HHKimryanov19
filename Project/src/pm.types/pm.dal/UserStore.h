@@ -11,7 +11,7 @@ namespace pm
 	{
 		struct UserStore
 		{
-			void create(pm::type::User user);
+			void create(pm::type::User* user);
 			std::vector<pm::type::User> getAll();
 			void remove(size_t id);
 			void update(pm::type::User user);
