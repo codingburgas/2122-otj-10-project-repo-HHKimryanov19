@@ -13,7 +13,7 @@ namespace pm
 		{
 			void create(pm::type::User* user);
 			std::vector<pm::type::User> getAll();
-			void remove(size_t id);
+			void remove(std::vector<pm::type::User>* user, size_t id);
 			void update(pm::type::User* user);
 			pm::type::User getById(size_t id);
 			pm::type::User getByEmail(std::string email);

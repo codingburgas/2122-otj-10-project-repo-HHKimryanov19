@@ -32,7 +32,7 @@ void pm::dal::UserStore::create(pm::type::User* user)
 		file1 << (*user).email << ' ';
 		file1 << (*user).passwordHash << ' ';
 		file1 << (*user).age << ' ';
-		file1 << (*user).createdOn << ' ' << std::endl;
+		file1 << (*user).createdOn << std::endl;
 	}
 	file.close();
 }
@@ -59,6 +59,7 @@ std::vector<pm::type::User> pm::dal::UserStore::getAll()
 			line.erase(0, line.find(' ') + 1);
 			newLine.age = stoi(line.substr(0, line.find(' ')));
 			line.erase(0, line.find(' ') + 1);
+			newLine.createdOn = stoi(line);
 			user.push_back(newLine);
 		}
 	}
@@ -66,9 +67,42 @@ std::vector<pm::type::User> pm::dal::UserStore::getAll()
 	return std::vector<pm::type::User>(user);
 }
 
-void pm::dal::UserStore::remove(size_t id)
+void pm::dal::UserStore::remove(std::vector<pm::type::User>* user, size_t id)
 {
 
+	std::ofstream file("Info.txt", std::ios::ate);
+	if (file.is_open())
+	{
+		for (int i = 0; i < (*user).size(); i++)
+		{
+			if (i != id - 1)
+			{
+				if (i < id - 1)
+				{
+					file << (*user)[i].id << " ";
+					file << (*user)[i].FirstName << ' ';
+					file << (*user)[i].LastName << ' ';
+					file << (*user)[i].email << ' ';
+					file << (*user)[i].passwordHash << ' ';
+					file << (*user)[i].age << ' ';
+					file << (*user)[i].createdOn << std::endl;
+				}
+				else
+				{
+					file << (*user)[i].id - 1<< " ";
+					file << (*user)[i].FirstName << ' ';
+					file << (*user)[i].LastName << ' ';
+					file << (*user)[i].email << ' ';
+					file << (*user)[i].passwordHash << ' ';
+					file << (*user)[i].age << ' ';
+					file << (*user)[i].createdOn << std::endl;
+				}
+			}
+		}
+	}
+	file.close();
+	pm::dal::UserStore u;
+	(*user) = u.getAll();
 }
 
 void pm::dal::UserStore::update(pm::type::User* user)
