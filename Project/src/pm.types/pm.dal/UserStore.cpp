@@ -64,7 +64,7 @@ std::vector<pm::type::User> pm::dal::UserStore::getAll()
 		}
 	}
 	file.close();
-	return std::vector<pm::type::User>(user);
+	return user;
 }
 
 void pm::dal::UserStore::remove(std::vector<pm::type::User>* user, size_t id)
@@ -89,7 +89,7 @@ void pm::dal::UserStore::remove(std::vector<pm::type::User>* user, size_t id)
 				}
 				else
 				{
-					file << (*user)[i].id - 1<< " ";
+					file << (*user)[i].id - 1 << " ";
 					file << (*user)[i].FirstName << ' ';
 					file << (*user)[i].LastName << ' ';
 					file << (*user)[i].email << ' ';
@@ -114,12 +114,23 @@ void pm::dal::UserStore::update(pm::type::User* user)
 	std::cin >> (*user).age;
 }
 
-pm::type::User pm::dal::UserStore::getById(size_t id)
+pm::type::User pm::dal::UserStore::getById(std::vector<pm::type::User>* user, size_t id)
 {
-	return pm::type::User();
+	for (size_t i = 0; i < (*user).size(); i++)
+	{
+		if (i == id - 1)
+		{
+			return (*user)[i];
+		}
+	}
 }
 
-pm::type::User pm::dal::UserStore::getByEmail(std::string email)
+pm::type::User pm::dal::UserStore::getByEmail(std::vector<pm::type::User>* user, std::string email)
 {
-	return pm::type::User();
-}
+	for (size_t i = 0; i < (*user).size(); i++)
+	{
+		if ((*user)[i].email == email)
+		{
+			return (*user)[i];
+		}
+	}

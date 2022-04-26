@@ -15,8 +15,8 @@ namespace pm
 			std::vector<pm::type::User> getAll();
 			void remove(std::vector<pm::type::User>* user, size_t id);
 			void update(pm::type::User* user);
-			pm::type::User getById(size_t id);
-			pm::type::User getByEmail(std::string email);
+			pm::type::User getById(std::vector<pm::type::User>* user, size_t id);
+			pm::type::User getByEmail(std::vector<pm::type::User>* user, std::string email);
 		};
 	}
 }
