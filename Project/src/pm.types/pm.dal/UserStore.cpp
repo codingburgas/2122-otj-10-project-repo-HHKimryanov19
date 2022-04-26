@@ -2,6 +2,7 @@
 #include "../pm.types/User.h"
 #include "UserStore.h"
 #include<fstream>
+#include<string>
 #include<vector>
 
 void pm::dal::UserStore::create(pm::type::User* user)
@@ -15,11 +16,11 @@ void pm::dal::UserStore::create(pm::type::User* user)
 	}
 	file.close();
 	(*user).id = n;
-	std::ofstream file1("Info.txt",std::ios::app);
+	std::ofstream file1("Info.txt", std::ios::app);
 
 	if (file1.is_open())
 	{
-		file1 << (*user).id<<' ';
+		file1 << (*user).id << ' ';
 		std::cin >> (*user).FirstName;
 		std::cin >> (*user).LastName;
 		std::cin >> (*user).email;
@@ -31,7 +32,7 @@ void pm::dal::UserStore::create(pm::type::User* user)
 		file1 << (*user).email << ' ';
 		file1 << (*user).passwordHash << ' ';
 		file1 << (*user).age << ' ';
-		file1 << (*user).createdOn<<' '<<std::endl;
+		file1 << (*user).createdOn << ' ' << std::endl;
 	}
 	file.close();
 }
@@ -44,9 +45,9 @@ std::vector<pm::type::User> pm::dal::UserStore::getAll()
 	std::string line;
 	if (file.is_open())
 	{
-		for (int i = 0; getline(file, line); i++)
+		for (size_t i = 0; getline(file, line); i++)
 		{
-			newLine.id = stoi(line.substr(0,line.find(' ')));
+			newLine.id = stoi(line.substr(0, line.find(' ')));
 			line.erase(0, line.find(' ') + 1);
 			newLine.FirstName = line.substr(0, line.find(' '));
 			line.erase(0, line.find(' ') + 1);
@@ -70,9 +71,13 @@ void pm::dal::UserStore::remove(size_t id)
 
 }
 
-void pm::dal::UserStore::update(pm::type::User user)
+void pm::dal::UserStore::update(pm::type::User* user)
 {
-
+	std::cin >> (*user).FirstName;
+	std::cin >> (*user).LastName;
+	std::cin >> (*user).email;
+	std::cin >> (*user).passwordHash;
+	std::cin >> (*user).age;
 }
 
 pm::type::User pm::dal::UserStore::getById(size_t id)
