@@ -21,43 +21,18 @@
 	file.close();
 }*/
 
-void pm::dal::UserStore::create(pm::type::User* user)
+size_t generateNewId(std::vector<pm::type::User> users)
 {
-	int n = 1;
-	std::ifstream file("Info.txt");
-	std::string str;
-	if (file.is_open())
+	size_t maxId = 0;
+	for (auto user : users)
 	{
-		while (getline(file, str)) {
-			n = stoi(str.substr(0, str.find(' ')));
+		if (user.id > maxId)
+		{
+			maxId = user.id;
 		}
 	}
-	file.close();
-	(*user).id = n + 1;
-	std::ofstream file1("Info.txt", std::ios::app);
 
-	if (file1.is_open())
-	{
-		file1 << (*user).id << ' ';
-		std::cout << "First name: ";
-		std::cin >> (*user).FirstName;
-		std::cout << "Last name: ";
-		std::cin >> (*user).LastName;
-		std::cout << "Email: ";
-		std::cin >> (*user).email;
-		std::cout << "Password: ";
-		std::cin >> (*user).passwordHash;
-		std::cout << "Age: ";
-		std::cin >> (*user).age;
-		(*user).createdOn = time(NULL);
-		file1 << (*user).FirstName << ' ';
-		file1 << (*user).LastName << ' ';
-		file1 << (*user).email << ' ';
-		file1 << (*user).passwordHash << ' ';
-		file1 << (*user).age << ' ';
-		file1 << (*user).createdOn << std::endl;
-	}
-	file.close();
+	return maxId + 1;
 }
 
 std::vector<pm::type::User> pm::dal::UserStore::getAll()
@@ -70,24 +45,53 @@ std::vector<pm::type::User> pm::dal::UserStore::getAll()
 	{
 		for (size_t i = 0; getline(file, line); i++)
 		{
-			newLine.id = stoi(line.substr(0, line.find(' ')));
-			line.erase(0, line.find(' ') + 1);
-			newLine.FirstName = line.substr(0, line.find(' '));
-			line.erase(0, line.find(' ') + 1);
-			newLine.LastName = line.substr(0, line.find(' '));
-			line.erase(0, line.find(' ') + 1);
-			newLine.email = line.substr(0, line.find(' '));
-			line.erase(0, line.find(' ') + 1);
-			newLine.passwordHash = line.substr(0, line.find(' '));
-			line.erase(0, line.find(' ') + 1);
-			newLine.age = stoi(line.substr(0, line.find(' ')));
-			line.erase(0, line.find(' ') + 1);
+			newLine.id = stoi(line.substr(0, line.find(',')));
+			line.erase(0, line.find(',') + 1);
+			newLine.FirstName = line.substr(0, line.find(','));
+			line.erase(0, line.find(',') + 1);
+			newLine.LastName = line.substr(0, line.find(','));
+			line.erase(0, line.find(',') + 1);
+			newLine.email = line.substr(0, line.find(','));
+			line.erase(0, line.find(',') + 1);
+			newLine.passwordHash = line.substr(0, line.find(','));
+			line.erase(0, line.find(',') + 1);
+			newLine.age = stoi(line.substr(0, line.find(',')));
+			line.erase(0, line.find(',') + 1);
 			newLine.createdOn = stoi(line);
 			user.push_back(newLine);
 		}
 	}
 	file.close();
 	return user;
+}
+
+void pm::dal::UserStore::create(pm::type::User* user)
+{
+	std::vector<pm::type::User> users = getAll();
+	std::ofstream file1("Info.txt", std::ios::app);
+	(*user).id = generateNewId(users);
+	if (file1.is_open())
+	{
+		file1 << (*user).id << ',';
+		std::cout << "First name: ";
+		std::cin >> (*user).FirstName;
+		std::cout << "Last name: ";
+		std::cin >> (*user).LastName;
+		std::cout << "Email: ";
+		std::cin >> (*user).email;
+		std::cout << "Password: ";
+		std::cin >> (*user).passwordHash;
+		std::cout << "Age: ";
+		std::cin >> (*user).age;
+		(*user).createdOn = time(NULL);
+		file1 << (*user).FirstName << ',';
+		file1 << (*user).LastName << ',';
+		file1 << (*user).email << ',';
+		file1 << (*user).passwordHash << ',';
+		file1 << (*user).age << ',';
+		file1 << (*user).createdOn << std::endl;
+	}
+	file1.close();
 }
 
 void pm::dal::UserStore::remove(std::vector<pm::type::User>* user, size_t id)
@@ -129,24 +133,24 @@ void pm::dal::UserStore::update(pm::type::User* user)
 	std::cin >> (*user).age;
 }
 
-pm::type::User pm::dal::UserStore::getById(std::vector<pm::type::User>* user, size_t id)
+pm::type::User pm::dal::UserStore::getById(std::vector<pm::type::User> user, size_t id)
 {
-	for (size_t i = 0; i < (*user).size(); i++)
+	for (size_t i = 0; i < user.size(); i++)
 	{
 		if (i == id - 1)
 		{
-			return (*user)[i];
+			return user[i];
 		}
 	}
 }
 
-pm::type::User pm::dal::UserStore::getByEmail(std::vector<pm::type::User>* user, std::string email)
+pm::type::User pm::dal::UserStore::getByEmail(std::vector<pm::type::User> user, std::string email)
 {
-	for (size_t i = 0; i < (*user).size(); i++)
+	for (size_t i = 0; i < user.size(); i++)
 	{
-		if ((*user)[i].email == email)
+		if (user[i].email == email)
 		{
-			return (*user)[i];
+			return user[i];
 		}
 	}
 }
