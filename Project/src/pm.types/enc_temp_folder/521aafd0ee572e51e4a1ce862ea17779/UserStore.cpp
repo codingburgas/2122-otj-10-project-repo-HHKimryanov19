@@ -4,8 +4,7 @@
 #include<fstream>
 #include<string>
 #include<vector>
-#include <sstream>
-using namespace std;
+
 /*void toFile(vector<pm::type::User> users)
 {
 	ofstream file("Info.txt");
@@ -26,7 +25,7 @@ void toFile(pm::type::User user)
 	std::ofstream file1("Info.txt", std::ios::app);
 	if (file1.is_open())
 	{
-		file1 << user.id << ',';
+		file1 <<user.id << ',';
 		file1 << user.FirstName << ',';
 		file1 << user.LastName << ',';
 		file1 << user.email << ',';
@@ -53,9 +52,7 @@ size_t generateNewId(std::vector<pm::type::User> users)
 
 std::vector<pm::type::User> pm::dal::UserStore::getAll()
 {
-	std::vector<pm::type::User> users;
-	pm::type::User user;
-	string str1;
+	std::vector<pm::type::User> user;
 	pm::type::User newLine;
 	std::ifstream file("Info.txt");
 	std::string line;
@@ -63,23 +60,24 @@ std::vector<pm::type::User> pm::dal::UserStore::getAll()
 	{
 		for (size_t i = 0; getline(file, line); i++)
 		{
-			std::vector<std::string> str;
-			std::stringstream ss(line);
-			while (getline(ss,str1,','))
-			{
-				str.push_back(str1);
-			}
-			user.id = size_t(stoi(str[0]));
-			user.id = size_t(stoi(str[0]));
-			user.id = size_t(stoi(str[0]));
-			user.id = size_t(stoi(str[0]));
-			user.id = size_t(stoi(str[0]));
-			user.id = size_t(stoi(str[0]));
-			users.push_back(user);
+			newLine.id = stoi(line.substr(0, line.find(',')));
+			line.erase(0, line.find(',') + 1);
+			newLine.FirstName = line.substr(0, line.find(','));
+			line.erase(0, line.find(',') + 1);
+			newLine.LastName = line.substr(0, line.find(','));
+			line.erase(0, line.find(',') + 1);
+			newLine.email = line.substr(0, line.find(','));
+			line.erase(0, line.find(',') + 1);
+			newLine.passwordHash = line.substr(0, line.find(','));
+			line.erase(0, line.find(',') + 1);
+			newLine.age = stoi(line.substr(0, line.find(',')));
+			line.erase(0, line.find(',') + 1);
+			newLine.createdOn = stoi(line);
+			user.push_back(newLine);
 		}
 	}
 	file.close();
-	return users;
+	return user;
 }
 
 void pm::dal::UserStore::create(pm::type::User* user)
@@ -89,7 +87,7 @@ void pm::dal::UserStore::create(pm::type::User* user)
 	(*user).id = generateNewId(users);
 	if (file1.is_open())
 	{
-
+		
 		std::cin >> (*user).FirstName;
 		std::cin >> (*user).LastName;
 		std::cin >> (*user).email;
@@ -102,13 +100,19 @@ void pm::dal::UserStore::create(pm::type::User* user)
 
 void pm::dal::UserStore::remove(std::vector<pm::type::User>* user, size_t id)
 {
-	for (int i = 0; i < (*user).size(); i++)
+
+	std::ofstream file("Info.txt", std::ios::ate);
+	if (file.is_open())
 	{
-		if ((*user)[i].id != id)
+		for (int i = 0; i < (*user).size(); i++)
 		{
-			toFile((*user)[i]);
+			if ((*user)[i].id != id)
+			{
+				toFile((*user)[i]);
+			}
 		}
 	}
+	file.close();
 	pm::dal::UserStore u;
 	(*user) = u.getAll();
 }
