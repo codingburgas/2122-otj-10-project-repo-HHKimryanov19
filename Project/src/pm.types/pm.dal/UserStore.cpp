@@ -6,21 +6,7 @@
 #include<vector>
 #include <sstream>
 using namespace std;
-/*void toFile(vector<pm::type::User> users)
-{
-	ofstream file("Info.txt");
-	if (file.is_open())
-	{
-		file << users.id<<' ';
-		file << users.FirstName << ' ';
-		file << users.LastName << ' ';
-		file << users.email << ' ';
-		file << users.passwordHash << ' ';
-		file << users.age << ' ';
-		file << users.createdOn << std::endl;
-	}
-	file.close();
-}*/
+
 void toFile(pm::type::User user)
 {
 	std::ofstream file1("Info.txt", std::ios::app);
@@ -89,12 +75,16 @@ void pm::dal::UserStore::create(pm::type::User* user)
 	(*user).id = generateNewId(users);
 	if (file1.is_open())
 	{
-
-		std::cin >> (*user).FirstName;
-		std::cin >> (*user).LastName;
-		std::cin >> (*user).email;
-		std::cin >> (*user).passwordHash;
-		std::cin >> (*user).age;
+		cout << "First name: ";
+	    cin >> (*user).FirstName;
+		cout << "Last name: ";
+		cin >> (*user).LastName;
+		cout << "Email: ";
+		cin >> (*user).email;
+		cout << "Password: ";
+		cin >> (*user).passwordHash;
+		cout << "Age: ";
+		cin >> (*user).age;
 		(*user).createdOn = time(NULL);
 	}
 	file1.close();
