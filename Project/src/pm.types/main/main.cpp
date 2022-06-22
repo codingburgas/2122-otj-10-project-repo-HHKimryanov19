@@ -139,8 +139,36 @@ int main()
 	pm::type::User newUser;
 	pm::dal::UserStore userFunc;
 	users = userFunc.getAll();
-	int n;
-	while (_getch() != 27)
+
+	size_t j = users.size();
+
+	bool nameLogin = false, passwordLogin = false;
+	string userName, password;
+	cout << "User name: ";
+	cin >> userName;
+	cout << endl << "Password: ";
+	cin>> password;
+	if (j != 0)
+	{
+		for (size_t i = 0; i < users.size(); i++)
+		{
+			if (users[i].FirstName == userName && users[i].passwordHash == password)
+			{
+				cout << "You are stupid";
+				break;
+			}
+		}
+	}
+	else
+	{
+		if (userName == "admin" && password == "adminpass")
+		{
+			cout << "You are admin";
+		}
+	}
+}
+
+/*while (_getch() != 27)
 	{
 		userFunc.create(&newUser);
 		users.push_back(newUser);
@@ -180,6 +208,4 @@ int main()
 	for (auto i : users)
 	{
 		cout << i.id << ". " << i.FirstName << " " << i.LastName << " " << i.age << " " << i.email << " " << i.passwordHash << " " << i.createdOn << endl;
-	}
-}
-
+	}*/
