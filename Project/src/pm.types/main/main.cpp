@@ -31,10 +31,10 @@ void buttonsAdmin() {
 	cout << " \\__________________/" << endl;
 }
 
-void buttonsRegister() {
+void buttonsLogIn() {
 	cout << "  __________________" << endl;
 	cout << " /                  \\" << endl;
-	cout << "{   Registr   }" << endl;
+	cout << "{       Log in       }" << endl;
 	cout << " \\__________________/" << endl;
 }
 
@@ -45,8 +45,8 @@ void buttonsUpdate() {
 	cout << " \\__________________/" << endl;
 }
 
-void menuButtons(vector<pm::type::User> users) {
-	int n = 1,n1 = 0;
+void menuAdmin(vector<pm::type::User> users) {
+	int n = 1, n1 = 0;
 	bool updatePress = false;
 	pm::dal::UserStore userFunc;
 	while (true)
@@ -133,6 +133,100 @@ void menuButtons(vector<pm::type::User> users) {
 	}
 }
 
+void startMenu(vector<pm::type::User> users)
+{
+	bool logIn = false, createButton = false;
+	int n = 1;
+	int n1;
+	while (true)
+	{
+		switch (n)
+		{
+		case 1:
+			system("CLS");
+			cout << "\x1b[1;37m";
+			buttonsLogIn();
+			cout << "\x1b[1;30m";
+			buttonCreate();
+			n1 = _getch();
+			if (n1 == 13)
+			{
+				system("CLS");
+				logIn = true;
+			}
+			break;
+		case 2:
+			system("CLS");
+			cout << "\x1b[1;30m";
+			buttonsLogIn();
+			cout << "\x1b[1;37m";
+			buttonCreate();
+			n1 = _getch();
+			if (n1 == 13)
+			{
+				system("CLS");
+				createButton = true;
+			}
+			break;
+		}
+
+		if (logIn == false && createButton == false)
+		{
+			switch (n1)
+			{
+			case KEY_UP:
+				if (n == 1)
+				{
+					n = 2;
+					system("CLS");
+				}
+				else
+				{
+					n--;
+				}
+				break;
+			case KEY_DOWN:
+				if (n == 2)
+				{
+					n = 1;
+				}
+				else
+				{
+					n++;
+				}
+				break;
+			}
+		}
+		else
+		{
+			int j = 
+			if (logIn)
+			{
+				if (j != 0)
+				{
+					for (size_t i = 0; i < users.size(); i++)
+					{
+						if (users[i].FirstName == userName && users[i].passwordHash == password)
+						{
+							cout << "You are stupid";
+							break;
+						}
+					}
+				}
+				else
+				{
+					if (userName == "admin" && password == "adminpass")
+					{
+						cout << "You are admin";
+					}
+				}
+			}
+		}
+
+
+	}
+}
+
 int main()
 {
 	vector<pm::type::User> users;
@@ -140,32 +234,7 @@ int main()
 	pm::dal::UserStore userFunc;
 	users = userFunc.getAll();
 
-	size_t j = users.size();
-
-	bool nameLogin = false, passwordLogin = false;
-	string userName, password;
-	cout << "User name: ";
-	cin >> userName;
-	cout << endl << "Password: ";
-	cin>> password;
-	if (j != 0)
-	{
-		for (size_t i = 0; i < users.size(); i++)
-		{
-			if (users[i].FirstName == userName && users[i].passwordHash == password)
-			{
-				cout << "You are stupid";
-				break;
-			}
-		}
-	}
-	else
-	{
-		if (userName == "admin" && password == "adminpass")
-		{
-			cout << "You are admin";
-		}
-	}
+	startMenu();
 }
 
 /*while (_getch() != 27)
@@ -209,3 +278,33 @@ int main()
 	{
 		cout << i.id << ". " << i.FirstName << " " << i.LastName << " " << i.age << " " << i.email << " " << i.passwordHash << " " << i.createdOn << endl;
 	}*/
+
+
+
+
+	/*size_t j = users.size();
+
+		bool nameLogin = false, passwordLogin = false;
+		string userName, password;
+		cout << "User name: ";
+		cin >> userName;
+		cout << endl << "Password: ";
+		cin>> password;
+		if (j != 0)
+		{
+			for (size_t i = 0; i < users.size(); i++)
+			{
+				if (users[i].FirstName == userName && users[i].passwordHash == password)
+				{
+					cout << "You are stupid";
+					break;
+				}
+			}
+		}
+		else
+		{
+			if (userName == "admin" && password == "adminpass")
+			{
+				cout << "You are admin";
+			}
+		}*/
