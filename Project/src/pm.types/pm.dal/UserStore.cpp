@@ -56,11 +56,11 @@ std::vector<pm::type::User> pm::dal::UserStore::getAll()
 				str.push_back(str1);
 			}
 			user.id = size_t(stoi(str[0]));
-			user.id = size_t(stoi(str[0]));
-			user.id = size_t(stoi(str[0]));
-			user.id = size_t(stoi(str[0]));
-			user.id = size_t(stoi(str[0]));
-			user.id = size_t(stoi(str[0]));
+			user.FirstName = str[1];
+			user.LastName = str[2];
+			user.email = str[3];
+			user.passwordHash = str[4];
+			user.age = size_t(stoi(str[5]));
 			users.push_back(user);
 		}
 	}

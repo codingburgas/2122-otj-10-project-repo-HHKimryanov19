@@ -31,14 +31,12 @@ void buttonsAdmin() {
 	cout << " \\__________________/" << endl;
 }
 
-
 void buttonsRegister() {
 	cout << "  __________________" << endl;
 	cout << " /                  \\" << endl;
 	cout << "{   Registr   }" << endl;
 	cout << " \\__________________/" << endl;
 }
-
 
 void buttonsUpdate() {
 	cout << "  __________________" << endl;
@@ -47,36 +45,12 @@ void buttonsUpdate() {
 	cout << " \\__________________/" << endl;
 }
 
-void menuButtons() {
-	int n = 0;
+void menuButtons(vector<pm::type::User> users) {
+	int n = 1,n1 = 0;
+	bool updatePress = false;
+	pm::dal::UserStore userFunc;
 	while (true)
 	{
-
-		switch (_getch())
-		{
-		case KEY_UP:
-			if (n == 1)
-			{
-				n = 3;
-				system("CLS");
-			}
-			else
-			{
-				n--;
-			}
-			break;
-		case KEY_DOWN:
-			if (n == 3)
-			{
-				n = 1;
-			}
-			else
-			{
-				n++;
-			}
-			break;
-		}
-
 		switch (n)
 		{
 		case 1:
@@ -103,6 +77,57 @@ void menuButtons() {
 			buttonsRemove();
 			cout << "\x1b[1;37m";
 			buttonsUpdate();
+			if (_getch() == 13)
+			{
+				system("CLS");
+				updatePress = true;
+			}
+			while (updatePress)
+			{
+				cin >> n1;
+				for (int i = 0; i < users.size(); i++)
+				{
+					if (users[i].id == n1)
+					{
+						userFunc.update(&users[i]);
+						n1 = 0;
+						break;
+					}
+				}
+				if (n1 != 0)
+				{
+					cout << "That user hasn't been found" << endl;
+				}
+				if (_getch() == 27)
+				{
+					updatePress = false;
+				}
+			}
+			break;
+		}
+
+		switch (_getch())
+		{
+		case KEY_UP:
+			if (n == 1)
+			{
+				n = 3;
+				system("CLS");
+			}
+			else
+			{
+				n--;
+			}
+			break;
+		case KEY_DOWN:
+			if (n == 3)
+			{
+				n = 1;
+			}
+			else
+			{
+				n++;
+			}
 			break;
 		}
 	}
@@ -110,12 +135,11 @@ void menuButtons() {
 
 int main()
 {
-	menuButtons();
 	vector<pm::type::User> users;
 	pm::type::User newUser;
 	pm::dal::UserStore userFunc;
-	int n;
 	users = userFunc.getAll();
+	int n;
 	while (_getch() != 27)
 	{
 		userFunc.create(&newUser);
@@ -144,7 +168,7 @@ int main()
 
 	for (int i = 0; i < users.size(); i++)
 	{
-		if (i + 1 == n)
+		if (users[i].id == n)
 		{
 			userFunc.update(&users[i]);
 		}
@@ -158,3 +182,4 @@ int main()
 		cout << i.id << ". " << i.FirstName << " " << i.LastName << " " << i.age << " " << i.email << " " << i.passwordHash << " " << i.createdOn << endl;
 	}
 }
+
