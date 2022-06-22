@@ -148,6 +148,7 @@ void startMenu(vector<pm::type::User> users)
 			buttonsLogIn();
 			cout << "\x1b[1;30m";
 			buttonCreate();
+			cout << "\x1b[1;37m";
 			n1 = _getch();
 			if (n1 == 13)
 			{
@@ -169,7 +170,6 @@ void startMenu(vector<pm::type::User> users)
 			}
 			break;
 		}
-
 		if (logIn == false && createButton == false)
 		{
 			switch (n1)
@@ -199,17 +199,32 @@ void startMenu(vector<pm::type::User> users)
 		}
 		else
 		{
-			int j = 
+			int j = users.size();
+			bool adminLogIn = false, userLogIn = false;
+			string userName, password;
+			cout << "User name: ";
+			cin >> userName;
+			cout << "Password: ";
+			cin >> password;
 			if (logIn)
 			{
 				if (j != 0)
 				{
-					for (size_t i = 0; i < users.size(); i++)
+					if (userName == "admin" && password == "adminpass")
 					{
-						if (users[i].FirstName == userName && users[i].passwordHash == password)
+						adminLogIn = true;
+						n = 3;
+					}
+					else
+					{
+						for (size_t i = 0; i < users.size(); i++)
 						{
-							cout << "You are stupid";
-							break;
+							if (users[i].FirstName == userName && users[i].passwordHash == password)
+							{
+								n = 3;
+								userLogIn = false;
+								break;
+							}
 						}
 					}
 				}
@@ -217,8 +232,20 @@ void startMenu(vector<pm::type::User> users)
 				{
 					if (userName == "admin" && password == "adminpass")
 					{
-						cout << "You are admin";
+						cout << "You are admin" << endl;
+						adminLogIn = true;
+						n = 3;
 					}
+				}
+
+				if (adminLogIn)
+				{
+					menuAdmin(users);
+				}
+
+				if (userLogIn)
+				{
+					cout << "Today is Wednesday"<<endl;
 				}
 			}
 		}
@@ -234,7 +261,7 @@ int main()
 	pm::dal::UserStore userFunc;
 	users = userFunc.getAll();
 
-	startMenu();
+	startMenu(users);
 }
 
 /*while (_getch() != 27)
