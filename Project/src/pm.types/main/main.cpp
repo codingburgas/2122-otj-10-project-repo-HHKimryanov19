@@ -69,7 +69,7 @@ void menuAdmin(vector<pm::type::User> users) {
 			{
 				if (_getch() == 27)
 				{
-					cout << "Create";
+					n = -1;
 					createPress = false;
 				}
 			}
@@ -92,7 +92,7 @@ void menuAdmin(vector<pm::type::User> users) {
 			{
 				if (_getch() == 27)
 				{
-					cout << "Remove" << endl;
+					n = -1;
 					removePress = false;
 				}
 			}
@@ -109,8 +109,14 @@ void menuAdmin(vector<pm::type::User> users) {
 				system("CLS");
 				updatePress = true;
 			}
+
 			while (updatePress)
 			{
+				cout << "Who user do you want to edit?" << endl;
+				for (int i = 0; i < users.size(); i++)
+				{
+					cout << users[i].id << ". " << users[i].FirstName << " " << users[i].LastName << " " << users[i].age << " " << users[i].email << endl;
+				}
 				cin >> n1;
 				for (int i = 0; i < users.size(); i++)
 				{
@@ -123,38 +129,53 @@ void menuAdmin(vector<pm::type::User> users) {
 				}
 				if (n1 != 0)
 				{
-					cout << "That user hasn't been found" << endl;
+					cout << "User with that id hasn't been found" << endl;
 				}
-				if (_getch() == 27)
+				cout << "Do you want another user?(YES/NO)" << endl;
+				string choice;
+				cin >> choice;
+				if (choice == "NO")
 				{
+					n = -1;
 					updatePress = false;
+				}
+				else
+				{
+					system("CLS");
 				}
 			}
 		}
 
-		switch (_getch())
+		if (n != -1)
 		{
-		case KEY_UP:
-			if (n == 1)
+			switch (_getch())
 			{
-				n = 3;
-				system("CLS");
+			case KEY_UP:
+				if (n == 1)
+				{
+					n = 3;
+					system("CLS");
+				}
+				else
+				{
+					n--;
+				}
+				break;
+			case KEY_DOWN:
+				if (n == 3)
+				{
+					n = 1;
+				}
+				else
+				{
+					n++;
+				}
+				break;
 			}
-			else
-			{
-				n--;
-			}
-			break;
-		case KEY_DOWN:
-			if (n == 3)
-			{
-				n = 1;
-			}
-			else
-			{
-				n++;
-			}
-			break;
+		}
+		else
+		{
+			n = 1;
 		}
 	}
 }
