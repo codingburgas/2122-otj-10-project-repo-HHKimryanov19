@@ -47,7 +47,7 @@ void buttonsUpdate() {
 
 void menuAdmin(vector<pm::type::User> users) {
 	int n = 1, n1 = 0;
-	bool updatePress = false;
+	bool updatePress = false, createPress = false, removePress = false;
 	pm::dal::UserStore userFunc;
 	while (true)
 	{
@@ -60,6 +60,19 @@ void menuAdmin(vector<pm::type::User> users) {
 			cout << "\x1b[1;30m";
 			buttonsRemove();
 			buttonsUpdate();
+			if (_getch() == 13)
+			{
+				system("CLS");
+				createPress = true;
+			}
+			while (createPress)
+			{
+				if (_getch() == 27)
+				{
+					cout << "Create";
+					createPress = false;
+				}
+			}
 			break;
 		case 2:
 			system("CLS");
@@ -69,6 +82,20 @@ void menuAdmin(vector<pm::type::User> users) {
 			buttonsRemove();
 			cout << "\x1b[1;30m";
 			buttonsUpdate();
+			if (_getch() == 13)
+			{
+				system("CLS");
+				removePress = true;
+			}
+
+			while (removePress)
+			{
+				if (_getch() == 27)
+				{
+					cout << "Remove" << endl;
+					removePress = false;
+				}
+			}
 			break;
 		case 3:
 			system("CLS");
@@ -103,7 +130,6 @@ void menuAdmin(vector<pm::type::User> users) {
 					updatePress = false;
 				}
 			}
-			break;
 		}
 
 		switch (_getch())
@@ -245,7 +271,7 @@ void startMenu(vector<pm::type::User> users)
 
 				if (userLogIn)
 				{
-					cout << "Today is Wednesday"<<endl;
+					cout << "Today is Wednesday" << endl;
 				}
 			}
 		}
