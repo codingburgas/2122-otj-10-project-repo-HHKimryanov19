@@ -61,7 +61,8 @@ vector<pm::type::User> pm::dal::UserStore::getAll()
 			user.createdOn = time_t(stoi(str[6]));
 			user.lastChange = time_t(stoi(str[7]));
 			user.idOfCreater = size_t(stoi(str[8]));
-			if (str[9] == "true")
+			user.idOfUserChange = size_t(stoi(str[9]));
+			if (str[10] == "true")
 			{
 				user.adminPrivileges = true;
 			}
@@ -94,7 +95,9 @@ pm::type::User pm::dal::UserStore::create(vector<pm::type::User> users,size_t id
 		cout << "Age: ";
 		cin >> user.age;
 		user.createdOn = time(NULL);
+		user.lastChange = time(NULL);
 		user.idOfCreater = idOfCreator;
+		user.idOfUserChange = idOfCreator;
 		cout << "This user is admin(true/false) - ";
 		cin >> user.adminPrivileges;
 
@@ -107,6 +110,7 @@ pm::type::User pm::dal::UserStore::create(vector<pm::type::User> users,size_t id
 		file1 << user.createdOn << ',';
 		file1 << user.lastChange << ',';
 		file1 << user.idOfCreater << ',';
+		file1 << user.idOfUserChange<<',';
 		if (user.adminPrivileges)
 		{
 			file1 << "true" << endl;
@@ -136,6 +140,7 @@ void pm::dal::UserStore::remove(vector<pm::type::User>* user, size_t id)
 			file1 << (*user)[i].createdOn << ',';
 			file1 << (*user)[i].lastChange << ',';
 			file1 << (*user)[i].idOfCreater << ',';
+			file1 << (*user)[i].idOfUserChange << ',';
 			if ((*user)[i].adminPrivileges)
 			{
 				file1 << "true"<<endl;
@@ -150,7 +155,7 @@ void pm::dal::UserStore::remove(vector<pm::type::User>* user, size_t id)
 	(*user) = u.getAll();
 }
 
-void pm::dal::UserStore::update(pm::type::User* user)
+void pm::dal::UserStore::update(pm::type::User* user,size_t idOfUserChange)
 {
 	cout << "First name: ";
 	cin >> (*user).FirstName;
@@ -163,6 +168,7 @@ void pm::dal::UserStore::update(pm::type::User* user)
 	cout << "Age: ";
 	cin >> (*user).age;
 	(*user).lastChange = time(NULL);
+	(*user).idOfUserChange = idOfUserChange;
 	cout << "This user is admin - ";
 	cin >> (*user).adminPrivileges;
 }

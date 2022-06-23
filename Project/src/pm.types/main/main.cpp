@@ -62,7 +62,6 @@ void displayUsers(vector<pm::type::User> users)
 }
 
 void menuAdmin(vector<pm::type::User> users, pm::type::User currecntUser) {
-	cin.ignore();
 	int n = 1, n1 = 0;
 	bool updatePress = false, createPress = false, removePress = false, allUsersPress = false;
 	pm::dal::UserStore userFunc;
@@ -174,7 +173,7 @@ void menuAdmin(vector<pm::type::User> users, pm::type::User currecntUser) {
 				{
 					if (users[i].id == n1)
 					{
-						userFunc.update(&users[i]);
+						userFunc.update(&users[i],currecntUser.id);
 						n1 = 0;
 						break;
 					}

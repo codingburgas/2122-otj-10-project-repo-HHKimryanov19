@@ -16,6 +16,7 @@ namespace pm {
 			std::time_t createdOn;
 			std::time_t lastChange;
 			size_t idOfCreater;
+			size_t idOfUserChange;
 			bool adminPrivileges;
 		};
 	}
