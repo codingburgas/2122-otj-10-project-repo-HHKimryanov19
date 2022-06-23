@@ -18,7 +18,7 @@ using namespace std;
 //	file1 << user.createdOn << std::endl;
 //}
 
-size_t generateNewId(std::vector<pm::type::User> users)
+size_t generateNewId(vector<pm::type::User> users)
 {
 	size_t maxId = 0;
 	for (auto user : users)
@@ -32,20 +32,20 @@ size_t generateNewId(std::vector<pm::type::User> users)
 	return maxId + 1;
 }
 
-std::vector<pm::type::User> pm::dal::UserStore::getAll()
+vector<pm::type::User> pm::dal::UserStore::getAll()
 {
-	std::vector<pm::type::User> users;
+	vector<pm::type::User> users;
 	pm::type::User user;
 	string str1;
 	pm::type::User newLine;
-	std::ifstream file("Info.txt");
-	std::string line;
+	ifstream file("Info.txt");
+	string line;
 	if (file.is_open())
 	{
 		for (size_t i = 0; getline(file, line); i++)
 		{
-			std::vector<std::string> str;
-			std::stringstream ss(line);
+			vector<string> str;
+			stringstream ss(line);
 			while (getline(ss, str1, ','))
 			{
 				str.push_back(str1);
@@ -56,6 +56,15 @@ std::vector<pm::type::User> pm::dal::UserStore::getAll()
 			user.email = str[3];
 			user.passwordHash = str[4];
 			user.age = size_t(stoi(str[5]));
+			user.createdOn = time_t(stoi(str[6]));
+			if (str[7] == "true")
+			{
+				user.adminPrivileges = true;
+			}
+			else
+			{
+				user.adminPrivileges = false;
+			}
 			users.push_back(user);
 		}
 	}
@@ -63,31 +72,35 @@ std::vector<pm::type::User> pm::dal::UserStore::getAll()
 	return users;
 }
 
-void pm::dal::UserStore::create(pm::type::User* user)
+pm::type::User pm::dal::UserStore::create()
 {
-	std::vector<pm::type::User> users = getAll();
-	std::ofstream file1("Info.txt", std::ios::app);
-	(*user).id = generateNewId(users);
+	vector<pm::type::User> users = getAll();
+	pm::type::User user;
+	ofstream file1("Info.txt", ios::app);
+	user.id = generateNewId(users);
 	if (file1.is_open())
 	{
 		cout << "First name: ";
-		cin >> (*user).FirstName;
+		cin >> user.FirstName;
 		cout << "Last name: ";
-		cin >> (*user).LastName;
+		cin >> user.LastName;
 		cout << "Email: ";
-		cin >> (*user).email;
+		cin >> user.email;
 		cout << "Password: ";
-		cin >> (*user).passwordHash;
+		cin >> user.passwordHash;
 		cout << "Age: ";
-		cin >> (*user).age;
-		(*user).createdOn = time(NULL);
+		cin >> user.age;
+		user.createdOn = time(NULL);
+		cout << "This user is admin - ";
+		cin >> user.adminPrivileges;
 	}
 	file1.close();
+	return user;
 }
 
-void pm::dal::UserStore::remove(std::vector<pm::type::User>* user, size_t id)
+void pm::dal::UserStore::remove(vector<pm::type::User>* user, size_t id)
 {
-	std::ofstream file1("Info.txt",ios::trunc);
+	ofstream file1("Info.txt",ios::trunc);
 	for (int i = 0; i < (*user).size(); i++)
 	{
 		if ((*user)[i].id != id)
@@ -98,7 +111,15 @@ void pm::dal::UserStore::remove(std::vector<pm::type::User>* user, size_t id)
 			file1 << (*user)[i].email << ',';
 			file1 << (*user)[i].passwordHash << ',';
 			file1 << (*user)[i].age << ',';
-			file1 << (*user)[i].createdOn << std::endl;
+			file1 << (*user)[i].createdOn << ',';
+			if ((*user)[i].adminPrivileges)
+			{
+				file1 << "true"<<endl;
+			}
+			else
+			{
+				file1 << "false" << endl;
+			}
 		}
 	}
 	pm::dal::UserStore u;
@@ -107,19 +128,21 @@ void pm::dal::UserStore::remove(std::vector<pm::type::User>* user, size_t id)
 
 void pm::dal::UserStore::update(pm::type::User* user)
 {
-	std::cout << "First name: ";
-	std::cin >> (*user).FirstName;
-	std::cout << "Last name: ";
-	std::cin >> (*user).LastName;
-	std::cout << "Email: ";
-	std::cin >> (*user).email;
-	std::cout << "Password: ";
-	std::cin >> (*user).passwordHash;
-	std::cout << "Age: ";
-	std::cin >> (*user).age;
+	cout << "First name: ";
+	cin >> (*user).FirstName;
+	cout << "Last name: ";
+	cin >> (*user).LastName;
+	cout << "Email: ";
+	cin >> (*user).email;
+	cout << "Password: ";
+	cin >> (*user).passwordHash;
+	cout << "Age: ";
+	cin >> (*user).age;
+	cout << "This user is admin - ";
+	cin >> (*user).adminPrivileges;
 }
 
-pm::type::User pm::dal::UserStore::getById(std::vector<pm::type::User> user, size_t id)
+pm::type::User pm::dal::UserStore::getById(vector<pm::type::User> user, size_t id)
 {
 	for (size_t i = 0; i < user.size(); i++)
 	{
@@ -130,7 +153,7 @@ pm::type::User pm::dal::UserStore::getById(std::vector<pm::type::User> user, siz
 	}
 }
 
-pm::type::User pm::dal::UserStore::getByEmail(std::vector<pm::type::User> user, std::string email)
+pm::type::User pm::dal::UserStore::getByEmail(vector<pm::type::User> user, string email)
 {
 	for (size_t i = 0; i < user.size(); i++)
 	{

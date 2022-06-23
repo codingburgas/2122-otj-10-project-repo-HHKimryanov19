@@ -14,6 +14,7 @@ namespace pm {
 			unsigned short age;
 			std::string passwordHash;
 			std::time_t createdOn;
+			bool adminPrivileges;
 		};
 	}
 }

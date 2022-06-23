@@ -45,17 +45,25 @@ void buttonsUpdate() {
 	cout << " \\__________________/" << endl;
 }
 
+void displayUsersButton()
+{
+	cout << "  __________________" << endl;
+	cout << " /                  \\" << endl;
+	cout << "{ Display all users  }" << endl;
+	cout << " \\__________________/" << endl;
+}
+
 void displayUsers(vector<pm::type::User> users)
 {
 	for (int i = 0; i < users.size(); i++)
 	{
-		cout << users[i].id << ". " << users[i].FirstName << " " << users[i].LastName << " " << users[i].age << " " << users[i].email << endl;
+		cout << users[i].id << ". " << users[i].FirstName << " " << users[i].LastName << " " << users[i].email << " " << users[i].age << " " << users[i].createdOn << endl;
 	}
 }
 
 void menuAdmin(vector<pm::type::User> users) {
 	int n = 1, n1 = 0;
-	bool updatePress = false, createPress = false, removePress = false;
+	bool updatePress = false, createPress = false, removePress = false, allUsersPress = false;
 	pm::dal::UserStore userFunc;
 	while (true)
 	{
@@ -63,6 +71,35 @@ void menuAdmin(vector<pm::type::User> users) {
 		{
 		case 1:
 			system("CLS");
+			cout << "\x1b[1;37m";
+			displayUsersButton();
+			cout << "\x1b[1;30m";
+			buttonCreate();
+			buttonsRemove();
+			buttonsUpdate();
+			cout << "\x1b[1;37m";
+			if (_getch() == 13)
+			{
+				system("CLS");
+				allUsersPress = true;
+			}
+			while (allUsersPress)
+			{
+				displayUsers(users);
+				cout << "Do you want to go back?(YES/NO)" << endl;
+				string choice;
+				cin >> choice;
+				if (choice == "NO")
+				{
+					n = -1;
+					allUsersPress = false;
+				}
+			}
+			break;
+		case 2:
+			system("CLS");
+			cout << "\x1b[1;30m";
+			displayUsersButton();
 			cout << "\x1b[1;37m";
 			buttonCreate();
 			cout << "\x1b[1;30m";
@@ -75,16 +112,21 @@ void menuAdmin(vector<pm::type::User> users) {
 			}
 			while (createPress)
 			{
-				if (_getch() == 27)
+				users.push_back(userFunc.create());
+				cout << "Do you want another user?(YES/NO)" << endl;
+				string choice;
+				cin >> choice;
+				if (choice == "NO")
 				{
 					n = -1;
 					createPress = false;
 				}
 			}
 			break;
-		case 2:
+		case 3:
 			system("CLS");
 			cout << "\x1b[1;30m";
+			displayUsersButton();
 			buttonCreate();
 			cout << "\x1b[1;37m";
 			buttonsRemove();
@@ -107,16 +149,17 @@ void menuAdmin(vector<pm::type::User> users) {
 				cout << "Do you want another user?(YES/NO)" << endl;
 				string choice;
 				cin >> choice;
-				if (choice=="NO")
+				if (choice == "NO")
 				{
 					n = -1;
 					removePress = false;
 				}
 			}
 			break;
-		case 3:
+		case 4:
 			system("CLS");
 			cout << "\x1b[1;30m";
+			displayUsersButton();
 			buttonCreate();
 			buttonsRemove();
 			cout << "\x1b[1;37m";
@@ -167,7 +210,7 @@ void menuAdmin(vector<pm::type::User> users) {
 			case KEY_UP:
 				if (n == 1)
 				{
-					n = 3;
+					n = 4;
 					system("CLS");
 				}
 				else
@@ -176,7 +219,7 @@ void menuAdmin(vector<pm::type::User> users) {
 				}
 				break;
 			case KEY_DOWN:
-				if (n == 3)
+				if (n == 4)
 				{
 					n = 1;
 				}
@@ -282,8 +325,16 @@ void startMenu(vector<pm::type::User> users)
 						{
 							if (users[i].FirstName == userName && users[i].passwordHash == password)
 							{
+								if (users[i].adminPrivileges)
+								{
+									adminLogIn = true;
+								}
+								else
+								{
+									userLogIn = true;
+								}
 								n = 3;
-								userLogIn = false;
+
 								break;
 							}
 						}
