@@ -7,21 +7,16 @@
 #include <sstream>
 using namespace std;
 
-void toFile(pm::type::User user)
-{
-	std::ofstream file1("Info.txt", std::ios::app);
-	if (file1.is_open())
-	{
-		file1 << user.id << ',';
-		file1 << user.FirstName << ',';
-		file1 << user.LastName << ',';
-		file1 << user.email << ',';
-		file1 << user.passwordHash << ',';
-		file1 << user.age << ',';
-		file1 << user.createdOn << std::endl;
-	}
-	file1.close();
-}
+//void toFile(pm::type::User user, std::ofstream file1)
+//{
+//	file1 << user.id << ',';
+//	file1 << user.FirstName << ',';
+//	file1 << user.LastName << ',';
+//	file1 << user.email << ',';
+//	file1 << user.passwordHash << ',';
+//	file1 << user.age << ',';
+//	file1 << user.createdOn << std::endl;
+//}
 
 size_t generateNewId(std::vector<pm::type::User> users)
 {
@@ -51,7 +46,7 @@ std::vector<pm::type::User> pm::dal::UserStore::getAll()
 		{
 			std::vector<std::string> str;
 			std::stringstream ss(line);
-			while (getline(ss,str1,','))
+			while (getline(ss, str1, ','))
 			{
 				str.push_back(str1);
 			}
@@ -76,7 +71,7 @@ void pm::dal::UserStore::create(pm::type::User* user)
 	if (file1.is_open())
 	{
 		cout << "First name: ";
-	    cin >> (*user).FirstName;
+		cin >> (*user).FirstName;
 		cout << "Last name: ";
 		cin >> (*user).LastName;
 		cout << "Email: ";
@@ -92,11 +87,18 @@ void pm::dal::UserStore::create(pm::type::User* user)
 
 void pm::dal::UserStore::remove(std::vector<pm::type::User>* user, size_t id)
 {
+	std::ofstream file1("Info.txt",ios::trunc);
 	for (int i = 0; i < (*user).size(); i++)
 	{
 		if ((*user)[i].id != id)
 		{
-			toFile((*user)[i]);
+			file1 << (*user)[i].id << ',';
+			file1 << (*user)[i].FirstName << ',';
+			file1 << (*user)[i].LastName << ',';
+			file1 << (*user)[i].email << ',';
+			file1 << (*user)[i].passwordHash << ',';
+			file1 << (*user)[i].age << ',';
+			file1 << (*user)[i].createdOn << std::endl;
 		}
 	}
 	pm::dal::UserStore u;

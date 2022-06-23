@@ -45,6 +45,14 @@ void buttonsUpdate() {
 	cout << " \\__________________/" << endl;
 }
 
+void displayUsers(vector<pm::type::User> users)
+{
+	for (int i = 0; i < users.size(); i++)
+	{
+		cout << users[i].id << ". " << users[i].FirstName << " " << users[i].LastName << " " << users[i].age << " " << users[i].email << endl;
+	}
+}
+
 void menuAdmin(vector<pm::type::User> users) {
 	int n = 1, n1 = 0;
 	bool updatePress = false, createPress = false, removePress = false;
@@ -82,6 +90,7 @@ void menuAdmin(vector<pm::type::User> users) {
 			buttonsRemove();
 			cout << "\x1b[1;30m";
 			buttonsUpdate();
+			cout << "\x1b[1;37m";
 			if (_getch() == 13)
 			{
 				system("CLS");
@@ -90,7 +99,15 @@ void menuAdmin(vector<pm::type::User> users) {
 
 			while (removePress)
 			{
-				if (_getch() == 27)
+				size_t userId;
+				displayUsers(users);
+				cout << endl << "Who user want to delete? - ";
+				cin >> userId;
+				userFunc.remove(&users, userId);
+				cout << "Do you want another user?(YES/NO)" << endl;
+				string choice;
+				cin >> choice;
+				if (choice=="NO")
 				{
 					n = -1;
 					removePress = false;
@@ -112,11 +129,8 @@ void menuAdmin(vector<pm::type::User> users) {
 
 			while (updatePress)
 			{
-				cout << "Who user do you want to edit?" << endl;
-				for (int i = 0; i < users.size(); i++)
-				{
-					cout << users[i].id << ". " << users[i].FirstName << " " << users[i].LastName << " " << users[i].age << " " << users[i].email << endl;
-				}
+				displayUsers(users);
+				cout << endl << "Who user do you want to edit? - ";
 				cin >> n1;
 				for (int i = 0; i < users.size(); i++)
 				{
