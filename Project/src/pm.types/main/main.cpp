@@ -61,7 +61,8 @@ void displayUsers(vector<pm::type::User> users)
 	}
 }
 
-void menuAdmin(vector<pm::type::User> users) {
+void menuAdmin(vector<pm::type::User> users, pm::type::User currecntUser) {
+	cin.ignore();
 	int n = 1, n1 = 0;
 	bool updatePress = false, createPress = false, removePress = false, allUsersPress = false;
 	pm::dal::UserStore userFunc;
@@ -110,17 +111,11 @@ void menuAdmin(vector<pm::type::User> users) {
 				system("CLS");
 				createPress = true;
 			}
-			while (createPress)
+			if (createPress)
 			{
-				users.push_back(userFunc.create());
-				cout << "Do you want another user?(YES/NO)" << endl;
-				string choice;
-				cin >> choice;
-				if (choice == "NO")
-				{
-					n = -1;
-					createPress = false;
-				}
+				users.push_back(userFunc.create(users,currecntUser.id));
+				n = -1;
+				createPress = false;
 			}
 			break;
 		case 3:
@@ -242,6 +237,7 @@ void startMenu(vector<pm::type::User> users)
 	bool logIn = false, createButton = false;
 	int n = 1;
 	int n1;
+	pm::type::User currentUser = users[0];
 	while (true)
 	{
 		switch (n)
@@ -327,6 +323,7 @@ void startMenu(vector<pm::type::User> users)
 							{
 								if (users[i].adminPrivileges)
 								{
+									currentUser = users[i];
 									adminLogIn = true;
 								}
 								else
@@ -352,7 +349,7 @@ void startMenu(vector<pm::type::User> users)
 
 				if (adminLogIn)
 				{
-					menuAdmin(users);
+					menuAdmin(users,currentUser);
 				}
 
 				if (userLogIn)

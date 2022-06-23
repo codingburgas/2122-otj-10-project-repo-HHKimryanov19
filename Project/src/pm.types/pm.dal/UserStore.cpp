@@ -32,6 +32,8 @@ size_t generateNewId(vector<pm::type::User> users)
 	return maxId + 1;
 }
 
+
+
 vector<pm::type::User> pm::dal::UserStore::getAll()
 {
 	vector<pm::type::User> users;
@@ -57,7 +59,9 @@ vector<pm::type::User> pm::dal::UserStore::getAll()
 			user.passwordHash = str[4];
 			user.age = size_t(stoi(str[5]));
 			user.createdOn = time_t(stoi(str[6]));
-			if (str[7] == "true")
+			user.lastChange = time_t(stoi(str[7]));
+			user.idOfCreater = size_t(stoi(str[8]));
+			if (str[9] == "true")
 			{
 				user.adminPrivileges = true;
 			}
@@ -72,9 +76,8 @@ vector<pm::type::User> pm::dal::UserStore::getAll()
 	return users;
 }
 
-pm::type::User pm::dal::UserStore::create()
+pm::type::User pm::dal::UserStore::create(vector<pm::type::User> users,size_t idOfCreator)
 {
-	vector<pm::type::User> users = getAll();
 	pm::type::User user;
 	ofstream file1("Info.txt", ios::app);
 	user.id = generateNewId(users);
@@ -91,8 +94,27 @@ pm::type::User pm::dal::UserStore::create()
 		cout << "Age: ";
 		cin >> user.age;
 		user.createdOn = time(NULL);
-		cout << "This user is admin - ";
+		user.idOfCreater = idOfCreator;
+		cout << "This user is admin(true/false) - ";
 		cin >> user.adminPrivileges;
+
+		file1 << user.id << ',';
+		file1 << user.FirstName << ',';
+		file1 << user.LastName << ',';
+		file1 << user.email << ',';
+		file1 << user.passwordHash << ',';
+		file1 << user.age << ',';
+		file1 << user.createdOn << ',';
+		file1 << user.lastChange << ',';
+		file1 << user.idOfCreater << ',';
+		if (user.adminPrivileges)
+		{
+			file1 << "true" << endl;
+		}
+		else
+		{
+			file1 << "false" << endl;
+		}
 	}
 	file1.close();
 	return user;
@@ -112,6 +134,8 @@ void pm::dal::UserStore::remove(vector<pm::type::User>* user, size_t id)
 			file1 << (*user)[i].passwordHash << ',';
 			file1 << (*user)[i].age << ',';
 			file1 << (*user)[i].createdOn << ',';
+			file1 << (*user)[i].lastChange << ',';
+			file1 << (*user)[i].idOfCreater << ',';
 			if ((*user)[i].adminPrivileges)
 			{
 				file1 << "true"<<endl;
@@ -138,6 +162,7 @@ void pm::dal::UserStore::update(pm::type::User* user)
 	cin >> (*user).passwordHash;
 	cout << "Age: ";
 	cin >> (*user).age;
+	(*user).lastChange = time(NULL);
 	cout << "This user is admin - ";
 	cin >> (*user).adminPrivileges;
 }
