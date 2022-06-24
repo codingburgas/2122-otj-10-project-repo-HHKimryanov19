@@ -175,11 +175,11 @@ void pm::dal::UserStore::update(pm::type::User* user,size_t idOfUserChange)
 
 pm::type::User pm::dal::UserStore::getById(vector<pm::type::User> user, size_t id)
 {
-	for (size_t i = 0; i < user.size(); i++)
+	for (auto i:user)
 	{
-		if (i == id - 1)
+		if (i.id == id)
 		{
-			return user[i];
+			return i;
 		}
 	}
 }

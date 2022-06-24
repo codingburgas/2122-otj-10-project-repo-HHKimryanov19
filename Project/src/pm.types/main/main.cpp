@@ -61,6 +61,19 @@ void displayUsers(vector<pm::type::User> users)
 	}
 }
 
+void displayUser(pm::type::User user,pm::type::User createrUser,pm::type::User changerUser)
+{
+	cout << user.id << ". " << user.FirstName << " " << user.LastName << endl;
+	cout << "Age: "<<user.age<<endl;
+	cout << "Email: "<<user.email<<endl;
+
+	cout << "Created on: "<<user.createdOn<<endl;
+	cout << "Last change: "<<user.lastChange<<endl;
+
+	cout << "Created by: " <<createrUser.FirstName<<" "<<createrUser.LastName << endl;
+	cout << "Last changed by: " << changerUser.FirstName << " " << changerUser.LastName << endl;
+}
+
 void menuAdmin(vector<pm::type::User> users, pm::type::User currecntUser) {
 	int n = 1, n1 = 0;
 	bool updatePress = false, createPress = false, removePress = false, allUsersPress = false;
@@ -86,13 +99,24 @@ void menuAdmin(vector<pm::type::User> users, pm::type::User currecntUser) {
 			while (allUsersPress)
 			{
 				displayUsers(users);
+				cout << "Which user do you want to see? - ";
+				size_t userId;
+				cin >> userId;
+				cout << endl;
+				pm::type::User wantedUser = userFunc.getById(users,userId);
+				displayUser(wantedUser, userFunc.getById(users, wantedUser.idOfCreater),
+					userFunc.getById(users, wantedUser.idOfUserChange));
 				cout << "Do you want to go back?(YES/NO)" << endl;
 				string choice;
 				cin >> choice;
-				if (choice == "NO")
+				if (choice == "YES")
 				{
 					n = -1;
 					allUsersPress = false;
+				}
+				else
+				{
+					system("CLS");
 				}
 			}
 			break;
