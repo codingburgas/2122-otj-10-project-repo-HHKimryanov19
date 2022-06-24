@@ -1,4 +1,4 @@
-1,Hris,Kimi,KOLK@gmail.com,lokijiu,18,100000,100000,0,1,true
-3,Hristiyan,Kimryanov,HHKimryanov19@gmail.com,123456789,17,1000000,100000,0,1,false
-8,Ivan,Byurzev,BVGZ,dhghdfhg,17,1000000,100000,0,1,false
+1,Hris,Kimi,KOLK@gmail.com,lokijiu,18,100000,100000,1,1,true
+3,Hristiyan,Kimryanov,HHKimryanov19@gmail.com,123456789,17,1000000,100000,1,1,false
+8,Ivan,Byurzev,BVGZ,dhghdfhg,17,1000000,100000,1,1,false
 9,Hris,KOLK,qwert,1fg,12,1656012758,10000,1,1,false

@@ -24,13 +24,6 @@ void buttonsRemove() {
 	cout << " \\__________________/" << endl;
 }
 
-void buttonsAdmin() {
-	cout << "  __________________" << endl;
-	cout << " /                  \\" << endl;
-	cout << "{   Remove account   }" << endl;
-	cout << " \\__________________/" << endl;
-}
-
 void buttonsLogIn() {
 	cout << "  __________________" << endl;
 	cout << " /                  \\" << endl;
@@ -53,6 +46,22 @@ void displayUsersButton()
 	cout << " \\__________________/" << endl;
 }
 
+void teamsManagement() {
+	cout << "  __________________" << endl;
+	cout << " /                  \\" << endl;
+	cout << "{  Teams Management  }" << endl;
+	cout << " \\__________________/" << endl;
+}
+
+void usersManagement() {
+	cout << "  __________________" << endl;
+	cout << " /                  \\" << endl;
+	cout << "{  Users Management  }" << endl;
+	cout << " \\__________________/" << endl;
+}
+
+//menuAdmin(users,currentUser);
+
 void displayUsers(vector<pm::type::User> users)
 {
 	for (int i = 0; i < users.size(); i++)
@@ -61,16 +70,16 @@ void displayUsers(vector<pm::type::User> users)
 	}
 }
 
-void displayUser(pm::type::User user,pm::type::User createrUser,pm::type::User changerUser)
+void displayUser(pm::type::User user, pm::type::User createrUser, pm::type::User changerUser)
 {
 	cout << user.id << ". " << user.FirstName << " " << user.LastName << endl;
-	cout << "Age: "<<user.age<<endl;
-	cout << "Email: "<<user.email<<endl;
+	cout << "Age: " << user.age << endl;
+	cout << "Email: " << user.email << endl;
 
-	cout << "Created on: "<<user.createdOn<<endl;
-	cout << "Last change: "<<user.lastChange<<endl;
+	cout << "Created on: " << user.createdOn << endl;
+	cout << "Last change: " << user.lastChange << endl;
 
-	cout << "Created by: " <<createrUser.FirstName<<" "<<createrUser.LastName << endl;
+	cout << "Created by: " << createrUser.FirstName << " " << createrUser.LastName << endl;
 	cout << "Last changed by: " << changerUser.FirstName << " " << changerUser.LastName << endl;
 }
 
@@ -103,9 +112,10 @@ void menuAdmin(vector<pm::type::User> users, pm::type::User currecntUser) {
 				size_t userId;
 				cin >> userId;
 				cout << endl;
-				pm::type::User wantedUser = userFunc.getById(users,userId);
+				pm::type::User wantedUser = userFunc.getById(users, userId);
 				displayUser(wantedUser, userFunc.getById(users, wantedUser.idOfCreater),
 					userFunc.getById(users, wantedUser.idOfUserChange));
+				cout << endl;
 				cout << "Do you want to go back?(YES/NO)" << endl;
 				string choice;
 				cin >> choice;
@@ -136,7 +146,7 @@ void menuAdmin(vector<pm::type::User> users, pm::type::User currecntUser) {
 			}
 			if (createPress)
 			{
-				users.push_back(userFunc.create(users,currecntUser.id));
+				users.push_back(userFunc.create(users, currecntUser.id));
 				n = -1;
 				createPress = false;
 			}
@@ -197,7 +207,7 @@ void menuAdmin(vector<pm::type::User> users, pm::type::User currecntUser) {
 				{
 					if (users[i].id == n1)
 					{
-						userFunc.update(&users[i],currecntUser.id);
+						userFunc.update(&users[i], currecntUser.id);
 						n1 = 0;
 						break;
 					}
@@ -251,6 +261,60 @@ void menuAdmin(vector<pm::type::User> users, pm::type::User currecntUser) {
 		else
 		{
 			n = 1;
+		}
+	}
+}
+
+void managementMenu(vector<pm::type::User> users, pm::type::User currentUser)
+{
+	bool teamM = false, userM = false;
+	int n = 1;
+	while (true)
+	{
+		switch (n)
+		{
+		case 1:
+			system("CLS");
+			cout << "\x1b[1;37m";
+			usersManagement();
+			cout << "\x1b[1;30m";
+			teamsManagement();
+			if (_getch() == 13)
+			{
+				menuAdmin(users, currentUser);
+			}
+			break;
+		case 2:
+			system("CLS");
+			cout << "\x1b[1;30m";
+			usersManagement();
+			cout << "\x1b[1;37m";
+			teamsManagement();
+			break;
+		}
+
+		switch (_getch())
+		{
+		case KEY_UP:
+			if (n == 1)
+			{
+				n = 2;
+			}
+			else
+			{
+				n--;
+			}
+			break;
+		case KEY_DOWN:
+			if (n == 2)
+			{
+				n = 1;
+			}
+			else
+			{
+				n++;
+			}
+			break;
 		}
 	}
 }
@@ -372,7 +436,7 @@ void startMenu(vector<pm::type::User> users)
 
 				if (adminLogIn)
 				{
-					menuAdmin(users,currentUser);
+					managementMenu(users, currentUser);
 				}
 
 				if (userLogIn)

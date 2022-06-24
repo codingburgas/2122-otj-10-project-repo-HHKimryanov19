@@ -7,17 +7,6 @@
 #include <sstream>
 using namespace std;
 
-//void toFile(pm::type::User user, std::ofstream file1)
-//{
-//	file1 << user.id << ',';
-//	file1 << user.FirstName << ',';
-//	file1 << user.LastName << ',';
-//	file1 << user.email << ',';
-//	file1 << user.passwordHash << ',';
-//	file1 << user.age << ',';
-//	file1 << user.createdOn << std::endl;
-//}
-
 size_t generateNewId(vector<pm::type::User> users)
 {
 	size_t maxId = 0;
@@ -31,8 +20,6 @@ size_t generateNewId(vector<pm::type::User> users)
 
 	return maxId + 1;
 }
-
-
 
 vector<pm::type::User> pm::dal::UserStore::getAll()
 {
@@ -175,7 +162,7 @@ void pm::dal::UserStore::update(pm::type::User* user,size_t idOfUserChange)
 
 pm::type::User pm::dal::UserStore::getById(vector<pm::type::User> user, size_t id)
 {
-	for (auto i:user)
+	for (auto i : user)
 	{
 		if (i.id == id)
 		{
