@@ -453,21 +453,25 @@ void startMenu(vector<pm::type::User> users)
 
 int main()
 {
-	/*vector<pm::type::User> users;
+	vector<pm::type::User> users;
 	pm::type::User newUser;
 	pm::dal::UserStore userFunc;
 	users = userFunc.getAll();
 
-	startMenu(users);*/
+	//startMenu(users);
 
 	vector<pm::type::Team> teams;
 	pm::dal::TeamStore teamFunc;
 	teams = teamFunc.getAll();
-
+	//teams.push_back(teamFunc.create(teams, users[0]));
+	size_t n;
+	cin >> n;
+	teamFunc.remove(&teams, n);
 	for (auto i : teams)
 	{
 		cout << i.id<<endl;
 	}
+	
 }
 
 /*while (_getch() != 27)
