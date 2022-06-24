@@ -98,6 +98,22 @@ void pm::dal::TeamStore::remove(std::vector<pm::type::Team>* teams, size_t id)
 	*teams = teamsFunc.getAll();
 }
 
+void pm::dal::TeamStore::update(pm::type::Team* team,pm::type::User currentUser)
+{
+	cout << "New title: ";
+	cin >> (*team).Title;
+	(*team).idOfUserChange = currentUser.id;
+	(*team).lastChange = time(NULL);
+}
+
+void pm::dal::TeamStore::displayTeams(vector<pm::type::Team> teams)
+{
+	for (int i = 0; i < teams.size(); i++)
+	{
+		cout << teams[i].id << ". " << teams[i].Title<<endl;
+	}
+}
+
 //void pm::dal::TeamStore::update(pm::type::Team* user)
 //{
 //

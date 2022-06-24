@@ -21,6 +21,33 @@ size_t generateNewId(vector<pm::type::User> users)
 	return maxId + 1;
 }
 
+void toFile(vector<pm::type::User> users)
+{
+	ofstream file1("Info.txt", ios::trunc);
+	for (int i = 0; i < users.size(); i++)
+	{
+		file1 << users[i].id << ',';
+		file1 << users[i].FirstName << ',';
+		file1 << users[i].LastName << ',';
+		file1 << users[i].email << ',';
+		file1 << users[i].passwordHash << ',';
+		file1 << users[i].age << ',';
+		file1 << users[i].createdOn << ',';
+		file1 << users[i].lastChange << ',';
+		file1 << users[i].idOfCreater << ',';
+		file1 << users[i].idOfUserChange << ',';
+		if (users[i].adminPrivileges)
+		{
+			file1 << "true" << endl;
+		}
+		else
+		{
+			file1 << "false" << endl;
+		}
+	}
+	file1.close();
+}
+
 vector<pm::type::User> pm::dal::UserStore::getAll()
 {
 	vector<pm::type::User> users;
@@ -63,7 +90,7 @@ vector<pm::type::User> pm::dal::UserStore::getAll()
 	return users;
 }
 
-pm::type::User pm::dal::UserStore::create(vector<pm::type::User> users,size_t idOfCreator)
+pm::type::User pm::dal::UserStore::create(vector<pm::type::User> users, size_t idOfCreator)
 {
 	pm::type::User user;
 	ofstream file1("Info.txt", ios::app);
@@ -96,7 +123,7 @@ pm::type::User pm::dal::UserStore::create(vector<pm::type::User> users,size_t id
 		file1 << user.createdOn << ',';
 		file1 << user.lastChange << ',';
 		file1 << user.idOfCreater << ',';
-		file1 << user.idOfUserChange<<',';
+		file1 << user.idOfUserChange << ',';
 		if (user.adminPrivileges)
 		{
 			file1 << "true" << endl;
@@ -112,7 +139,7 @@ pm::type::User pm::dal::UserStore::create(vector<pm::type::User> users,size_t id
 
 void pm::dal::UserStore::remove(vector<pm::type::User>* user, size_t id)
 {
-	ofstream file1("Info.txt",ios::trunc);
+	ofstream file1("Info.txt", ios::trunc);
 	for (int i = 0; i < (*user).size(); i++)
 	{
 		if ((*user)[i].id != id)
@@ -129,7 +156,7 @@ void pm::dal::UserStore::remove(vector<pm::type::User>* user, size_t id)
 			file1 << (*user)[i].idOfUserChange << ',';
 			if ((*user)[i].adminPrivileges)
 			{
-				file1 << "true"<<endl;
+				file1 << "true" << endl;
 			}
 			else
 			{
@@ -137,11 +164,12 @@ void pm::dal::UserStore::remove(vector<pm::type::User>* user, size_t id)
 			}
 		}
 	}
+	file1.close();
 	pm::dal::UserStore u;
 	(*user) = u.getAll();
 }
 
-void pm::dal::UserStore::update(pm::type::User* user,size_t idOfUserChange)
+void pm::dal::UserStore::update(std::vector<pm::type::User>* users,pm::type::User* user, size_t idOfUserChange)
 {
 	cout << "First name: ";
 	cin >> (*user).FirstName;
@@ -157,6 +185,7 @@ void pm::dal::UserStore::update(pm::type::User* user,size_t idOfUserChange)
 	(*user).idOfUserChange = idOfUserChange;
 	cout << "This user is admin - ";
 	cin >> (*user).adminPrivileges;
+	toFile(*users);
 }
 
 pm::type::User pm::dal::UserStore::getById(vector<pm::type::User> user, size_t id)
@@ -178,5 +207,13 @@ pm::type::User pm::dal::UserStore::getByEmail(vector<pm::type::User> user, strin
 		{
 			return user[i];
 		}
+	}
+}
+
+void pm::dal::UserStore::displayUsers(vector<pm::type::User> users)
+{
+	for (int i = 0; i < users.size(); i++)
+	{
+		cout << users[i].id << ". " << users[i].FirstName << " " << users[i].LastName << " " << users[i].email << " " << users[i].age << " " << users[i].createdOn << endl;
 	}
 }

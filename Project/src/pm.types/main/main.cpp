@@ -63,14 +63,6 @@ void usersManagement() {
 
 //menuAdmin(users,currentUser);
 
-void displayUsers(vector<pm::type::User> users)
-{
-	for (int i = 0; i < users.size(); i++)
-	{
-		cout << users[i].id << ". " << users[i].FirstName << " " << users[i].LastName << " " << users[i].email << " " << users[i].age << " " << users[i].createdOn << endl;
-	}
-}
-
 void displayUser(pm::type::User user, pm::type::User createrUser, pm::type::User changerUser)
 {
 	cout << user.id << ". " << user.FirstName << " " << user.LastName << endl;
@@ -108,7 +100,7 @@ void menuAdmin(vector<pm::type::User> users, pm::type::User currecntUser) {
 			}
 			while (allUsersPress)
 			{
-				displayUsers(users);
+				userFunc.displayUsers(users);
 				cout << "Which user do you want to see? - ";
 				size_t userId;
 				cin >> userId;
@@ -171,7 +163,7 @@ void menuAdmin(vector<pm::type::User> users, pm::type::User currecntUser) {
 			while (removePress)
 			{
 				size_t userId;
-				displayUsers(users);
+				userFunc.displayUsers(users);
 				cout << endl << "Who user want to delete? - ";
 				cin >> userId;
 				userFunc.remove(&users, userId);
@@ -201,14 +193,14 @@ void menuAdmin(vector<pm::type::User> users, pm::type::User currecntUser) {
 
 			while (updatePress)
 			{
-				displayUsers(users);
+				userFunc.displayUsers(users);
 				cout << endl << "Who user do you want to edit? - ";
 				cin >> n1;
 				for (int i = 0; i < users.size(); i++)
 				{
 					if (users[i].id == n1)
 					{
-						userFunc.update(&users[i], currecntUser.id);
+						userFunc.update(&users,&users[i], currecntUser.id);
 						n1 = 0;
 						break;
 					}
@@ -217,10 +209,8 @@ void menuAdmin(vector<pm::type::User> users, pm::type::User currecntUser) {
 				{
 					cout << "User with that id hasn't been found" << endl;
 				}
-				cout << "Do you want another user?(YES/NO)" << endl;
-				string choice;
-				cin >> choice;
-				if (choice == "NO")
+				cout << "Press enter..." << endl;
+				if (_getch()==13)
 				{
 					n = -1;
 					updatePress = false;
@@ -458,19 +448,18 @@ int main()
 	pm::dal::UserStore userFunc;
 	users = userFunc.getAll();
 
-	//startMenu(users);
+	startMenu(users);
 
-	vector<pm::type::Team> teams;
+	/*vector<pm::type::Team> teams;
 	pm::dal::TeamStore teamFunc;
-	teams = teamFunc.getAll();
+	teams = teamFunc.getAll();*/
 	//teams.push_back(teamFunc.create(teams, users[0]));
-	size_t n;
+	/*size_t n;
 	cin >> n;
-	teamFunc.remove(&teams, n);
-	for (auto i : teams)
-	{
-		cout << i.id<<endl;
-	}
+
+	teamFunc.displayTeams(teams);
+	teamFunc.update(&teams[0], users[0]);
+	teamFunc.displayTeams(teams);*/
 	
 }
 
