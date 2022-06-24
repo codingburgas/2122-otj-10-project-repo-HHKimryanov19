@@ -19,5 +19,14 @@ namespace pm {
 			size_t idOfUserChange;
 			bool adminPrivileges;
 		};
+
+		struct Team {
+			size_t id;
+			std::string Title;
+			std::time_t createdOn;
+			size_t idOfCreater;
+			std::time_t lastChange;
+			size_t idOfUserChange;
+		};
 	}
 }

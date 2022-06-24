@@ -3,6 +3,7 @@
 #include<string>
 #include<conio.h>
 #include "..\pm.dal\UserStore.h"
+#include "..\pm.dal\Header.h"
 #include "..\pm.types\User.h"
 #include <conio.h>
 
@@ -452,12 +453,21 @@ void startMenu(vector<pm::type::User> users)
 
 int main()
 {
-	vector<pm::type::User> users;
+	/*vector<pm::type::User> users;
 	pm::type::User newUser;
 	pm::dal::UserStore userFunc;
 	users = userFunc.getAll();
 
-	startMenu(users);
+	startMenu(users);*/
+
+	vector<pm::type::Team> teams;
+	pm::dal::TeamStore teamFunc;
+	teams = teamFunc.getAll();
+
+	for (auto i : teams)
+	{
+		cout << i.id<<endl;
+	}
 }
 
 /*while (_getch() != 27)
@@ -502,10 +512,7 @@ int main()
 		cout << i.id << ". " << i.FirstName << " " << i.LastName << " " << i.age << " " << i.email << " " << i.passwordHash << " " << i.createdOn << endl;
 	}*/
 
-
-
-
-	/*size_t j = users.size();
+/*size_t j = users.size();
 
 		bool nameLogin = false, passwordLogin = false;
 		string userName, password;

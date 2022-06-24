@@ -26,7 +26,6 @@ vector<pm::type::User> pm::dal::UserStore::getAll()
 	vector<pm::type::User> users;
 	pm::type::User user;
 	string str1;
-	pm::type::User newLine;
 	ifstream file("Info.txt");
 	string line;
 	if (file.is_open())
