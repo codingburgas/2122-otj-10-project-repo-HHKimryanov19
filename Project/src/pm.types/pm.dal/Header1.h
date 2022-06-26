@@ -13,10 +13,10 @@ namespace pm
 		struct ProjectStore
 		{
 			std::vector<pm::type::Project> getAll();
-			pm::type::User create(std::vector<pm::type::Project> users, size_t idOfCreator);
-			void remove(std::vector<pm::type::Project>* user, size_t id);
-			void update(std::vector<pm::type::Project>* users, pm::type::Project* user, size_t idOfUserChange);
-			void displayProjects(std::vector<pm::type::Project> users);
+			pm::type::Project create(size_t idOfCreator);
+			void remove(std::vector<pm::type::Project>* projects, size_t idOfUser, size_t id);
+			void update(std::vector<pm::type::Project>* projects, size_t idOfUser, size_t id);
+			void displayProjects(std::vector<pm::type::Project> projects);
 		};
 	}
 }
