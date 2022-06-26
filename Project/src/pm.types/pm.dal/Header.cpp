@@ -24,7 +24,6 @@ std::vector<pm::type::Team> pm::dal::TeamStore::getAll()
 {
 	vector<pm::type::Team> teams;
 	pm::type::Team team;
-	string e;
 	string str1;
 	ifstream file("teams.txt");
 	string line;
@@ -41,7 +40,7 @@ std::vector<pm::type::Team> pm::dal::TeamStore::getAll()
 			team.id = stoi(teamField[0]);
 			team.Title = teamField[1];
 			team.createdOn = time_t(stoi(teamField[2]));
-			team.idOfCreater = size_t(stoi(teamField[3]));
+			team.idOfCreator = size_t(stoi(teamField[3]));
 			team.lastChange = time_t(stoi(teamField[4]));
 			team.idOfUserChange = size_t(stoi(teamField[5]));
 			teams.push_back(team);
@@ -61,14 +60,14 @@ pm::type::Team pm::dal::TeamStore::create(std::vector<pm::type::Team> teams, pm:
 		cout << "Title: ";
 		cin >> team.Title;
 		team.createdOn = time(NULL);
-		team.idOfCreater = currentUser.id;
+		team.idOfCreator = currentUser.id;
 		team.lastChange = time(NULL);
 		team.idOfUserChange = currentUser.id;
 
 		file << team.id << ',';
 		file << team.Title << ',';
 		file << team.createdOn << ',';
-		file << team.idOfCreater << ',';
+		file << team.idOfCreator << ',';
 		file << team.lastChange << ',';
 		file << team.idOfUserChange << endl;
 	}
@@ -81,15 +80,15 @@ void pm::dal::TeamStore::remove(std::vector<pm::type::Team>* teams, size_t id)
 	ofstream file("teams.txt", ios::trunc);
 	if (file.is_open())
 	{
-		for (size_t i = 0;i<(*teams).size();i++)
+		for (size_t i = 0; i < (*teams).size(); i++)
 		{
 			if ((*teams)[i].id != id)
 			{
 				file << (*teams)[i].id << ',';
-				file << (*teams)[i].Title<< ',';
+				file << (*teams)[i].Title << ',';
 				file << (*teams)[i].createdOn << ',';
-				file << (*teams)[i].idOfCreater<< ',';
-				file << (*teams)[i].lastChange<< ',';
+				file << (*teams)[i].idOfCreator << ',';
+				file << (*teams)[i].lastChange << ',';
 				file << (*teams)[i].idOfUserChange << endl;
 			}
 		}
@@ -98,7 +97,7 @@ void pm::dal::TeamStore::remove(std::vector<pm::type::Team>* teams, size_t id)
 	*teams = teamsFunc.getAll();
 }
 
-void pm::dal::TeamStore::update(pm::type::Team* team,pm::type::User currentUser)
+void pm::dal::TeamStore::update(pm::type::Team* team, pm::type::User currentUser)
 {
 	cout << "New title: ";
 	cin >> (*team).Title;
@@ -110,14 +109,101 @@ void pm::dal::TeamStore::displayTeams(vector<pm::type::Team> teams)
 {
 	for (int i = 0; i < teams.size(); i++)
 	{
-		cout << teams[i].id << ". " << teams[i].Title<<endl;
+		cout << teams[i].id << ". " << teams[i].Title << endl;
 	}
 }
 
-//void pm::dal::TeamStore::update(pm::type::Team* user)
-//{
-//
-//}
+vector<vector<size_t>> pm::dal::TeamStore::usersInTheTeams()
+{
+	vector<vector<size_t>> v;
+	vector<size_t> v1;
+	ifstream file("usersInTheTeams.txt");
+	string str1;
+	string line;
+	if (file.is_open())
+	{
+		for (size_t i = 0; getline(file, line); i++)
+		{
+			vector<size_t> usersId;
+			stringstream ss(line);
+			while (getline(ss, str1, ','))
+			{
+				usersId.push_back(size_t(stoi(str1)));
+			}
+			v.push_back(usersId);
+		}
+	}
+	file.close();
+	return v;
+}
+
+std::vector<vector<size_t>> pm::dal::TeamStore::asignToTeam(std::vector<pm::type::Team> teams, size_t teamId, size_t userId)
+{
+	vector<vector<size_t>> v = usersInTheTeams();
+	ofstream file("usersInTheTeams.txt", ios::trunc);
+	int n = 0;
+	if (file.is_open())
+	{
+		for (size_t i = 0; i < teams.size(); i++)
+		{
+			if (teams[i].id == teamId)
+			{
+				for (size_t j = 0; j < v[i].size(); j++)
+				{
+					if (v[i][j] == userId)
+					{
+						break;
+					}
+					else
+					{
+						n++;
+					}
+				}
+				if (n == v[i].size())
+				{
+					v[i].push_back(userId);
+					for (size_t k = 0; k < teams.size(); k++)
+					{
+						for (size_t m = 0; m < v[k].size(); m++)
+						{
+							if (m == v[k].size() - 1)
+							{
+								file << v[k][m] << endl;
+							}
+							else
+							{
+								file << v[k][m] << ",";
+							}
+						}
+					}
+					break;
+				}
+				else
+				{
+					cout << "This user has already been added";
+					for (size_t k = 0; k < teams.size(); k++)
+					{
+						for (size_t m = 0; m < v[k].size(); m++)
+						{
+							if (m == v[k].size() - 1)
+							{
+								file << v[k][m] << endl;
+							}
+							else
+							{
+								file << v[k][m] << ",";
+							}
+						}
+					}
+					break;
+				}
+			}
+		}
+
+	}
+	file.close();
+	return v;
+}
 
 //pm::type::User pm::dal::TeamStore::getById(std::vector<pm::type::Team> user, size_t id)
 //{

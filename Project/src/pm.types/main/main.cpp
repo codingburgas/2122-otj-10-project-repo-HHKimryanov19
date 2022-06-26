@@ -448,11 +448,55 @@ int main()
 	pm::dal::UserStore userFunc;
 	users = userFunc.getAll();
 
-	startMenu(users);
+	//startMenu(users);
 
-	/*vector<pm::type::Team> teams;
+	vector<pm::type::Team> teams;
 	pm::dal::TeamStore teamFunc;
-	teams = teamFunc.getAll();*/
+	teams = teamFunc.getAll();
+	vector<vector<size_t>> v = teamFunc.usersInTheTeams();
+	v = teamFunc.asignToTeam(teams, 5, 3);
+
+	/*very important
+	int n;
+	cin >> n;
+	int wantedTeam = 0;
+	for (int i = 0; i < teams.size(); i++)
+	{
+		if (teams[i].id == n)
+		{
+			wantedTeam = i;
+		}
+	}
+
+	cout << teams[wantedTeam].Title << ": " << endl;
+	for (int j = 0; j < v[wantedTeam].size(); j++)
+	{
+		for (int k = 0; k < users.size(); k++)
+		{
+			if (users[k].id == v[wantedTeam][j])
+			{
+				cout << users[k].FirstName << " " << users[k].LastName << endl;
+			}
+		}
+	}*/
+
+
+	for (int i = 0; i < teams.size(); i++)
+	{
+		cout << teams[i].Title<<": "<< endl;
+		for (int j = 0; j < v[i].size(); j++)
+		{
+			for (int k = 0; k < users.size(); k++)
+			{
+				if (users[k].id == v[i][j])
+				{
+					cout << users[k].FirstName << " " << users[k].LastName<<endl;
+				}
+			}
+		}
+		cout << endl;
+	}
+
 	//teams.push_back(teamFunc.create(teams, users[0]));
 	/*size_t n;
 	cin >> n;
