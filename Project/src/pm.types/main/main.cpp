@@ -4,6 +4,7 @@
 #include<conio.h>
 #include "..\pm.dal\UserStore.h"
 #include "..\pm.dal\Header.h"
+#include "..\pm.dal\Header1.h"
 #include "..\pm.types\User.h"
 #include <conio.h>
 
@@ -448,13 +449,19 @@ int main()
 	pm::dal::UserStore userFunc;
 	users = userFunc.getAll();
 
+	pm::dal::ProjectStore projectFunc;
+	vector<pm::type::Project> projects;
+	projects = projectFunc.getAll();
+	projectFunc.update(&projects, 2, 3);
+	projectFunc.displayProjects(projects,users[0]);
+
 	//startMenu(users);
 
-	vector<pm::type::Team> teams;
+	/*vector<pm::type::Team> teams;
 	pm::dal::TeamStore teamFunc;
 	teams = teamFunc.getAll();
 	vector<vector<size_t>> v = teamFunc.usersInTheTeams();
-	v = teamFunc.asignToTeam(teams, 5, 3);
+	v = teamFunc.asignToTeam(teams, 5, 3);*/
 
 	/*very important
 	int n;
@@ -481,21 +488,21 @@ int main()
 	}*/
 
 
-	for (int i = 0; i < teams.size(); i++)
-	{
-		cout << teams[i].Title<<": "<< endl;
-		for (int j = 0; j < v[i].size(); j++)
-		{
-			for (int k = 0; k < users.size(); k++)
-			{
-				if (users[k].id == v[i][j])
-				{
-					cout << users[k].FirstName << " " << users[k].LastName<<endl;
-				}
-			}
-		}
-		cout << endl;
-	}
+	//for (int i = 0; i < teams.size(); i++)
+	//{
+	//	cout << teams[i].Title<<": "<< endl;
+	//	for (int j = 0; j < v[i].size(); j++)
+	//	{
+	//		for (int k = 0; k < users.size(); k++)
+	//		{
+	//			if (users[k].id == v[i][j])
+	//			{
+	//				cout << users[k].FirstName << " " << users[k].LastName<<endl;
+	//			}
+	//		}
+	//	}
+	//	cout << endl;
+	//}
 
 	//teams.push_back(teamFunc.create(teams, users[0]));
 	/*size_t n;

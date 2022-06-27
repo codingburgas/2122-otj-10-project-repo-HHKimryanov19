@@ -30,6 +30,7 @@ namespace pm {
 		};
 
 		struct Project {
+			size_t id;
 			std::string Title;
 			std::string Description;
 			std::time_t createdOn;
