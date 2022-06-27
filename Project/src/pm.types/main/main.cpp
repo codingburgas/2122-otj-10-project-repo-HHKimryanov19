@@ -455,6 +455,36 @@ int main()
 	projectFunc.update(&projects, 2, 3);
 	projectFunc.displayProjects(projects,users[0]);
 
+	vector<pm::type::Team> teams;
+	pm::dal::TeamStore teamFunc;
+	teams = teamFunc.getAll();
+
+	/*very important
+	int n;
+	cin >> n;
+	int wantedTeam = 0;
+	std::vector<std::vector<size_t>> v = projectFunc.teamsInTheProject();
+	v = projectFunc.asignToTeam(projects, projects[1].id, teams[0].id);
+	for (int i = 0; i < projects.size(); i++)
+	{
+		if (projects[i].id == n)
+		{
+			wantedTeam = i;
+		}
+	}
+	cout << endl;
+	cout << projects[wantedTeam].Title << ": " << endl;
+	for (int j = 0; j < v[wantedTeam].size(); j++)
+	{
+		for (int k = 0; k < teams.size(); k++)
+		{
+			if (teams[k].id == v[wantedTeam][j])
+			{
+				cout << teams[k].Title<<endl;
+			}
+		}
+	}*/
+
 	//startMenu(users);
 
 	/*vector<pm::type::Team> teams;
