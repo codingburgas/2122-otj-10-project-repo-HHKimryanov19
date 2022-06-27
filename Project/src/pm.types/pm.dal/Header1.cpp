@@ -106,8 +106,10 @@ void pm::dal::ProjectStore::remove(std::vector<pm::type::Project>* projects, siz
 {
 	pm::dal::ProjectStore projectFunc;
 	ofstream file("projects.txt", ios::trunc);
+	ofstream file1("teamsInTheProjects.txt", ios::trunc);
+	std::vector<std::vector<size_t>> v = projectFunc.teamsInTheProject();
 	int n;
-	if (file.is_open())
+	if (file.is_open()&&file1.is_open())
 	{
 		for (size_t i = 0; i < (*projects).size(); i++)
 		{
@@ -120,6 +122,17 @@ void pm::dal::ProjectStore::remove(std::vector<pm::type::Project>* projects, siz
 				file << (*projects)[i].lastChange << ',';
 				file << (*projects)[i].idOfUserChange << endl;
 				file << (*projects)[i].Description << endl;
+				for (size_t j = 0; j < v[i].size(); j++)
+				{
+					if (j != v[i].size() - 1)
+					{
+						file1 << v[i][j] << ',';
+					}
+					else
+					{
+						file1 << v[i][j] << endl;
+					}
+				}
 				n++;
 			}
 			else
@@ -133,6 +146,17 @@ void pm::dal::ProjectStore::remove(std::vector<pm::type::Project>* projects, siz
 					file << (*projects)[i].lastChange << ',';
 					file << (*projects)[i].idOfUserChange << endl;
 					file << (*projects)[i].Description << endl;
+					for (size_t j = 0; j < v[i].size(); j++)
+					{
+						if (j != v[i].size() - 1)
+						{
+							file1 << v[i][j] << ',';
+						}
+						else
+						{
+							file1 << v[i][j] << endl;
+						}
+					}
 					n++;
 				}
 			}
