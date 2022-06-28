@@ -458,12 +458,17 @@ int main()
 	vector<pm::type::Team> teams;
 	pm::dal::TeamStore teamFunc;
 	teams = teamFunc.getAll();
-	
-	vector<vector<size_t>> v = teamFunc.usersInTheTeams();
-
-	vector<vector<size_t>> v1 = projectFunc.teamsInTheProject();
-
-	teamFunc.remove(&teams, 4);
+	projectFunc.displayProjects(projects, users[0]);
+	/*for (size_t i = 0; i < projects.size(); i++)
+	{
+		cout << "Projects " << projects[i].id << ": " << endl;
+		cout<< projects[i].assignedTeams.size();
+		for (size_t j = 0; j < projects[i].assignedTeams.size(); j++)
+		{
+			cout << projects[i].assignedTeams[j].id << endl;
+		}
+		cout << endl;
+	}*/
 	/*int n;
 	cin >> n;
 	int wantedTeam = 0;

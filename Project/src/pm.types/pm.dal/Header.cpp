@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Header.h"
+#include "UserStore.h"
 #include<fstream>
 #include<string>
 #include<vector>
@@ -20,14 +21,32 @@ size_t generateNewId(vector<pm::type::Team> teams)
 	return maxId + 1;
 }
 
+void toFile(std::vector<pm::type::Team> teams)
+{
+	ofstream file("teams.txt", ios::trunc);
+	for (int i = 0; i < teams.size(); i++)
+	{
+		file << teams[i].id << ',';
+		file << teams[i].Title << ',';
+		file << teams[i].createdOn << ',';
+		file << teams[i].idOfCreator << ',';
+		file << teams[i].lastChange << ',';
+		file << teams[i].idOfUserChange << endl;
+	}
+	file.close();
+}
+
 std::vector<pm::type::Team> pm::dal::TeamStore::getAll()
 {
 	vector<pm::type::Team> teams;
 	pm::type::Team team;
 	string str1;
 	ifstream file("teams.txt");
+	ifstream file1("usersInTheTeams.txt");
 	string line;
-	if (file.is_open())
+	string line1;
+	pm::dal::UserStore userFunc;
+	if (file.is_open() && file1.is_open())
 	{
 		for (size_t i = 0; getline(file, line); i++)
 		{
@@ -45,8 +64,17 @@ std::vector<pm::type::Team> pm::dal::TeamStore::getAll()
 			team.idOfUserChange = size_t(stoi(teamField[5]));
 			teams.push_back(team);
 		}
+		for (size_t i = 0; getline(file1, line1); i++)
+		{
+			stringstream ss1(line1);
+			while (getline(ss1, str1, ','))
+			{
+				teams[i].assignedUser.push_back(userFunc.getById(userFunc.getAll(), stoi(str1)));
+			}
+		}
 	}
 	file.close();
+	file1.close();
 	return teams;
 }
 
@@ -79,10 +107,9 @@ void pm::dal::TeamStore::remove(std::vector<pm::type::Team>* teams, size_t id)
 {
 	pm::dal::TeamStore teamsFunc;
 	ofstream file("teams.txt", ios::trunc);
-	vector<vector<size_t>> v = teamsFunc.usersInTheTeams();
 	ofstream file1("usersInTheTeams.txt", ios::trunc);
 
-	if (file.is_open()&&file1.is_open())
+	if (file.is_open() && file1.is_open())
 	{
 		for (size_t i = 0; i < (*teams).size(); i++)
 		{
@@ -94,16 +121,15 @@ void pm::dal::TeamStore::remove(std::vector<pm::type::Team>* teams, size_t id)
 				file << (*teams)[i].idOfCreator << ',';
 				file << (*teams)[i].lastChange << ',';
 				file << (*teams)[i].idOfUserChange << endl;
-
-				for (size_t j = 0; j < v.size(); j++)
+				for (size_t j = 0; j < (*teams)[i].assignedUser.size(); j++)
 				{
-					if (j != v.size() - 1)
+					if (j == (*teams)[i].assignedUser.size() - 1)
 					{
-						file1 << v[i][j]<<',';
+						file1 << (*teams)[i].assignedUser[j].id << ',';
 					}
 					else
 					{
-						file1 << v[i][j] << endl;
+						file1 << (*teams)[i].assignedUser[j].id << endl;
 					}
 				}
 			}
@@ -130,99 +156,39 @@ void pm::dal::TeamStore::displayTeams(vector<pm::type::Team> teams)
 	}
 }
 
-vector<vector<size_t>> pm::dal::TeamStore::usersInTheTeams()
+void pm::dal::TeamStore::asignToTeam(std::vector< pm::type::Team>* teams, pm::type::Team* team, pm::type::User user)
 {
-	vector<vector<size_t>> v;
-	vector<size_t> v1;
-	ifstream file("usersInTheTeams.txt");
-	string str1;
-	string line;
-	if (file.is_open())
-	{
-		for (size_t i = 0; getline(file, line); i++)
-		{
-			vector<size_t> usersId;
-			stringstream ss(line);
-			while (getline(ss, str1, ','))
-			{
-				usersId.push_back(size_t(stoi(str1)));
-			}
-			v.push_back(usersId);
-		}
-	}
-	file.close();
-	return v;
-}
-
-std::vector<vector<size_t>> pm::dal::TeamStore::asignToTeam(std::vector<pm::type::Team> teams, size_t teamId, size_t userId)
-{
-	vector<vector<size_t>> v = usersInTheTeams();
 	ofstream file("usersInTheTeams.txt", ios::trunc);
 	int n = 0;
 	if (file.is_open())
 	{
-		for (size_t i = 0; i < teams.size(); i++)
+		(*team).assignedUser.push_back(user);
+		for (size_t i = 0; i < (*teams).size(); i++)
 		{
-			if (teams[i].id == teamId)
+			for (size_t j = 0; j < (*teams)[i].assignedUser.size(); j++)
 			{
-				for (size_t j = 0; j < v[i].size(); j++)
+				if (j != (*teams)[i].assignedUser.size() - 1)
 				{
-					if (v[i][j] == userId)
-					{
-						break;
-					}
-					else
-					{
-						n++;
-					}
-				}
-				if (n == v[i].size())
-				{
-					v[i].push_back(userId);
-					for (size_t k = 0; k < teams.size(); k++)
-					{
-						for (size_t m = 0; m < v[k].size(); m++)
-						{
-							if (m == v[k].size() - 1)
-							{
-								file << v[k][m] << endl;
-							}
-							else
-							{
-								file << v[k][m] << ",";
-							}
-						}
-					}
-					break;
+					file << (*teams)[i].assignedUser[j].id << ',';
 				}
 				else
 				{
-					cout << "This user has already been added";
-					for (size_t k = 0; k < teams.size(); k++)
-					{
-						for (size_t m = 0; m < v[k].size(); m++)
-						{
-							if (m == v[k].size() - 1)
-							{
-								file << v[k][m] << endl;
-							}
-							else
-							{
-								file << v[k][m] << ",";
-							}
-						}
-					}
-					break;
+					file << (*teams)[i].assignedUser[j].id << endl;
 				}
 			}
 		}
-
 	}
 	file.close();
-	return v;
+	return;
 }
 
-//pm::type::User pm::dal::TeamStore::getById(std::vector<pm::type::Team> user, size_t id)
-//{
-//    
-//}
+pm::type::Team pm::dal::TeamStore::getById(std::vector<pm::type::Team> teams, size_t id)
+{
+	for (size_t i = 0; i < teams.size(); i++)
+	{
+		if (teams[i].id == id)
+		{
+			return teams[i];
+		}
+	}
+}

@@ -14,10 +14,11 @@ namespace pm
 			pm::type::Team create(std::vector<pm::type::Team> teams,pm::type::User currentUser);
 			void remove(std::vector<pm::type::Team>* teams, size_t id);
 			void update(pm::type::Team* team, pm::type::User currentUser);
-			/*pm::type::User getById(std::vector<pm::type::Team> user, size_t id); */
+			pm::type::Team getById(std::vector<pm::type::Team> teams, size_t id);
 			void displayTeams(std::vector<pm::type::Team> teams);
-			std::vector<std::vector<size_t>> usersInTheTeams();
-			std::vector<std::vector<size_t>> asignToTeam(std::vector<pm::type::Team> teams, size_t teamId, size_t userId);
+			void asignToTeam(std::vector< pm::type::Team>* teams, pm::type::Team* team, pm::type::User user);
+			//std::vector<std::vector<size_t>> usersInTheTeams();
+			//std::vector<std::vector<size_t>> asignToTeam(std::vector<pm::type::Team> teams, size_t teamId, size_t userId);
 		};
 	}
 }
