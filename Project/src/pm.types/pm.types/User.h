@@ -40,5 +40,18 @@ namespace pm {
 			size_t idOfUserChange;
 			std::vector<pm::type::Team> assignedTeams;
 		};
+
+		struct Task{
+			size_t id;
+			size_t idOfProject;
+			size_t idOfAssignee;
+			std::string title;
+			std::string description;
+			std::string status;
+			std::time_t createdOn;
+			size_t idOfCreator;
+			std::time_t lastChange;
+			size_t idOfLastChange;
+		};
 	}
 }

@@ -1,12 +1,12 @@
 #include <iostream>
-#include<fstream>
-#include<string>
-#include<conio.h>
-#include "..\pm.dal\UserStore.h"
-#include "..\pm.dal\Header.h"
-#include "..\pm.dal\Header1.h"
-#include "..\pm.types\User.h"
-#include <conio.h>
+//#include<fstream>
+//#include<string>
+//#include<conio.h>
+//#include "..\pm.dal\UserStore.h"
+//#include "..\pm.dal\Header.h"
+//#include "..\pm.dal\Header1.h"
+//#include "..\pm.types\User.h"
+//#include <conio.h>
 
 using namespace std;
 #define KEY_UP 72
@@ -444,7 +444,8 @@ void startMenu(vector<pm::type::User> users)
 
 int main()
 {
-	vector<pm::type::User> users;
+	cout << sizeof(vector<string>);
+	/*vector<pm::type::User> users;
 	pm::type::User newUser;
 	pm::dal::UserStore userFunc;
 	users = userFunc.getAll();
@@ -458,7 +459,7 @@ int main()
 	vector<pm::type::Team> teams;
 	pm::dal::TeamStore teamFunc;
 	teams = teamFunc.getAll();
-	projectFunc.displayProjects(projects, users[0]);
+	projectFunc.displayProjects(projects, users[0]);*/
 	/*for (size_t i = 0; i < projects.size(); i++)
 	{
 		cout << "Projects " << projects[i].id << ": " << endl;

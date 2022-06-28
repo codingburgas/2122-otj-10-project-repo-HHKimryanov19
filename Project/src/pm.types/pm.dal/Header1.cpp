@@ -5,6 +5,7 @@
 #include<string>
 #include<vector>
 #include <sstream>
+#include "Header2.h"
 using namespace std;
 
 size_t generateNewId(vector<pm::type::Project> projects)
