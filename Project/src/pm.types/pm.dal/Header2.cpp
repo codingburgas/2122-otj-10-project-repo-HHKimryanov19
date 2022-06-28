@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Header2.h"
+#include "Header1.h"
 #include<fstream>
 #include<string>
 #include<vector>
@@ -95,15 +96,61 @@ pm::type::Task pm::dal::TaskStore::create(std::vector<pm::type::Task> tasks,size
 	return task;
 }
 
-void pm::dal::TaskStore::remove(std::vector<pm::type::Task>* tasks,size_t taskId)
+void pm::dal::TaskStore::remove(std::vector<pm::type::Task>* tasks,size_t taskId,pm::type::Project project,size_t userId)
 {
+	pm::dal::TaskStore taskFunc;
 	ofstream file("tasks.txt", ios::trunc);
 	if (file.is_open())
 	{
-		for (size_t i = 0; i < (*tasks).size(); i++)
+		if (project.idOfCreator == userId)
 		{
-			if ((*tasks)[i].id != taskId)
+			for (size_t i = 0; i < (*tasks).size(); i++)
 			{
+				if ((*tasks)[i].id != taskId)
+				{
+					file << (*tasks)[i].id << ',';
+					file << (*tasks)[i].idOfProject << ',';
+					file << (*tasks)[i].idOfAssignee << ',';
+					file << (*tasks)[i].title << ',';
+					file << (*tasks)[i].status << ',';
+					file << (*tasks)[i].createdOn << ',';
+					file << (*tasks)[i].idOfCreator << ',';
+					file << (*tasks)[i].lastChange << ',';
+					file << (*tasks)[i].idOfLastChange << endl;
+					file << (*tasks)[i].description << endl;
+				}
+			}
+		}
+		else
+		{
+			cout << "Sorry! You aren't able to remove this task";
+		}
+	}
+	(*tasks) = taskFunc.getAll();
+	file.close();
+}
+
+void pm::dal::TaskStore::update(std::vector<pm::type::Task>* tasks, pm::type::Task* task, size_t idOfUser, pm::type::Project project)
+{
+	if (project.idOfCreator == idOfUser)
+	{
+		cout << "Id of assignee";
+		cin >> (*task).idOfAssignee;
+		cout << "New title: ";
+		cin >> (*task).title;
+		cin.ignore();
+		cout << "New description:" << endl;
+		getline(cin, (*task).description);
+		cout << "Status of task:";
+		cin >> (*task).status;
+		(*task).lastChange = time(NULL);
+		(*task).idOfLastChange = idOfUser;
+		ofstream file("tasks.txt", ios::trunc);
+		if (file.is_open())
+		{
+			for (size_t i = 0; i < (*tasks).size(); i++)
+			{
+
 				file << (*tasks)[i].id << ',';
 				file << (*tasks)[i].idOfProject << ',';
 				file << (*tasks)[i].idOfAssignee << ',';
@@ -116,43 +163,15 @@ void pm::dal::TaskStore::remove(std::vector<pm::type::Task>* tasks,size_t taskId
 				file << (*tasks)[i].description << endl;
 			}
 		}
+		file.close();
 	}
-	file.close();
-}
-
-void pm::dal::TaskStore::update(std::vector<pm::type::Task>* tasks, size_t idOfUser, size_t id)
-{
-	ofstream file("tasks.txt", ios::trunc);
-	pm::type::Task task;
-	task.id = generateNewId(tasks);
-	cout << "Id of project";
-	cin >> task.idOfProject;
-	cout << "Id of assignee";
-	cin >> task.idOfAssignee;
-	cout << "Title: ";
-	cin >> task.title;
-	cin.ignore();
-	cout << "Description:" << endl;
-	getline(cin, task.description);
-	task.status = "pending";
-	task.lastChange = time(NULL);
-	task.idOfLastChange = idOfUser;
-	for (size_t i = 0; i < (*tasks).size(); i++)
+	else
 	{
-		
-			file << (*tasks)[i].id << ',';
-			file << (*tasks)[i].idOfProject << ',';
-			file << (*tasks)[i].idOfAssignee << ',';
-			file << (*tasks)[i].title << ',';
-			file << (*tasks)[i].status << ',';
-			file << (*tasks)[i].createdOn << ',';
-			file << (*tasks)[i].idOfCreator << ',';
-			file << (*tasks)[i].lastChange << ',';
-			file << (*tasks)[i].idOfLastChange << endl;
-			file << (*tasks)[i].description << endl;
+		cout << "Sorry! You aren't able to edit this task";
 	}
 }
 
 void pm::dal::TaskStore::displayProjects(std::vector<pm::type::Task> tasks, pm::type::User currentUser)
 {
+
 }
