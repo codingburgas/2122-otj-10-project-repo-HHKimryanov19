@@ -18,7 +18,7 @@ namespace pm
 			void update(std::vector<pm::type::Project>* projects, size_t idOfUser, size_t id);
 			void displayProjects(std::vector<pm::type::Project> projects, pm::type::User currentUser);
 			std::vector<std::vector<size_t>> teamsInTheProject();
-			std::vector<std::vector<size_t>> asignToTeam(std::vector<pm::type::Project> projects, size_t projectId, size_t teamId);
+			std::vector<std::vector<size_t>> asignToTeam(std::vector<pm::type::Project> projects, size_t projectId, size_t teamId, size_t userId);
 		};
 	}
 }

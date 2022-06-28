@@ -460,7 +460,8 @@ int main()
 	teams = teamFunc.getAll();
 	
 	vector<vector<size_t>> v = teamFunc.usersInTheTeams();
-	v = teamFunc.asignToTeam(teams, 5, 3);
+
+	vector<vector<size_t>> v1 = projectFunc.teamsInTheProject();
 
 	teamFunc.remove(&teams, 4);
 	/*int n;
@@ -497,7 +498,7 @@ int main()
 	v = teamFunc.asignToTeam(teams, 5, 3);*/
 
 	
-	int n;
+	/*int n;
 	cin >> n;
 	int wantedTeam = 0;
 	for (int i = 0; i < teams.size(); i++)
@@ -518,7 +519,7 @@ int main()
 				cout << users[k].FirstName << " " << users[k].LastName << endl;
 			}
 		}
-	}
+	}*/
 
 
 	//for (int i = 0; i < teams.size(); i++)

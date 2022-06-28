@@ -235,7 +235,7 @@ vector<vector<size_t>> pm::dal::ProjectStore::teamsInTheProject()
 	return v;
 }
 
-std::vector<std::vector<size_t>> pm::dal::ProjectStore::asignToTeam(std::vector<pm::type::Project> projects, size_t projectId, size_t teamId)
+std::vector<std::vector<size_t>> pm::dal::ProjectStore::asignToTeam(std::vector<pm::type::Project> projects, size_t projectId, size_t teamId,size_t userId)
 {
 	vector<vector<size_t>> v = teamsInTheProject();
 	ofstream file("teamsInTheProjects.txt", ios::trunc);
@@ -246,58 +246,60 @@ std::vector<std::vector<size_t>> pm::dal::ProjectStore::asignToTeam(std::vector<
 		{
 			if (projects[i].id == projectId)
 			{
-				for (size_t j = 0; j < v[i].size(); j++)
+				if (projects[i].idOfCreator == userId)
 				{
-					if (v[i][j] == teamId)
+					for (size_t j = 0; j < v[i].size(); j++)
 					{
+						if (v[i][j] == teamId)
+						{
+							break;
+						}
+						else
+						{
+							n++;
+						}
+					}
+					if (n == v[i].size())
+					{
+						v[i].push_back(teamId);
+						for (size_t k = 0; k < projects.size(); k++)
+						{
+							for (size_t m = 0; m < v[k].size(); m++)
+							{
+								if (m == v[k].size() - 1)
+								{
+									file << v[k][m] << endl;
+								}
+								else
+								{
+									file << v[k][m] << ",";
+								}
+							}
+						}
 						break;
 					}
 					else
 					{
-						n++;
-					}
-				}
-				if (n == v[i].size())
-				{
-					v[i].push_back(teamId);
-					for (size_t k = 0; k < projects.size(); k++)
-					{
-						for (size_t m = 0; m < v[k].size(); m++)
+						cout << "This user has already been added";
+						for (size_t k = 0; k < projects.size(); k++)
 						{
-							if (m == v[k].size() - 1)
+							for (size_t m = 0; m < v[k].size(); m++)
 							{
-								file << v[k][m] << endl;
-							}
-							else
-							{
-								file << v[k][m] << ",";
+								if (m == v[k].size() - 1)
+								{
+									file << v[k][m] << endl;
+								}
+								else
+								{
+									file << v[k][m] << ",";
+								}
 							}
 						}
+						break;
 					}
-					break;
-				}
-				else
-				{
-					cout << "This user has already been added";
-					for (size_t k = 0; k < projects.size(); k++)
-					{
-						for (size_t m = 0; m < v[k].size(); m++)
-						{
-							if (m == v[k].size() - 1)
-							{
-								file << v[k][m] << endl;
-							}
-							else
-							{
-								file << v[k][m] << ",";
-							}
-						}
-					}
-					break;
 				}
 			}
 		}
-
 	}
 	file.close();
 	return v;
