@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "../pm.types/User.h"
 #include "UserStore.h"
+#include "Header.h"
 #include<fstream>
 #include<string>
 #include<vector>
@@ -169,7 +170,7 @@ void pm::dal::UserStore::remove(vector<pm::type::User>* user, size_t id)
 	(*user) = u.getAll();
 }
 
-void pm::dal::UserStore::update(std::vector<pm::type::User>* users,pm::type::User* user, size_t idOfUserChange)
+void pm::dal::UserStore::update(std::vector<pm::type::User>* users, pm::type::User* user, size_t idOfUserChange)
 {
 	cout << "First name: ";
 	cin >> (*user).FirstName;

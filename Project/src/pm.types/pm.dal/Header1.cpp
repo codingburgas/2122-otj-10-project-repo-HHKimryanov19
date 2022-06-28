@@ -105,10 +105,11 @@ pm::type::Project pm::dal::ProjectStore::create(std::vector<pm::type::Project> p
 void pm::dal::ProjectStore::remove(std::vector<pm::type::Project>* projects, size_t idOfUser, size_t id)
 {
 	pm::dal::ProjectStore projectFunc;
+	std::vector<std::vector<size_t>> v = projectFunc.teamsInTheProject();
 	ofstream file("projects.txt", ios::trunc);
 	ofstream file1("teamsInTheProjects.txt", ios::trunc);
-	std::vector<std::vector<size_t>> v = projectFunc.teamsInTheProject();
-	int n;
+	
+	int n = 0;
 	if (file.is_open()&&file1.is_open())
 	{
 		for (size_t i = 0; i < (*projects).size(); i++)

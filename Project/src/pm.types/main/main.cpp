@@ -458,9 +458,12 @@ int main()
 	vector<pm::type::Team> teams;
 	pm::dal::TeamStore teamFunc;
 	teams = teamFunc.getAll();
+	
+	vector<vector<size_t>> v = teamFunc.usersInTheTeams();
+	v = teamFunc.asignToTeam(teams, 5, 3);
 
-	/*very important
-	int n;
+	teamFunc.remove(&teams, 4);
+	/*int n;
 	cin >> n;
 	int wantedTeam = 0;
 	std::vector<std::vector<size_t>> v = projectFunc.teamsInTheProject();
@@ -493,7 +496,7 @@ int main()
 	vector<vector<size_t>> v = teamFunc.usersInTheTeams();
 	v = teamFunc.asignToTeam(teams, 5, 3);*/
 
-	/*very important
+	
 	int n;
 	cin >> n;
 	int wantedTeam = 0;
@@ -515,7 +518,7 @@ int main()
 				cout << users[k].FirstName << " " << users[k].LastName << endl;
 			}
 		}
-	}*/
+	}
 
 
 	//for (int i = 0; i < teams.size(); i++)

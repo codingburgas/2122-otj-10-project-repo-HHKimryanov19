@@ -77,8 +77,12 @@ pm::type::Team pm::dal::TeamStore::create(std::vector<pm::type::Team> teams, pm:
 
 void pm::dal::TeamStore::remove(std::vector<pm::type::Team>* teams, size_t id)
 {
+	pm::dal::TeamStore teamsFunc;
 	ofstream file("teams.txt", ios::trunc);
-	if (file.is_open())
+	vector<vector<size_t>> v = teamsFunc.usersInTheTeams();
+	ofstream file1("usersInTheTeams.txt", ios::trunc);
+
+	if (file.is_open()&&file1.is_open())
 	{
 		for (size_t i = 0; i < (*teams).size(); i++)
 		{
@@ -90,10 +94,23 @@ void pm::dal::TeamStore::remove(std::vector<pm::type::Team>* teams, size_t id)
 				file << (*teams)[i].idOfCreator << ',';
 				file << (*teams)[i].lastChange << ',';
 				file << (*teams)[i].idOfUserChange << endl;
+
+				for (size_t j = 0; j < v.size(); j++)
+				{
+					if (j != v.size() - 1)
+					{
+						file1 << v[i][j]<<',';
+					}
+					else
+					{
+						file1 << v[i][j] << endl;
+					}
+				}
 			}
 		}
 	}
-	pm::dal::TeamStore teamsFunc;
+	file.close();
+	file1.close();
 	*teams = teamsFunc.getAll();
 }
 
