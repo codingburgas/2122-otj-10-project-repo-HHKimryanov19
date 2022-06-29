@@ -121,15 +121,15 @@ void pm::dal::TeamStore::remove(std::vector<pm::type::Team>* teams, size_t id)
 				file << (*teams)[i].idOfCreator << ',';
 				file << (*teams)[i].lastChange << ',';
 				file << (*teams)[i].idOfUserChange << endl;
-				for (size_t j = 0; j < (*teams)[i].assignedUser.size(); j++)
+				for (size_t j = 0; j < (*teams)[i].idOfUsers.size(); j++)
 				{
-					if (j == (*teams)[i].assignedUser.size() - 1)
+					if (j == (*teams)[i].idOfUsers.size() - 1)
 					{
-						file1 << (*teams)[i].assignedUser[j].id << ',';
+						file1 << (*teams)[i].idOfUsers[j] << ',';
 					}
 					else
 					{
-						file1 << (*teams)[i].assignedUser[j].id << endl;
+						file1 << (*teams)[i].idOfUsers[j] << endl;
 					}
 				}
 			}
@@ -156,24 +156,24 @@ void pm::dal::TeamStore::displayTeams(vector<pm::type::Team> teams)
 	}
 }
 
-void pm::dal::TeamStore::asignToTeam(std::vector< pm::type::Team>* teams, pm::type::Team* team, pm::type::User user)
+void pm::dal::TeamStore::asignToTeam(std::vector< pm::type::Team>& teams, pm::type::Team* team, pm::type::User user)
 {
 	ofstream file("usersInTheTeams.txt", ios::trunc);
 	int n = 0;
 	if (file.is_open())
 	{
-		(*team).assignedUser.push_back(user);
-		for (size_t i = 0; i < (*teams).size(); i++)
+		(*team).idOfUsers.push_back(user.id);
+		for (size_t i = 0; i < teams.size(); i++)
 		{
-			for (size_t j = 0; j < (*teams)[i].assignedUser.size(); j++)
+			for (size_t j = 0; j < teams[i].idOfUsers.size(); j++)
 			{
-				if (j != (*teams)[i].assignedUser.size() - 1)
+				if (j != teams[i].idOfUsers.size() - 1)
 				{
-					file << (*teams)[i].assignedUser[j].id << ',';
+					file << teams[i].idOfUsers[j] << ',';
 				}
 				else
 				{
-					file << (*teams)[i].assignedUser[j].id << endl;
+					file << teams[i].idOfUsers[j] << endl;
 				}
 			}
 		}

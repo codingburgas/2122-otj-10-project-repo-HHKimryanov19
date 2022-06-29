@@ -27,7 +27,7 @@ namespace pm {
 			size_t idOfCreator;
 			std::time_t lastChange;
 			size_t idOfUserChange;
-			std::vector<pm::type::User> assignedUser;
+			std::vector<size_t> idOfUsers;
 		};
 
 		struct Project {
@@ -38,7 +38,7 @@ namespace pm {
 			size_t idOfCreator;
 			std::time_t lastChange;
 			size_t idOfUserChange;
-			std::vector<pm::type::Team> assignedTeams;
+			std::vector<size_t> idOfTeams;
 		};
 
 		struct Task{

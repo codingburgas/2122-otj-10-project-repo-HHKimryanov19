@@ -262,18 +262,18 @@ void pm::dal::ProjectStore::displayProjects(std::vector<pm::type::Project> proje
 	int n = 0;
 	if (file.is_open())
 	{
-		(*project).assignedTeams.push_back(team);
+		(*project).idOfTeams.push_back(team.id);
 		for (size_t i = 0; i < (*projects).size(); i++)
 		{
-			for (size_t j = 0; j < (*projects)[i].assignedTeams.size(); j++)
+			for (size_t j = 0; j < (*projects)[i].idOfTeams.size(); j++)
 			{
-				if (j != (*projects)[i].assignedTeams.size() - 1)
+				if (j != (*projects)[i].idOfTeams.size() - 1)
 				{
-					file << (*projects)[i].assignedTeams[j].id << ',';
+					file << (*projects)[i].idOfTeams[j] << ',';
 				}
 				else
 				{
-					file << (*projects)[i].assignedTeams[j].id << endl;
+					file << (*projects)[i].idOfTeams[j] << endl;
 				}
 			}
 		}
