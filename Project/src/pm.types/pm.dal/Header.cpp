@@ -69,7 +69,7 @@ std::vector<pm::type::Team> pm::dal::TeamStore::getAll()
 			stringstream ss1(line1);
 			while (getline(ss1, str1, ','))
 			{
-				teams[i].assignedUser.push_back(userFunc.getById(userFunc.getAll(), stoi(str1)));
+				teams[i].idOfUsers.push_back(stoi(str1));
 			}
 		}
 	}

@@ -1,450 +1,194 @@
 #include <iostream>
-//#include<fstream>
-//#include<string>
-//#include<conio.h>
-//#include "..\pm.dal\UserStore.h"
-//#include "..\pm.dal\Header.h"
-//#include "..\pm.dal\Header1.h"
-//#include "..\pm.types\User.h"
-//#include <conio.h>
-
+#include"../consoleApp/Header.h"
 using namespace std;
-#define KEY_UP 72
-#define KEY_DOWN 80
 
-void buttonCreate() {
-	cout << "  __________________" << endl;
-	cout << " /                  \\" << endl;
-	cout << "{   Create account   }" << endl;
-	cout << " \\__________________/" << endl;
-}
+//int update(vector<pm::type::User> users, pm::dal::UserStore userFunc,pm::type::User currentUser,int& n)
+//{
+//	int Event,n1;
+//	bool updatePress = false;
+//	system("CLS");
+//	cout << "\x1b[1;30m";
+//	displayUsersButton();
+//	buttonCreate(); 
+//	buttonsRemove();
+//	cout << "\x1b[1;37m";
+//	buttonsUpdate();
+//	cout << "\x1b[1;30m";
+//	backButton();
+//	Event = _getch();
+//	if (Event == 13)
+//	{
+//		system("CLS");
+//		updatePress = true;
+//	}
+//
+//	while (updatePress)
+//	{
+//		userFunc.displayUsers(users);
+//		cout << endl << "Who user do you want to edit? - ";
+//		cin >> n1;
+//		for (int i = 0; i < users.size(); i++)
+//		{
+//			if (users[i].id == n1)
+//			{
+//				userFunc.update(users, users[i], currentUser.id);
+//				n1 = 0;
+//				break;
+//			}
+//		}
+//		if (n1 != 0)
+//		{
+//			cout << "User with that id hasn't been found" << endl;
+//		}
+//		cout << "Press enter..." << endl;
+//		if (_getch() == 13)
+//		{
+//			n = -1;
+//			updatePress = false;
+//		}
+//		else
+//		{
+//			system("CLS");
+//		}
+//	}
+//	return Event;
+//}
+//int create()
+//{
+//	system("CLS");
+//	cout << "\x1b[1;30m";
+//	displayUsersButton();
+//	cout << "\x1b[1;37m";
+//	buttonCreate();
+//	cout << "\x1b[1;30m";
+//	buttonsRemove();
+//	buttonsUpdate();
+//	backButton();
+//	cout << "\x1b[1;37m";
+//	Event = _getch();
+//	if (Event == 13)
+//	{
+//		system("CLS");
+//		createPress = true;
+//	}
+//
+//	if (createPress)
+//	{
+//		cout << "First name: ";
+//		cin >> FirstName;
+//		cout << "Last name: ";
+//		cin >> LastName;
+//		cout << "Email: ";
+//		cin >> email;
+//		cout << "Password: ";
+//		cin >> passwordHash;
+//		cout << "Age: ";
+//		cin >> age;
+//		cout << "This user is admin(true/false) - ";
+//		cin >> adminPrivileges;
+//		userFunc.create(users, currecntUser.id, FirstName, LastName, email, passwordHash, adminPrivileges, age);
+//		n = -1;
+//		createPress = false;
+//	}
+//}
+//int display()
+//{
+//	system("CLS");
+//	cout << "\x1b[1;37m";
+//	displayUsersButton();
+//	cout << "\x1b[1;30m";
+//	buttonCreate();
+//	buttonsRemove();
+//	buttonsUpdate();
+//	backButton();
+//	cout << "\x1b[1;37m";
+//	Event = _getch();
+//	if (Event == 13)
+//	{
+//		system("CLS");
+//		while (true)
+//		{
+//			userFunc.displayUsers(users);
+//			cout << "Which user do you want to see? - ";
+//			cin >> userId;
+//			cout << endl;
+//			pm::type::User wantedUser = userFunc.getById(users, userId);
+//			displayUser(wantedUser, userFunc.getById(users, wantedUser.idOfCreater),
+//				userFunc.getById(users, wantedUser.idOfUserChange));
+//			cout << endl;
+//			cout << "Do you want to go back?(YES/NO)" << endl;
+//			cin >> choice;
+//			if (choice == "YES")
+//			{
+//				n = -1;
+//				break;
+//			}
+//			else
+//			{
+//				system("CLS");
+//			}
+//		}
+//	}
+//}
+//int remove()
+//{
+//	system("CLS");
+//	cout << "\x1b[1;30m";
+//	displayUsersButton();
+//	buttonCreate();
+//	cout << "\x1b[1;37m";
+//	buttonsRemove();
+//	cout << "\x1b[1;30m";
+//	buttonsUpdate();
+//	backButton();
+//	cout << "\x1b[1;37m";
+//	Event = _getch();
+//	if (Event == 13)
+//	{
+//		system("CLS");
+//		removePress = true;
+//	}
+//
+//	while (removePress)
+//	{
+//		size_t userId;
+//		userFunc.displayUsers(users);
+//		cout << endl << "Who user want to delete? - ";
+//		cin >> userId;
+//		userFunc.remove(users, userId);
+//		cout << "Do you want another user?(YES/NO)" << endl;
+//		string choice;
+//		cin >> choice;
+//		if (choice == "NO")
+//		{
+//			n = -1;
+//			removePress = false;
+//		}
+//	}
+//}
+//int back()
+//{
+//	system("CLS");
+//	cout << "\x1b[1;30m";
+//	displayUsersButton();
+//	buttonCreate();
+//	buttonsRemove();
+//	buttonsUpdate();
+//	cout << "\x1b[1;37m";
+//	backButton();
+//	cout << "\x1b[1;30m";
+//	Event = _getch();
+//	if (Event == 13)
+//	{
+//		return;
+//	}
+//	break;
+//}
 
-void buttonsRemove() {
-	cout << "  __________________" << endl;
-	cout << " /                  \\" << endl;
-	cout << "{   Remove account   }" << endl;
-	cout << " \\__________________/" << endl;
-}
-
-void buttonsLogIn() {
-	cout << "  __________________" << endl;
-	cout << " /                  \\" << endl;
-	cout << "{       Log in       }" << endl;
-	cout << " \\__________________/" << endl;
-}
-
-void buttonsUpdate() {
-	cout << "  __________________" << endl;
-	cout << " /                  \\" << endl;
-	cout << "{   Update account   }" << endl;
-	cout << " \\__________________/" << endl;
-}
-
-void displayUsersButton()
-{
-	cout << "  __________________" << endl;
-	cout << " /                  \\" << endl;
-	cout << "{ Display all users  }" << endl;
-	cout << " \\__________________/" << endl;
-}
-
-void teamsManagement() {
-	cout << "  __________________" << endl;
-	cout << " /                  \\" << endl;
-	cout << "{  Teams Management  }" << endl;
-	cout << " \\__________________/" << endl;
-}
-
-void usersManagement() {
-	cout << "  __________________" << endl;
-	cout << " /                  \\" << endl;
-	cout << "{  Users Management  }" << endl;
-	cout << " \\__________________/" << endl;
-}
-
-//menuAdmin(users,currentUser);
-
-void displayUser(pm::type::User user, pm::type::User createrUser, pm::type::User changerUser)
-{
-	cout << user.id << ". " << user.FirstName << " " << user.LastName << endl;
-	cout << "Age: " << user.age << endl;
-	cout << "Email: " << user.email << endl;
-
-	cout << "Created on: " << user.createdOn << endl;
-	cout << "Last change: " << user.lastChange << endl;
-
-	cout << "Created by: " << createrUser.FirstName << " " << createrUser.LastName << endl;
-	cout << "Last changed by: " << changerUser.FirstName << " " << changerUser.LastName << endl;
-}
-
-void menuAdmin(vector<pm::type::User> users, pm::type::User currecntUser) {
-	int n = 1, n1 = 0;
-	bool updatePress = false, createPress = false, removePress = false, allUsersPress = false;
-	pm::dal::UserStore userFunc;
-	while (true)
-	{
-		switch (n)
-		{
-		case 1:
-			system("CLS");
-			cout << "\x1b[1;37m";
-			displayUsersButton();
-			cout << "\x1b[1;30m";
-			buttonCreate();
-			buttonsRemove();
-			buttonsUpdate();
-			cout << "\x1b[1;37m";
-			if (_getch() == 13)
-			{
-				system("CLS");
-				allUsersPress = true;
-			}
-			while (allUsersPress)
-			{
-				userFunc.displayUsers(users);
-				cout << "Which user do you want to see? - ";
-				size_t userId;
-				cin >> userId;
-				cout << endl;
-				pm::type::User wantedUser = userFunc.getById(users, userId);
-				displayUser(wantedUser, userFunc.getById(users, wantedUser.idOfCreater),
-					userFunc.getById(users, wantedUser.idOfUserChange));
-				cout << endl;
-				cout << "Do you want to go back?(YES/NO)" << endl;
-				string choice;
-				cin >> choice;
-				if (choice == "YES")
-				{
-					n = -1;
-					allUsersPress = false;
-				}
-				else
-				{
-					system("CLS");
-				}
-			}
-			break;
-		case 2:
-			system("CLS");
-			cout << "\x1b[1;30m";
-			displayUsersButton();
-			cout << "\x1b[1;37m";
-			buttonCreate();
-			cout << "\x1b[1;30m";
-			buttonsRemove();
-			buttonsUpdate();
-			if (_getch() == 13)
-			{
-				system("CLS");
-				createPress = true;
-			}
-			if (createPress)
-			{
-				users.push_back(userFunc.create(users, currecntUser.id));
-				n = -1;
-				createPress = false;
-			}
-			break;
-		case 3:
-			system("CLS");
-			cout << "\x1b[1;30m";
-			displayUsersButton();
-			buttonCreate();
-			cout << "\x1b[1;37m";
-			buttonsRemove();
-			cout << "\x1b[1;30m";
-			buttonsUpdate();
-			cout << "\x1b[1;37m";
-			if (_getch() == 13)
-			{
-				system("CLS");
-				removePress = true;
-			}
-
-			while (removePress)
-			{
-				size_t userId;
-				userFunc.displayUsers(users);
-				cout << endl << "Who user want to delete? - ";
-				cin >> userId;
-				userFunc.remove(&users, userId);
-				cout << "Do you want another user?(YES/NO)" << endl;
-				string choice;
-				cin >> choice;
-				if (choice == "NO")
-				{
-					n = -1;
-					removePress = false;
-				}
-			}
-			break;
-		case 4:
-			system("CLS");
-			cout << "\x1b[1;30m";
-			displayUsersButton();
-			buttonCreate();
-			buttonsRemove();
-			cout << "\x1b[1;37m";
-			buttonsUpdate();
-			if (_getch() == 13)
-			{
-				system("CLS");
-				updatePress = true;
-			}
-
-			while (updatePress)
-			{
-				userFunc.displayUsers(users);
-				cout << endl << "Who user do you want to edit? - ";
-				cin >> n1;
-				for (int i = 0; i < users.size(); i++)
-				{
-					if (users[i].id == n1)
-					{
-						userFunc.update(&users,&users[i], currecntUser.id);
-						n1 = 0;
-						break;
-					}
-				}
-				if (n1 != 0)
-				{
-					cout << "User with that id hasn't been found" << endl;
-				}
-				cout << "Press enter..." << endl;
-				if (_getch()==13)
-				{
-					n = -1;
-					updatePress = false;
-				}
-				else
-				{
-					system("CLS");
-				}
-			}
-		}
-
-		if (n != -1)
-		{
-			switch (_getch())
-			{
-			case KEY_UP:
-				if (n == 1)
-				{
-					n = 4;
-					system("CLS");
-				}
-				else
-				{
-					n--;
-				}
-				break;
-			case KEY_DOWN:
-				if (n == 4)
-				{
-					n = 1;
-				}
-				else
-				{
-					n++;
-				}
-				break;
-			}
-		}
-		else
-		{
-			n = 1;
-		}
-	}
-}
-
-void managementMenu(vector<pm::type::User> users, pm::type::User currentUser)
-{
-	bool teamM = false, userM = false;
-	int n = 1;
-	while (true)
-	{
-		switch (n)
-		{
-		case 1:
-			system("CLS");
-			cout << "\x1b[1;37m";
-			usersManagement();
-			cout << "\x1b[1;30m";
-			teamsManagement();
-			if (_getch() == 13)
-			{
-				menuAdmin(users, currentUser);
-			}
-			break;
-		case 2:
-			system("CLS");
-			cout << "\x1b[1;30m";
-			usersManagement();
-			cout << "\x1b[1;37m";
-			teamsManagement();
-			break;
-		}
-
-		switch (_getch())
-		{
-		case KEY_UP:
-			if (n == 1)
-			{
-				n = 2;
-			}
-			else
-			{
-				n--;
-			}
-			break;
-		case KEY_DOWN:
-			if (n == 2)
-			{
-				n = 1;
-			}
-			else
-			{
-				n++;
-			}
-			break;
-		}
-	}
-}
-
-void startMenu(vector<pm::type::User> users)
-{
-	bool logIn = false, createButton = false;
-	int n = 1;
-	int n1;
-	pm::type::User currentUser = users[0];
-	while (true)
-	{
-		switch (n)
-		{
-		case 1:
-			system("CLS");
-			cout << "\x1b[1;37m";
-			buttonsLogIn();
-			cout << "\x1b[1;30m";
-			buttonCreate();
-			cout << "\x1b[1;37m";
-			n1 = _getch();
-			if (n1 == 13)
-			{
-				system("CLS");
-				logIn = true;
-			}
-			break;
-		case 2:
-			system("CLS");
-			cout << "\x1b[1;30m";
-			buttonsLogIn();
-			cout << "\x1b[1;37m";
-			buttonCreate();
-			n1 = _getch();
-			if (n1 == 13)
-			{
-				system("CLS");
-				createButton = true;
-			}
-			break;
-		}
-		if (logIn == false && createButton == false)
-		{
-			switch (n1)
-			{
-			case KEY_UP:
-				if (n == 1)
-				{
-					n = 2;
-					system("CLS");
-				}
-				else
-				{
-					n--;
-				}
-				break;
-			case KEY_DOWN:
-				if (n == 2)
-				{
-					n = 1;
-				}
-				else
-				{
-					n++;
-				}
-				break;
-			}
-		}
-		else
-		{
-			int j = users.size();
-			bool adminLogIn = false, userLogIn = false;
-			string userName, password;
-			cout << "User name: ";
-			cin >> userName;
-			cout << "Password: ";
-			cin >> password;
-			if (logIn)
-			{
-				if (j != 0)
-				{
-					if (userName == "admin" && password == "adminpass")
-					{
-						adminLogIn = true;
-						n = 3;
-					}
-					else
-					{
-						for (size_t i = 0; i < users.size(); i++)
-						{
-							if (users[i].FirstName == userName && users[i].passwordHash == password)
-							{
-								if (users[i].adminPrivileges)
-								{
-									currentUser = users[i];
-									adminLogIn = true;
-								}
-								else
-								{
-									userLogIn = true;
-								}
-								n = 3;
-
-								break;
-							}
-						}
-					}
-				}
-				else
-				{
-					if (userName == "admin" && password == "adminpass")
-					{
-						cout << "You are admin" << endl;
-						adminLogIn = true;
-						n = 3;
-					}
-				}
-
-				if (adminLogIn)
-				{
-					managementMenu(users, currentUser);
-				}
-
-				if (userLogIn)
-				{
-					cout << "Today is Wednesday" << endl;
-				}
-			}
-		}
-
-
-	}
-}
 
 int main()
 {
-	cout << sizeof(vector<string>);
+	startMenu();
 	/*vector<pm::type::User> users;
 	pm::type::User newUser;
 	pm::dal::UserStore userFunc;
@@ -503,7 +247,7 @@ int main()
 	vector<vector<size_t>> v = teamFunc.usersInTheTeams();
 	v = teamFunc.asignToTeam(teams, 5, 3);*/
 
-	
+
 	/*int n;
 	cin >> n;
 	int wantedTeam = 0;
@@ -551,7 +295,8 @@ int main()
 	teamFunc.displayTeams(teams);
 	teamFunc.update(&teams[0], users[0]);
 	teamFunc.displayTeams(teams);*/
-	
+
+	return 0;
 }
 
 /*while (_getch() != 27)
@@ -596,29 +341,29 @@ int main()
 		cout << i.id << ". " << i.FirstName << " " << i.LastName << " " << i.age << " " << i.email << " " << i.passwordHash << " " << i.createdOn << endl;
 	}*/
 
-/*size_t j = users.size();
+	/*size_t j = users.size();
 
-		bool nameLogin = false, passwordLogin = false;
-		string userName, password;
-		cout << "User name: ";
-		cin >> userName;
-		cout << endl << "Password: ";
-		cin>> password;
-		if (j != 0)
-		{
-			for (size_t i = 0; i < users.size(); i++)
+			bool nameLogin = false, passwordLogin = false;
+			string userName, password;
+			cout << "User name: ";
+			cin >> userName;
+			cout << endl << "Password: ";
+			cin>> password;
+			if (j != 0)
 			{
-				if (users[i].FirstName == userName && users[i].passwordHash == password)
+				for (size_t i = 0; i < users.size(); i++)
 				{
-					cout << "You are stupid";
-					break;
+					if (users[i].FirstName == userName && users[i].passwordHash == password)
+					{
+						cout << "You are stupid";
+						break;
+					}
 				}
 			}
-		}
-		else
-		{
-			if (userName == "admin" && password == "adminpass")
+			else
 			{
-				cout << "You are admin";
-			}
-		}*/
+				if (userName == "admin" && password == "adminpass")
+				{
+					cout << "You are admin";
+				}
+			}*/

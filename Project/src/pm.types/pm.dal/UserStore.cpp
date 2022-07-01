@@ -2,10 +2,6 @@
 #include "../pm.types/User.h"
 #include "UserStore.h"
 #include "Header.h"
-#include<fstream>
-#include<string>
-#include<vector>
-#include <sstream>
 using namespace std;
 
 size_t generateNewId(vector<pm::type::User> users)
@@ -91,13 +87,19 @@ vector<pm::type::User> pm::dal::UserStore::getAll()
 	return users;
 }
 
-pm::type::User pm::dal::UserStore::create(vector<pm::type::User> users, size_t idOfCreator)
+vector<pm::type::User> pm::dal::UserStore::create(vector<pm::type::User> users, size_t idOfCreator)
 {
+	string str;
 	pm::type::User user;
 	ofstream file1("Info.txt", ios::app);
 	user.id = generateNewId(users);
 	if (file1.is_open())
 	{
+		user.createdOn = time(NULL);
+		user.idOfCreater = idOfCreator;
+		user.lastChange = time(NULL);
+		user.idOfUserChange = idOfCreator;
+
 		cout << "First name: ";
 		cin >> user.FirstName;
 		cout << "Last name: ";
@@ -108,12 +110,16 @@ pm::type::User pm::dal::UserStore::create(vector<pm::type::User> users, size_t i
 		cin >> user.passwordHash;
 		cout << "Age: ";
 		cin >> user.age;
-		user.createdOn = time(NULL);
-		user.lastChange = time(NULL);
-		user.idOfCreater = idOfCreator;
-		user.idOfUserChange = idOfCreator;
-		cout << "This user is admin(true/false) - ";
-		cin >> user.adminPrivileges;
+		cout << "Admin or user(type in lowercase) - ";
+		cin >> str;
+		if (str == "admin")
+		{
+			user.adminPrivileges = 1;
+		}
+		else
+		{
+			user.adminPrivileges = 0;
+		}
 
 		file1 << user.id << ',';
 		file1 << user.FirstName << ',';
@@ -135,27 +141,28 @@ pm::type::User pm::dal::UserStore::create(vector<pm::type::User> users, size_t i
 		}
 	}
 	file1.close();
-	return user;
+	users.push_back(user);
+	return users;
 }
 
-void pm::dal::UserStore::remove(vector<pm::type::User>* user, size_t id)
+vector<pm::type::User> pm::dal::UserStore::remove(vector<pm::type::User> users, size_t id)
 {
 	ofstream file1("Info.txt", ios::trunc);
-	for (int i = 0; i < (*user).size(); i++)
+	for (int i = 0; i < users.size(); i++)
 	{
-		if ((*user)[i].id != id)
+		if (users[i].id != id)
 		{
-			file1 << (*user)[i].id << ',';
-			file1 << (*user)[i].FirstName << ',';
-			file1 << (*user)[i].LastName << ',';
-			file1 << (*user)[i].email << ',';
-			file1 << (*user)[i].passwordHash << ',';
-			file1 << (*user)[i].age << ',';
-			file1 << (*user)[i].createdOn << ',';
-			file1 << (*user)[i].lastChange << ',';
-			file1 << (*user)[i].idOfCreater << ',';
-			file1 << (*user)[i].idOfUserChange << ',';
-			if ((*user)[i].adminPrivileges)
+			file1 << users[i].id << ',';
+			file1 << users[i].FirstName << ',';
+			file1 << users[i].LastName << ',';
+			file1 << users[i].email << ',';
+			file1 << users[i].passwordHash << ',';
+			file1 << users[i].age << ',';
+			file1 << users[i].createdOn << ',';
+			file1 << users[i].lastChange << ',';
+			file1 << users[i].idOfCreater << ',';
+			file1 << users[i].idOfUserChange << ',';
+			if (users[i].adminPrivileges)
 			{
 				file1 << "true" << endl;
 			}
@@ -167,26 +174,37 @@ void pm::dal::UserStore::remove(vector<pm::type::User>* user, size_t id)
 	}
 	file1.close();
 	pm::dal::UserStore u;
-	(*user) = u.getAll();
+	users = u.getAll();
+	return users;
 }
 
-void pm::dal::UserStore::update(std::vector<pm::type::User>* users, pm::type::User* user, size_t idOfUserChange)
+vector<pm::type::User> pm::dal::UserStore::update(std::vector<pm::type::User> users, size_t userIndex, size_t idOfUserChange)
 {
+	string str;
 	cout << "First name: ";
-	cin >> (*user).FirstName;
+	cin >> users[userIndex].FirstName;
 	cout << "Last name: ";
-	cin >> (*user).LastName;
+	cin >> users[userIndex].LastName;
 	cout << "Email: ";
-	cin >> (*user).email;
+	cin >> users[userIndex].email;
 	cout << "Password: ";
-	cin >> (*user).passwordHash;
+	cin >> users[userIndex].passwordHash;
 	cout << "Age: ";
-	cin >> (*user).age;
-	(*user).lastChange = time(NULL);
-	(*user).idOfUserChange = idOfUserChange;
-	cout << "This user is admin - ";
-	cin >> (*user).adminPrivileges;
-	toFile(*users);
+	cin >> users[userIndex].age;
+	users[userIndex].lastChange = time(NULL);
+	users[userIndex].idOfUserChange = idOfUserChange;
+	cout << "Admin or user(type in lowercase) - ";
+	cin >> str;
+	if (str == "admin")
+	{
+		users[userIndex].adminPrivileges = 1;
+	}
+	else
+	{
+		users[userIndex].adminPrivileges = 0;
+	}
+	toFile(users);
+	return users;
 }
 
 pm::type::User pm::dal::UserStore::getById(vector<pm::type::User> user, size_t id)
