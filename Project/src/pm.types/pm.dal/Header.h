@@ -14,7 +14,7 @@ namespace pm
 			std::vector<pm::type::Team> create(std::vector<pm::type::Team> teams,pm::type::User currentUser);
 			std::vector<pm::type::Team> remove(std::vector<pm::type::Team> teams, size_t id);
 			std::vector<pm::type::Team> update(std::vector<pm::type::Team> teams, size_t indexOfTeam, size_t currentUserId);
-			pm::type::Team getById(std::vector<pm::type::Team> teams, size_t id);
+			size_t  getById(std::vector<pm::type::Team> teams, size_t id);
 			void displayTeams(std::vector<pm::type::Team> teams);
 			std::vector<pm::type::Team> asignToTeam(std::vector< pm::type::Team> teams, size_t indexOfTeam, size_t idOfUser);
 			//std::vector<std::vector<size_t>> usersInTheTeams();

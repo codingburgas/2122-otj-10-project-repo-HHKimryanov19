@@ -111,14 +111,14 @@ void displayUser(pm::type::User user, pm::type::User createrUser, pm::type::User
 	cout << "Last changed by: " << changerUser.FirstName << " " << changerUser.LastName << endl;
 }
 
-void displayTeam(pm::type::Team team, pm::type::User createrUser, pm::type::User changerUser)
+void displayTeam(vector<pm::type::Team> teams, size_t indexOfTeam, pm::type::User createrUser, pm::type::User changerUser)
 {
-	cout << team.id << ". " << team.Title << endl;
+	cout << teams[indexOfTeam].id << ". " << teams[indexOfTeam].Title << endl;
 
-	cout << "Created on: " << team.createdOn << endl;
+	cout << "Created on: " << teams[indexOfTeam].createdOn << endl;
 	cout << "Created by: " << createrUser.FirstName << " " << createrUser.LastName << endl;
 
-	cout << "Last change: " << team.lastChange << endl;
+	cout << "Last change: " << teams[indexOfTeam].lastChange << endl;
 	cout << "Last changed by: " << changerUser.FirstName << " " << changerUser.LastName << endl;
 
 }
@@ -249,7 +249,7 @@ void menuAdminUser(vector<pm::type::User>& users, pm::type::User& currentUser) {
 				displayUser(wantedUser, userFunc.getById(users, wantedUser.idOfCreater),
 					userFunc.getById(users, wantedUser.idOfUserChange));
 				cout << endl;
-				cout << "Press enter to update another user or escape to go back" << endl;
+				cout << "Press enter to display another user or escape to go back" << endl;
 				Event = _getch();
 				if (Event == 27)
 				{
@@ -324,7 +324,7 @@ void menuAdminUser(vector<pm::type::User>& users, pm::type::User& currentUser) {
 				{
 					cout << "User with that id hasn't been found" << endl;
 				}
-				cout << "Press enter to update another user or escape to go back";
+				cout << "Press enter to edit another user or escape to go back";
 				Event = _getch();
 				if (Event == 27)
 				{
@@ -343,6 +343,7 @@ void menuAdminUser(vector<pm::type::User>& users, pm::type::User& currentUser) {
 		}
 	}
 }
+//ready
 
 void menuAdminTeam(vector<pm::type::Team>& teams, vector<pm::type::User>& users, pm::type::User& currentUser)
 {
@@ -490,11 +491,10 @@ void menuAdminTeam(vector<pm::type::Team>& teams, vector<pm::type::User>& users,
 				cout << "Which team do you want to see? - ";
 				cin >> teamId;
 				cout << endl;
-				pm::type::Team wantedTeam = teamFunc.getById(teams, teamId);
-				displayTeam(wantedTeam, userFunc.getById(users, wantedTeam.idOfCreator),
-					userFunc.getById(users, wantedTeam.idOfUserChange));
+				size_t wantedTeam = teamFunc.getById(teams, teamId);
+				displayTeam(teams, wantedTeam, userFunc.getById(users, teams[wantedTeam].idOfUserChange), userFunc.getById(users, teams[wantedTeam].idOfUserChange));
 				cout << endl;
-				cout << "Press enter to update another team or escape to go back" << endl;
+				cout << "Press enter to display another team or escape to go back" << endl;
 				Event = _getch();
 				if (Event == 27)
 				{
@@ -513,7 +513,7 @@ void menuAdminTeam(vector<pm::type::Team>& teams, vector<pm::type::User>& users,
 			while (true)
 			{
 				teams = teamFunc.create(teams, currentUser);
-				cout << "Press enter to create another user or escape to go back" << endl;
+				cout << "Press enter to create another team or escape to go back" << endl;
 				Event = _getch();
 				if (Event == 27)
 				{
@@ -534,7 +534,7 @@ void menuAdminTeam(vector<pm::type::Team>& teams, vector<pm::type::User>& users,
 				cout << endl << "Who user want to delete? - ";
 				cin >> teamId;
 				teams = teamFunc.remove(teams, teamId);
-				cout << "Press enter to remove another user or escape to go back" << endl;
+				cout << "Press enter to remove another team or escape to go back" << endl;
 				Event = _getch();
 				if (Event == 27)
 				{
@@ -568,7 +568,7 @@ void menuAdminTeam(vector<pm::type::Team>& teams, vector<pm::type::User>& users,
 				{
 					cout << "User with that id hasn't been found" << endl;
 				}
-				cout << "Press enter to update another user or escape to go back";
+				cout << "Press enter to edit another team or escape to go back";
 				Event = _getch();
 				if (Event == 27)
 				{
@@ -608,7 +608,7 @@ void menuAdminTeam(vector<pm::type::Team>& teams, vector<pm::type::User>& users,
 					system("CLS");
 
 					teams = teamFunc.asignToTeam(teams, indexOfTeam, idOfUser);
-					cout << "Press enter to update another user or escape to go back";
+					cout << "Press enter to assign another user or escape to go back";
 					Event = _getch();
 					if (Event == 27)
 					{
@@ -633,6 +633,7 @@ void menuAdminTeam(vector<pm::type::Team>& teams, vector<pm::type::User>& users,
 		}
 	}
 }
+//ready
 
 void managementMenuAdmin(vector<pm::type::User>& users, pm::type::User& currentUser, vector<pm::type::Team>& teams)
 {
@@ -721,7 +722,7 @@ void managementMenuAdmin(vector<pm::type::User>& users, pm::type::User& currentU
 	}
 }
 
-void menuUserProject(vector<pm::type::Project>& projects,pm::type::User& currentUser,vector<pm::type::Team>& teams)
+void menuUserProject(vector<pm::type::Project>& projects, pm::type::User& currentUser, vector<pm::type::Team>& teams, vector<pm::type::User> users)
 {
 	int Event = 0;
 	int option = 1, updateId, teamId;
@@ -865,7 +866,14 @@ void menuUserProject(vector<pm::type::Project>& projects,pm::type::User& current
 			system("CLS");
 			while (true)
 			{
-				projectFunc.displayProjects(projects,currentUser,teams);
+				projectFunc.displayProjects(projects, currentUser, teams);
+				string nameOfProject;
+				cout << "Which project do you want? - ";
+				cin >> nameOfProject;
+				size_t index = projectFunc.getByTitle(projects, nameOfProject);
+				cout << endl;
+				projectFunc.displayProject(projects[index], users);
+				cout << "Press enter to display another project or escape to go back";
 				Event = _getch();
 				if (Event == 27)
 				{
@@ -880,8 +888,9 @@ void menuUserProject(vector<pm::type::Project>& projects,pm::type::User& current
 			break;
 		case 2:
 			system("CLS");
-
-			projectFunc.create(projects, currentUser.id);
+			cout << "Create project: " << endl << endl;
+			projects.push_back(projectFunc.create(projects, currentUser.id));
+			cout << "Press enter to create another project or escape to go back";
 			Event = _getch();
 			if (Event == 27)
 			{
@@ -897,9 +906,14 @@ void menuUserProject(vector<pm::type::Project>& projects,pm::type::User& current
 			system("CLS");
 			while (true)
 			{
-				int idOfProject = 0;
-				cin >> idOfProject;
+				projectFunc.displayProjects(projects, currentUser, teams);
+				string name;
+				cout << "Which project do you want to delete? - ";
+				cin >> name;
+				size_t index = projectFunc.getByTitle(projects, name);
+				size_t idOfProject = projects[index].id;
 				projects = projectFunc.remove(projects, currentUser.id, idOfProject);
+				cout << "Press enter to remove another project or escape to go back";
 				Event = _getch();
 				if (Event == 27)
 				{
@@ -916,9 +930,14 @@ void menuUserProject(vector<pm::type::Project>& projects,pm::type::User& current
 			system("CLS");
 			while (true)
 			{
-				int idOfProject;
-				cin >> idOfProject;
-				projectFunc.update(projects,currentUser.id,idOfProject);
+				projectFunc.displayProjects(projects, currentUser, teams);
+				string name;
+				cout << "Which project do you want to edit? - ";
+				cin >> name;
+				size_t idOfProject = projectFunc.getByTitle(projects, name);
+				projectFunc.update(projects, currentUser.id, projects[idOfProject].id);
+				cout << "Press enter to edit another project or escape to go back";
+				Event = _getch();
 				if (Event == 27)
 				{
 					option = 1;
@@ -932,27 +951,46 @@ void menuUserProject(vector<pm::type::Project>& projects,pm::type::User& current
 			break;
 		case 5:
 			system("CLS");
-			if (true)
+
+			while (true)
 			{
-				while (true)
+				projectFunc.displayProjects(projects, currentUser, teams);
+				string nameOfProject;
+				cin >> nameOfProject;
+				size_t projectIndex = projectFunc.getByTitle(projects, nameOfProject);
+
+				int idOfTeam;
+				system("CLS");
+				cin >> idOfTeam;
+				for (size_t i = 0; i < projects.size(); i++)
 				{
-					Event = _getch();
-					if (Event == 27)
+					for (size_t j = 0; j < projects[i].idOfTeams.size(); j++)
 					{
-						option = 1;
-						break;
-					}
-					else
-					{
-						system("CLS");
+						size_t index = teamFunc.getById(teams, projects[i].idOfTeams[j]);
+						for (size_t k = 0; k < teams[index].idOfUsers.size(); k++)
+						{
+							if (teams[index].idOfUsers[k] == currentUser.id && projects[index].idOfCreator != currentUser.id)
+							{
+								cout << "Title: " << projects[i].Title << endl;
+							}
+						}
 					}
 				}
+				size_t teamIndex = teamFunc.getById(teams, idOfTeam);
+				projectFunc.asignToTeam(projects, projectIndex, teamIndex, teams);
+				cout << "Press enter to assign another team or escape to go back";
+				Event = _getch();
+				if (Event == 27)
+				{
+					option = 1;
+					break;
+				}
+				else
+				{
+					system("CLS");
+				}
 			}
-			else
-			{
-				option = 1;
-				Event = 0;
-			}
+
 			break;
 		case 6:
 			return;
@@ -961,7 +999,7 @@ void menuUserProject(vector<pm::type::Project>& projects,pm::type::User& current
 	}
 }
 
-void managementMenuUser(vector<pm::type::Project>& projects,pm::type::User& currentUser,vector<pm::type::Team>& teams)
+void managementMenuUser(vector<pm::type::Project>& projects, pm::type::User& currentUser, vector<pm::type::Team>& teams, vector<pm::type::User>& users)
 {
 	int Event = 1, n = 1;
 	while (true)
@@ -1037,7 +1075,7 @@ void managementMenuUser(vector<pm::type::Project>& projects,pm::type::User& curr
 			break;
 		case 1:
 			system("CLS");
-			menuUserProject(projects,currentUser,teams);
+			menuUserProject(projects, currentUser, teams, users);
 			break;
 		case 2:
 			system("CLS");
@@ -1061,7 +1099,7 @@ void startMenu()
 	bool logIn = false, createButton = false;
 	int n = 1;
 	int n1;
-	pm::type::User currentUser = users[0];
+	pm::type::User currentUser;
 	while (true)
 	{
 		switch (n)
@@ -1152,6 +1190,7 @@ void startMenu()
 								}
 								else
 								{
+									currentUser = users[i];
 									userLogIn = true;
 								}
 								n = 3;
@@ -1181,7 +1220,7 @@ void startMenu()
 
 				if (userLogIn)
 				{
-					managementMenuUser(projects,currentUser,teams);
+					managementMenuUser(projects, currentUser, teams, users);
 					logIn = false;
 					createButton = false;
 					userLogIn = false;
@@ -1189,7 +1228,5 @@ void startMenu()
 				}
 			}
 		}
-
-
 	}
 }

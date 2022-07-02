@@ -205,8 +205,8 @@ void pm::dal::TaskStore::displayAllProjectsTasks(std::vector<pm::type::Task> tas
 	{
 		for (size_t j = 0; j < projects[i].idOfTeams.size(); j++)
 		{
-			team = teamFunc.getById(teams, projects[i].idOfTeams[j]);
-			for (size_t k = 0; k < team.idOfUsers.size(); i++)
+			size_t index = teamFunc.getById(teams, projects[i].idOfTeams[j]);
+			for (size_t k = 0; k < teams[index].idOfUsers.size(); i++)
 			{
 				if (team.idOfUsers[k] == currentUser.id)
 				{
@@ -265,8 +265,8 @@ void pm::dal::TaskStore::displayProjectTasks(size_t id,std::vector<pm::type::Tas
 		{
 			for (size_t j = 0; j < projects[i].idOfTeams.size(); j++)
 			{
-				team = teamFunc.getById(teams, projects[i].idOfTeams[j]);
-				for (size_t k = 0; k < team.idOfUsers.size(); i++)
+				size_t index = teamFunc.getById(teams, projects[i].idOfTeams[j]);
+				for (size_t k = 0; k < teams[index].idOfUsers.size(); i++)
 				{
 					if (team.idOfUsers[k] == currentUser.id)
 					{

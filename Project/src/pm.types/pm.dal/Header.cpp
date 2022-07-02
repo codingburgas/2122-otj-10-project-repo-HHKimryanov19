@@ -185,13 +185,13 @@ vector<pm::type::Team> pm::dal::TeamStore::asignToTeam(std::vector< pm::type::Te
 	return teams;
 }
 
-pm::type::Team pm::dal::TeamStore::getById(std::vector<pm::type::Team> teams, size_t id)
+size_t pm::dal::TeamStore::getById(std::vector<pm::type::Team> teams, size_t id)
 {
 	for (size_t i = 0; i < teams.size(); i++)
 	{
 		if (teams[i].id == id)
 		{
-			return teams[i];
+			return i;
 		}
 	}
 }
