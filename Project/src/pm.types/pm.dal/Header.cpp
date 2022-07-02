@@ -78,7 +78,7 @@ std::vector<pm::type::Team> pm::dal::TeamStore::getAll()
 	return teams;
 }
 
-pm::type::Team pm::dal::TeamStore::create(std::vector<pm::type::Team> teams, pm::type::User currentUser)
+vector<pm::type::Team> pm::dal::TeamStore::create(std::vector<pm::type::Team> teams, pm::type::User currentUser)
 {
 	pm::type::Team team;
 	ofstream file("teams.txt", ios::app);
@@ -100,10 +100,10 @@ pm::type::Team pm::dal::TeamStore::create(std::vector<pm::type::Team> teams, pm:
 		file << team.idOfUserChange << endl;
 	}
 	file.close();
-	return team;
+	teams.push_back(team);
+	return teams;
 }
-
-void pm::dal::TeamStore::remove(std::vector<pm::type::Team>* teams, size_t id)
+vector<pm::type::Team> pm::dal::TeamStore::remove(std::vector<pm::type::Team> teams, size_t id)
 {
 	pm::dal::TeamStore teamsFunc;
 	ofstream file("teams.txt", ios::trunc);
@@ -111,25 +111,25 @@ void pm::dal::TeamStore::remove(std::vector<pm::type::Team>* teams, size_t id)
 
 	if (file.is_open() && file1.is_open())
 	{
-		for (size_t i = 0; i < (*teams).size(); i++)
+		for (size_t i = 0; i < teams.size(); i++)
 		{
-			if ((*teams)[i].id != id)
+			if (teams[i].id != id)
 			{
-				file << (*teams)[i].id << ',';
-				file << (*teams)[i].Title << ',';
-				file << (*teams)[i].createdOn << ',';
-				file << (*teams)[i].idOfCreator << ',';
-				file << (*teams)[i].lastChange << ',';
-				file << (*teams)[i].idOfUserChange << endl;
-				for (size_t j = 0; j < (*teams)[i].idOfUsers.size(); j++)
+				file << teams[i].id << ',';
+				file << teams[i].Title << ',';
+				file << teams[i].createdOn << ',';
+				file << teams[i].idOfCreator << ',';
+				file << teams[i].lastChange << ',';
+				file << teams[i].idOfUserChange << endl;
+				for (size_t j = 0; j < teams[i].idOfUsers.size(); j++)
 				{
-					if (j == (*teams)[i].idOfUsers.size() - 1)
+					if (j == teams[i].idOfUsers.size() - 1)
 					{
-						file1 << (*teams)[i].idOfUsers[j] << ',';
+						file1 << teams[i].idOfUsers[j] << ',';
 					}
 					else
 					{
-						file1 << (*teams)[i].idOfUsers[j] << endl;
+						file1 << teams[i].idOfUsers[j] << endl;
 					}
 				}
 			}
@@ -137,15 +137,18 @@ void pm::dal::TeamStore::remove(std::vector<pm::type::Team>* teams, size_t id)
 	}
 	file.close();
 	file1.close();
-	*teams = teamsFunc.getAll();
+	teams = teamsFunc.getAll();
+	return teams;
 }
 
-void pm::dal::TeamStore::update(pm::type::Team* team, pm::type::User currentUser)
+std::vector<pm::type::Team> pm::dal::TeamStore::update(vector<pm::type::Team> teams,size_t indexOfTeam, size_t currentUserId)
 {
 	cout << "New title: ";
-	cin >> (*team).Title;
-	(*team).idOfUserChange = currentUser.id;
-	(*team).lastChange = time(NULL);
+	cin >> teams[indexOfTeam].Title;
+	teams[indexOfTeam].idOfUserChange = currentUserId;
+	teams[indexOfTeam].lastChange = time(NULL);
+	toFile(teams);
+	return teams;
 }
 
 void pm::dal::TeamStore::displayTeams(vector<pm::type::Team> teams)
@@ -156,13 +159,13 @@ void pm::dal::TeamStore::displayTeams(vector<pm::type::Team> teams)
 	}
 }
 
-void pm::dal::TeamStore::asignToTeam(std::vector< pm::type::Team>& teams, pm::type::Team* team, pm::type::User user)
+vector<pm::type::Team> pm::dal::TeamStore::asignToTeam(std::vector< pm::type::Team> teams,size_t indexOfTeam, size_t idOfUser)
 {
 	ofstream file("usersInTheTeams.txt", ios::trunc);
 	int n = 0;
 	if (file.is_open())
 	{
-		(*team).idOfUsers.push_back(user.id);
+		teams[indexOfTeam].idOfUsers.push_back(idOfUser);
 		for (size_t i = 0; i < teams.size(); i++)
 		{
 			for (size_t j = 0; j < teams[i].idOfUsers.size(); j++)
@@ -179,7 +182,7 @@ void pm::dal::TeamStore::asignToTeam(std::vector< pm::type::Team>& teams, pm::ty
 		}
 	}
 	file.close();
-	return;
+	return teams;
 }
 
 pm::type::Team pm::dal::TeamStore::getById(std::vector<pm::type::Team> teams, size_t id)

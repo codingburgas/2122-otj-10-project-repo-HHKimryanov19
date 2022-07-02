@@ -11,12 +11,12 @@ namespace pm
 	{
 		struct TeamStore {
 			std::vector<pm::type::Team> getAll();
-			pm::type::Team create(std::vector<pm::type::Team> teams,pm::type::User currentUser);
-			void remove(std::vector<pm::type::Team>* teams, size_t id);
-			void update(pm::type::Team* team, pm::type::User currentUser);
+			std::vector<pm::type::Team> create(std::vector<pm::type::Team> teams,pm::type::User currentUser);
+			std::vector<pm::type::Team> remove(std::vector<pm::type::Team> teams, size_t id);
+			std::vector<pm::type::Team> update(std::vector<pm::type::Team> teams, size_t indexOfTeam, size_t currentUserId);
 			pm::type::Team getById(std::vector<pm::type::Team> teams, size_t id);
 			void displayTeams(std::vector<pm::type::Team> teams);
-			void asignToTeam(std::vector< pm::type::Team>& teams, pm::type::Team* team, pm::type::User user);
+			std::vector<pm::type::Team> asignToTeam(std::vector< pm::type::Team> teams, size_t indexOfTeam, size_t idOfUser);
 			//std::vector<std::vector<size_t>> usersInTheTeams();
 			//std::vector<std::vector<size_t>> asignToTeam(std::vector<pm::type::Team> teams, size_t teamId, size_t userId);
 		};
