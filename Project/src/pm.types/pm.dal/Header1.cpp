@@ -130,7 +130,7 @@ pm::type::Project pm::dal::ProjectStore::create(std::vector<pm::type::Project> p
 	return project;
 }
 
-void pm::dal::ProjectStore::remove(std::vector<pm::type::Project>& projects, size_t idOfUser, size_t id)
+vector<pm::type::Project> pm::dal::ProjectStore::remove(std::vector<pm::type::Project> projects, size_t idOfUser, size_t id)
 {
 	pm::dal::ProjectStore projectFunc;
 	ofstream file("projects.txt", ios::trunc);
@@ -199,6 +199,7 @@ void pm::dal::ProjectStore::remove(std::vector<pm::type::Project>& projects, siz
 	{
 		projects = projectFunc.getAll();
 	}
+	return projects;
 }
 
 void pm::dal::ProjectStore::update(std::vector<pm::type::Project>& projects, size_t idOfUser, size_t id)
@@ -246,7 +247,7 @@ void pm::dal::ProjectStore::displayProjects(std::vector<pm::type::Project> proje
 		for (size_t j = 0; j < projects[i].idOfTeams.size(); j++)
 		{
 			team = teamFunc.getById(teams, projects[i].idOfTeams[j]);
-			for (size_t k = 0; k < team.idOfUsers.size(); i++)
+			for (size_t k = 0; k < team.idOfUsers.size(); k++)
 			{
 				if (team.idOfUsers[k] == currentUser.id)
 				{

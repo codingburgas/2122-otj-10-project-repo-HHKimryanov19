@@ -88,6 +88,14 @@ void assignUserButton()
 	cout << "{     Assign user    }" << endl;
 	cout << " \\__________________/" << endl;
 }
+
+void assignTeamButton()
+{
+	cout << "  __________________" << endl;
+	cout << " /                  \\" << endl;
+	cout << "{     Assign team    }" << endl;
+	cout << " \\__________________/" << endl;
+}
 //menuAdmin(users,currentUser);
 
 void displayUser(pm::type::User user, pm::type::User createrUser, pm::type::User changerUser)
@@ -115,7 +123,7 @@ void displayTeam(pm::type::Team team, pm::type::User createrUser, pm::type::User
 
 }
 
-void menuAdminUser(vector<pm::type::User> users, pm::type::User currentUser) {
+void menuAdminUser(vector<pm::type::User>& users, pm::type::User& currentUser) {
 	int Event;
 	int option = 1, updateId, userId;
 	string choice;
@@ -133,6 +141,7 @@ void menuAdminUser(vector<pm::type::User> users, pm::type::User currentUser) {
 			buttonsRemove();
 			buttonsUpdate();
 			backButton();
+			cout << "\x1b[1;37m";
 			Event = _getch();
 			if (Event == 13)
 			{
@@ -141,6 +150,7 @@ void menuAdminUser(vector<pm::type::User> users, pm::type::User currentUser) {
 			break;
 		case 2:
 			system("CLS");
+			cout << "\x1b[1;30m";
 			displayUsersButton();
 			cout << "\x1b[1;37m";
 			buttonCreate();
@@ -148,6 +158,7 @@ void menuAdminUser(vector<pm::type::User> users, pm::type::User currentUser) {
 			buttonsRemove();
 			buttonsUpdate();
 			backButton();
+			cout << "\x1b[1;37m";
 			Event = _getch();
 			if (Event == 13)
 			{
@@ -156,6 +167,7 @@ void menuAdminUser(vector<pm::type::User> users, pm::type::User currentUser) {
 			break;
 		case 3:
 			system("CLS");
+			cout << "\x1b[1;30m";
 			displayUsersButton();
 			buttonCreate();
 			cout << "\x1b[1;37m";
@@ -163,6 +175,7 @@ void menuAdminUser(vector<pm::type::User> users, pm::type::User currentUser) {
 			cout << "\x1b[1;30m";
 			buttonsUpdate();
 			backButton();
+			cout << "\x1b[1;37m";
 			Event = _getch();
 			if (Event == 13)
 			{
@@ -171,6 +184,7 @@ void menuAdminUser(vector<pm::type::User> users, pm::type::User currentUser) {
 			break;
 		case 4:
 			system("CLS");
+			cout << "\x1b[1;30m";
 			displayUsersButton();
 			buttonCreate();
 			buttonsRemove();
@@ -178,6 +192,7 @@ void menuAdminUser(vector<pm::type::User> users, pm::type::User currentUser) {
 			buttonsUpdate();
 			cout << "\x1b[1;30m";
 			backButton();
+			cout << "\x1b[1;37m";
 			Event = _getch();
 			if (Event == 13)
 			{
@@ -192,7 +207,7 @@ void menuAdminUser(vector<pm::type::User> users, pm::type::User currentUser) {
 			buttonsUpdate();
 			cout << "\x1b[1;37m";
 			backButton();
-			cout << "\x1b[1;30m";
+			cout << "\x1b[1;37m";
 			Event = _getch();
 			if (Event == 13)
 			{
@@ -329,7 +344,7 @@ void menuAdminUser(vector<pm::type::User> users, pm::type::User currentUser) {
 	}
 }
 
-void menuAdminTeam(vector<pm::type::Team> teams, vector<pm::type::User> users, pm::type::User currentUser)
+void menuAdminTeam(vector<pm::type::Team>& teams, vector<pm::type::User>& users, pm::type::User& currentUser)
 {
 	int Event;
 	int option = 1, updateId, teamId;
@@ -349,6 +364,7 @@ void menuAdminTeam(vector<pm::type::Team> teams, vector<pm::type::User> users, p
 			buttonsUpdate();
 			assignUserButton();
 			backButton();
+			cout << "\x1b[1;37m";
 			Event = _getch();
 			if (Event == 13)
 			{
@@ -357,6 +373,7 @@ void menuAdminTeam(vector<pm::type::Team> teams, vector<pm::type::User> users, p
 			break;
 		case 2:
 			system("CLS");
+			cout << "\x1b[1;30m";
 			displayUsersButton();
 			cout << "\x1b[1;37m";
 			buttonCreate();
@@ -365,6 +382,7 @@ void menuAdminTeam(vector<pm::type::Team> teams, vector<pm::type::User> users, p
 			buttonsUpdate();
 			assignUserButton();
 			backButton();
+			cout << "\x1b[1;37m";
 			Event = _getch();
 			if (Event == 13)
 			{
@@ -373,6 +391,7 @@ void menuAdminTeam(vector<pm::type::Team> teams, vector<pm::type::User> users, p
 			break;
 		case 3:
 			system("CLS");
+			cout << "\x1b[1;30m";
 			displayUsersButton();
 			buttonCreate();
 			cout << "\x1b[1;37m";
@@ -381,6 +400,7 @@ void menuAdminTeam(vector<pm::type::Team> teams, vector<pm::type::User> users, p
 			buttonsUpdate();
 			assignUserButton();
 			backButton();
+			cout << "\x1b[1;37m";
 			Event = _getch();
 			if (Event == 13)
 			{
@@ -389,6 +409,7 @@ void menuAdminTeam(vector<pm::type::Team> teams, vector<pm::type::User> users, p
 			break;
 		case 4:
 			system("CLS");
+			cout << "\x1b[1;30m";
 			displayUsersButton();
 			buttonCreate();
 			buttonsRemove();
@@ -397,6 +418,7 @@ void menuAdminTeam(vector<pm::type::Team> teams, vector<pm::type::User> users, p
 			cout << "\x1b[1;30m";
 			assignUserButton();
 			backButton();
+			cout << "\x1b[1;37m";
 			Event = _getch();
 			if (Event == 13)
 			{
@@ -405,6 +427,7 @@ void menuAdminTeam(vector<pm::type::Team> teams, vector<pm::type::User> users, p
 			break;
 		case 5:
 			system("CLS");
+			cout << "\x1b[1;30m";
 			displayUsersButton();
 			buttonCreate();
 			buttonsRemove();
@@ -413,6 +436,7 @@ void menuAdminTeam(vector<pm::type::Team> teams, vector<pm::type::User> users, p
 			assignUserButton();
 			cout << "\x1b[1;30m";
 			backButton();
+			cout << "\x1b[1;37m";
 			Event = _getch();
 			if (Event == 13)
 			{
@@ -421,6 +445,7 @@ void menuAdminTeam(vector<pm::type::Team> teams, vector<pm::type::User> users, p
 			break;
 		case 6:
 			system("CLS");
+			cout << "\x1b[1;30m";
 			displayUsersButton();
 			buttonCreate();
 			buttonsRemove();
@@ -428,7 +453,6 @@ void menuAdminTeam(vector<pm::type::Team> teams, vector<pm::type::User> users, p
 			assignUserButton();
 			cout << "\x1b[1;37m";
 			backButton();
-			cout << "\x1b[1;30m";
 			Event = _getch();
 			if (Event == 13)
 			{
@@ -610,7 +634,7 @@ void menuAdminTeam(vector<pm::type::Team> teams, vector<pm::type::User> users, p
 	}
 }
 
-void managementMenuAdmin(vector<pm::type::User> users, pm::type::User currentUser, vector<pm::type::Team> teams)
+void managementMenuAdmin(vector<pm::type::User>& users, pm::type::User& currentUser, vector<pm::type::Team>& teams)
 {
 	int n = 1;
 	int Event;
@@ -625,6 +649,7 @@ void managementMenuAdmin(vector<pm::type::User> users, pm::type::User currentUse
 			cout << "\x1b[1;30m";
 			teamsManagement();
 			backButton();
+			cout << "\x1b[1;37m";
 			Event = _getch();
 			if (Event == 13)
 			{
@@ -633,11 +658,13 @@ void managementMenuAdmin(vector<pm::type::User> users, pm::type::User currentUse
 			break;
 		case 2:
 			system("CLS");
+			cout << "\x1b[1;30m";
 			usersManagement();
 			cout << "\x1b[1;37m";
 			teamsManagement();
 			cout << "\x1b[1;30m";
 			backButton();
+			cout << "\x1b[1;37m";
 			Event = _getch();
 			if (Event == 13)
 			{
@@ -646,11 +673,11 @@ void managementMenuAdmin(vector<pm::type::User> users, pm::type::User currentUse
 			break;
 		case 3:
 			system("CLS");
+			cout << "\x1b[1;30m";
 			usersManagement();
 			teamsManagement();
 			cout << "\x1b[1;37m";
 			backButton();
-			cout << "\x1b[1;30m";
 			Event = _getch();
 			if (Event == 13)
 			{
@@ -694,12 +721,247 @@ void managementMenuAdmin(vector<pm::type::User> users, pm::type::User currentUse
 	}
 }
 
-void menuUserProject()
+void menuUserProject(vector<pm::type::Project>& projects,pm::type::User& currentUser,vector<pm::type::Team>& teams)
 {
-	int Event;
+	int Event = 0;
+	int option = 1, updateId, teamId;
+	pm::dal::TeamStore teamFunc;
+	pm::dal::UserStore userFunc;
+	pm::dal::ProjectStore projectFunc;
+	while (true)
+	{
+		switch (option)
+		{
+		case 1:
+			system("CLS");
+			cout << "\x1b[1;37m";
+			displayUsersButton();
+			cout << "\x1b[1;30m";
+			buttonCreate();
+			buttonsRemove();
+			buttonsUpdate();
+			assignTeamButton();
+			backButton();
+			cout << "\x1b[1;37m";
+			Event = _getch();
+			if (Event == 13)
+			{
+				Event = 1;
+			}
+			break;
+		case 2:
+			system("CLS");
+			cout << "\x1b[1;30m";
+			displayUsersButton();
+			cout << "\x1b[1;37m";
+			buttonCreate();
+			cout << "\x1b[1;30m";
+			buttonsRemove();
+			buttonsUpdate();
+			assignTeamButton();
+			backButton();
+			cout << "\x1b[1;37m";
+			Event = _getch();
+			if (Event == 13)
+			{
+				Event = 2;
+			}
+			break;
+		case 3:
+			system("CLS");
+			cout << "\x1b[1;30m";
+			displayUsersButton();
+			buttonCreate();
+			cout << "\x1b[1;37m";
+			buttonsRemove();
+			cout << "\x1b[1;30m";
+			buttonsUpdate();
+			assignTeamButton();
+			backButton();
+			cout << "\x1b[1;37m";
+			Event = _getch();
+			if (Event == 13)
+			{
+				Event = 3;
+			}
+			break;
+		case 4:
+			system("CLS");
+			cout << "\x1b[1;30m";
+			displayUsersButton();
+			buttonCreate();
+			buttonsRemove();
+			cout << "\x1b[1;37m";
+			buttonsUpdate();
+			cout << "\x1b[1;30m";
+			assignTeamButton();
+			backButton();
+			cout << "\x1b[1;37m";
+			Event = _getch();
+			if (Event == 13)
+			{
+				Event = 4;
+			}
+			break;
+		case 5:
+			system("CLS");
+			cout << "\x1b[1;30m";
+			displayUsersButton();
+			buttonCreate();
+			buttonsRemove();
+			buttonsUpdate();
+			cout << "\x1b[1;37m";
+			assignTeamButton();
+			cout << "\x1b[1;30m";
+			backButton();
+			cout << "\x1b[1;37m";
+			Event = _getch();
+			if (Event == 13)
+			{
+				Event = 5;
+			}
+			break;
+		case 6:
+			system("CLS");
+			cout << "\x1b[1;30m";
+			displayUsersButton();
+			buttonCreate();
+			buttonsRemove();
+			buttonsUpdate();
+			assignTeamButton();
+			cout << "\x1b[1;37m";
+			backButton();
+			Event = _getch();
+			if (Event == 13)
+			{
+				Event = 6;
+			}
+			break;
+		}
+
+		switch (Event)
+		{
+		case KEY_DOWN:
+			if (option == 6)
+			{
+				option = 1;
+			}
+			else
+			{
+				option++;
+			}
+			break;
+		case KEY_UP:
+			if (option == 1)
+			{
+				option = 6;
+			}
+			else
+			{
+				option--;
+			}
+			break;
+		case 1:
+			system("CLS");
+			while (true)
+			{
+				projectFunc.displayProjects(projects,currentUser,teams);
+				Event = _getch();
+				if (Event == 27)
+				{
+					option = 1;
+					break;
+				}
+				else
+				{
+					system("CLS");
+				}
+			}
+			break;
+		case 2:
+			system("CLS");
+
+			projectFunc.create(projects, currentUser.id);
+			Event = _getch();
+			if (Event == 27)
+			{
+				option = 1;
+				break;
+			}
+			else
+			{
+				system("CLS");
+			}
+			break;
+		case 3:
+			system("CLS");
+			while (true)
+			{
+				int idOfProject = 0;
+				cin >> idOfProject;
+				projects = projectFunc.remove(projects, currentUser.id, idOfProject);
+				Event = _getch();
+				if (Event == 27)
+				{
+					option = 1;
+					break;
+				}
+				else
+				{
+					system("CLS");
+				}
+			}
+			break;
+		case 4:
+			system("CLS");
+			while (true)
+			{
+				int idOfProject;
+				cin >> idOfProject;
+				projectFunc.update(projects,currentUser.id,idOfProject);
+				if (Event == 27)
+				{
+					option = 1;
+					break;
+				}
+				else
+				{
+					system("CLS");
+				}
+			}
+			break;
+		case 5:
+			system("CLS");
+			if (true)
+			{
+				while (true)
+				{
+					Event = _getch();
+					if (Event == 27)
+					{
+						option = 1;
+						break;
+					}
+					else
+					{
+						system("CLS");
+					}
+				}
+			}
+			else
+			{
+				option = 1;
+				Event = 0;
+			}
+			break;
+		case 6:
+			return;
+			break;
+		}
+	}
 }
 
-void managementMenuUser()
+void managementMenuUser(vector<pm::type::Project>& projects,pm::type::User& currentUser,vector<pm::type::Team>& teams)
 {
 	int Event = 1, n = 1;
 	while (true)
@@ -713,6 +975,7 @@ void managementMenuUser()
 			cout << "\x1b[1;30m";
 			tasksManagement();
 			backButton();
+			cout << "\x1b[1;37m";
 			Event = _getch();
 			if (Event == 13)
 			{
@@ -721,11 +984,13 @@ void managementMenuUser()
 			break;
 		case 2:
 			system("CLS");
+			cout << "\x1b[1;30m";
 			projectsManagement();
 			cout << "\x1b[1;37m";
 			tasksManagement();
 			cout << "\x1b[1;30m";
 			backButton();
+			cout << "\x1b[1;37m";
 			Event = _getch();
 			if (Event == 13)
 			{
@@ -735,12 +1000,11 @@ void managementMenuUser()
 
 		case 3:
 			system("CLS");
-			
+			cout << "\x1b[1;30m";
 			projectsManagement();
 			tasksManagement();
 			cout << "\x1b[1;37m";
 			backButton();
-			cout << "\x1b[1;30m";
 			Event = _getch();
 			if (Event == 13)
 			{
@@ -773,7 +1037,7 @@ void managementMenuUser()
 			break;
 		case 1:
 			system("CLS");
-			cout << "You are stupid";
+			menuUserProject(projects,currentUser,teams);
 			break;
 		case 2:
 			system("CLS");
@@ -792,6 +1056,8 @@ void startMenu()
 	vector<pm::type::User> users = userFunc.getAll();
 	pm::dal::TeamStore teamFunc;
 	vector<pm::type::Team> teams = teamFunc.getAll();
+	pm::dal::ProjectStore projectFunc;
+	vector<pm::type::Project> projects = projectFunc.getAll();
 	bool logIn = false, createButton = false;
 	int n = 1;
 	int n1;
@@ -915,7 +1181,7 @@ void startMenu()
 
 				if (userLogIn)
 				{
-					managementMenuUser();
+					managementMenuUser(projects,currentUser,teams);
 					logIn = false;
 					createButton = false;
 					userLogIn = false;

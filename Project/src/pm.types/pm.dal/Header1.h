@@ -13,7 +13,7 @@ namespace pm
 		{
 			std::vector<pm::type::Project> getAll();
 			pm::type::Project create(std::vector<pm::type::Project> projects, size_t idOfCreator);
-			void remove(std::vector<pm::type::Project>& projects, size_t idOfUser, size_t id);
+			vector<pm::type::Project> remove(std::vector<pm::type::Project> projects, size_t idOfUser, size_t id);
 			void update(std::vector<pm::type::Project>& projects, size_t idOfUser, size_t id);
 			void displayProjects(std::vector<pm::type::Project> projects, pm::type::User currentUser, std::vector<pm::type::Team> teams);
 			void asignToTeam(std::vector<pm::type::Project>& projects, pm::type::Project& project, pm::type::Team team);
