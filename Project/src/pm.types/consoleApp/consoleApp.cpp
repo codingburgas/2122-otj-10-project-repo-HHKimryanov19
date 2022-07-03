@@ -5,6 +5,7 @@
 #include "..\pm.dal\Header.h"
 #include "..\consoleApp\Header.h"
 #include "..\pm.dal\Header1.h"
+#include "..\pm.dal\Header2.h"
 #include "..\pm.types\User.h"
 using namespace std;
 #define KEY_UP 72
@@ -326,7 +327,7 @@ void menuAdminUser(vector<pm::type::User>& users, pm::type::User& currentUser) {
 				userFunc.displayUsers(users);
 				cout << endl << "Who user do you want to edit? - ";
 				cin >> updateId;
-				if (userFunc.checkId(users, userId))
+				if (userFunc.checkId(users, updateId))
 				{
 					for (int i = 0; i < users.size(); i++)
 					{
@@ -619,7 +620,7 @@ void menuAdminTeam(vector<pm::type::Team>& teams, vector<pm::type::User>& users,
 			{
 				while (true)
 				{
-					
+
 					userFunc.displayUsers(users);
 					int idOfUser;
 					cout << "Choose user by Id: ";
@@ -629,7 +630,7 @@ void menuAdminTeam(vector<pm::type::Team>& teams, vector<pm::type::User>& users,
 					size_t idOfTeam, indexOfTeam = 0;
 					teamFunc.displayTeams(teams);
 					cout << "Choose team by Id: ";
-					
+
 					cin >> idOfTeam;
 					if (userFunc.checkId(users, idOfUser) && teamFunc.checkId(teams, idOfTeam))
 					{
@@ -680,6 +681,217 @@ void menuAdminTeam(vector<pm::type::Team>& teams, vector<pm::type::User>& users,
 	}
 }
 //ready
+
+void menuUserTasks(vector<pm::type::Task> tasks, pm::type::User currentUser, vector<pm::type::Project> projects, vector<pm::type::User> users, vector<pm::type::Team> teams)
+{
+	int Event;
+	pm::dal::TaskStore tasksFunc;
+	pm::dal::ProjectStore projectFunc;
+	pm::dal::UserStore userProject;
+	size_t index = 0;
+	int option = 1;
+	size_t idTask, idOfProject;
+	while (true)
+	{
+		switch (option)
+		{
+		case 1:
+			system("CLS");
+			cout << "\x1b[1;37m";
+			displayUsersButton();
+			cout << "\x1b[1;30m";
+			buttonCreate();
+			buttonsRemove();
+			buttonsUpdate();
+			backButton();
+			cout << "\x1b[1;37m";
+			Event = _getch();
+			if (Event == 13)
+			{
+				Event = 1;
+			}
+			break;
+		case 2:
+			system("CLS");
+			cout << "\x1b[1;30m";
+			displayUsersButton();
+			cout << "\x1b[1;37m";
+			buttonCreate();
+			cout << "\x1b[1;30m";
+			buttonsRemove();
+			buttonsUpdate();
+			backButton();
+			cout << "\x1b[1;37m";
+			Event = _getch();
+			if (Event == 13)
+			{
+				Event = 2;
+			}
+			break;
+		case 3:
+			system("CLS");
+			cout << "\x1b[1;30m";
+			displayUsersButton();
+			buttonCreate();
+			cout << "\x1b[1;37m";
+			buttonsRemove();
+			cout << "\x1b[1;30m";
+			buttonsUpdate();
+			backButton();
+			cout << "\x1b[1;37m";
+			Event = _getch();
+			if (Event == 13)
+			{
+				Event = 3;
+			}
+			break;
+		case 4:
+			system("CLS");
+			cout << "\x1b[1;30m";
+			displayUsersButton();
+			buttonCreate();
+			buttonsRemove();
+			cout << "\x1b[1;37m";
+			buttonsUpdate();
+			cout << "\x1b[1;30m";
+			backButton();
+			cout << "\x1b[1;37m";
+			Event = _getch();
+			if (Event == 13)
+			{
+				Event = 4;
+			}
+			break;
+		case 5:
+			system("CLS");
+			cout << "\x1b[1;30m";
+			displayUsersButton();
+			buttonCreate();
+			buttonsRemove();
+			buttonsUpdate();
+			cout << "\x1b[1;37m";
+			backButton();
+			Event = _getch();
+			if (Event == 13)
+			{
+				Event = 5;
+			}
+			break;
+		}
+
+		switch (Event)
+		{
+		case KEY_UP:
+			if (option == 1)
+			{
+				option = 5;
+			}
+			else
+			{
+				option--;
+			}
+			break;
+		case KEY_DOWN:
+			if (option == 5)
+			{
+				option = 1;
+			}
+			else
+			{
+				option++;
+			}
+			break;
+		case 1:
+			while (true)
+			{
+				system("CLS");
+				projectFunc.displayProjects(projects, currentUser, teams,1);
+				cin >> idOfProject;
+				if (projectFunc.checkId(projects,idOfProject))
+				{
+					index = projectFunc.getById(projects,idOfProject);
+					cout << endl;
+					tasksFunc.displayProjectTasks(projects[index].id, tasks, currentUser, projects, users, teams);
+				}
+				else
+				{
+					cout << "Sorry! There is not a project with that title";
+				}
+				cout << "Press enter to display other tasks of another project or escape to go back";
+				Event = _getch();
+				if (Event == 27)
+				{
+					option = 1;
+					break;
+				}
+			}
+			break;
+		case 2:
+			while (true)
+			{
+				system("CLS");
+				projectFunc.displayProjects(projects, currentUser, teams,0);
+				
+				tasksFunc.create(tasks, currentUser.id,users);
+				cout << "Press enter to display other tasks of another project or escape to go back";
+				Event = _getch();
+				if (Event == 27)
+				{
+					option = 1;
+					break;
+				}
+			}
+			break;
+		case 3:
+			while (true)
+			{
+				system("CLS");
+
+				tasksFunc.displayCreated(tasks, currentUser, projects, users, teams);
+				cin >> idTask;
+				tasksFunc.remove(tasks, idTask, currentUser.id);
+				cout << "Press enter to display other tasks of another project or escape to go back";
+				Event = _getch();
+				if (Event == 27)
+				{
+					option = 1;
+					break;
+				}
+			}
+			break;
+		case 4:
+			while (true)
+			{
+				system("CLS");
+				tasksFunc.displayCreated(tasks, currentUser, projects, users, teams); 
+				cin >> idTask;
+				system("CLS");
+				projectFunc.displayProjects(projects, currentUser, teams,0);
+				cout << endl;
+				cin >> idOfProject;
+				if (projectFunc.checkId(projects,idOfProject) && tasksFunc.checkId(tasks,idTask))
+				{
+					tasksFunc.update(tasks, tasks[tasksFunc.getById(tasks, idTask)], currentUser.id, projects[projectFunc.getById(projects,idOfProject)]);
+				}
+				else
+				{
+					cout << "Sorry! There is not a project with that title or task with that id "<<endl;
+				}
+				cout << "Press enter to display other tasks of another project or escape to go back";
+				Event = _getch();
+				if (Event == 27)
+				{
+					option = 1;
+					break;
+				}
+			}
+			break;
+		case 5:
+			return;
+			break;
+		}
+	}
+}
 
 void managementMenuAdmin(vector<pm::type::User>& users, pm::type::User& currentUser, vector<pm::type::Team>& teams)
 {
@@ -772,6 +984,7 @@ void menuUserProject(vector<pm::type::Project>& projects, pm::type::User& curren
 {
 	int Event = 0;
 	int option = 1, updateId, teamId;
+	size_t index, idOfProject, idOfTeam;
 	pm::dal::TeamStore teamFunc;
 	pm::dal::UserStore userFunc;
 	pm::dal::ProjectStore projectFunc;
@@ -912,11 +1125,10 @@ void menuUserProject(vector<pm::type::Project>& projects, pm::type::User& curren
 			system("CLS");
 			while (true)
 			{
-				projectFunc.displayProjects(projects, currentUser, teams);
-				string nameOfProject;
+				projectFunc.displayProjects(projects, currentUser, teams,1);
 				cout << "Which project do you want? - ";
-				cin >> nameOfProject;
-				size_t index = projectFunc.getByTitle(projects, nameOfProject);
+				cin >> idOfProject;
+				index = projectFunc.getById(projects, idOfProject);
 				cout << endl;
 				projectFunc.displayProject(projects[index], users);
 				cout << "Press enter to display another project or escape to go back";
@@ -952,12 +1164,9 @@ void menuUserProject(vector<pm::type::Project>& projects, pm::type::User& curren
 			system("CLS");
 			while (true)
 			{
-				projectFunc.displayProjects(projects, currentUser, teams);
-				string name;
+				projectFunc.displayProjects(projects, currentUser, teams,0);
 				cout << "Which project do you want to delete? - ";
-				cin >> name;
-				size_t index = projectFunc.getByTitle(projects, name);
-				size_t idOfProject = projects[index].id;
+				cin >> idOfProject;
 				projects = projectFunc.remove(projects, currentUser.id, idOfProject);
 				cout << "Press enter to remove another project or escape to go back";
 				Event = _getch();
@@ -975,13 +1184,11 @@ void menuUserProject(vector<pm::type::Project>& projects, pm::type::User& curren
 		case 4:
 			system("CLS");
 			while (true)
-			{
-				projectFunc.displayProjects(projects, currentUser, teams);
-				string name;
+			{ 
+				projectFunc.displayProjects(projects, currentUser, teams,0);
 				cout << "Which project do you want to edit? - ";
-				cin >> name;
-				size_t idOfProject = projectFunc.getByTitle(projects, name);
-				projectFunc.update(projects, currentUser.id, projects[idOfProject].id);
+				cin >> idOfProject;
+				projectFunc.update(projects, currentUser.id, idOfProject);
 				cout << "Press enter to edit another project or escape to go back";
 				Event = _getch();
 				if (Event == 27)
@@ -1000,12 +1207,11 @@ void menuUserProject(vector<pm::type::Project>& projects, pm::type::User& curren
 
 			while (true)
 			{
-				projectFunc.displayProjects(projects, currentUser, teams);
-				string nameOfProject, nameOfTeam;
+				projectFunc.displayProjects(projects, currentUser, teams,0);
 
 				cout << "Choose project: ";
-				cin >> nameOfProject;
-				size_t projectIndex = projectFunc.getByTitle(projects, nameOfProject);
+				cin >> idOfProject;
+				size_t projectIndex = projectFunc.getById(projects,idOfProject);
 
 				system("CLS");
 				cout << "Teams: " << endl << endl;
@@ -1025,8 +1231,8 @@ void menuUserProject(vector<pm::type::Project>& projects, pm::type::User& curren
 					}
 				}
 				cout << "Choose project: ";
-				cin >> nameOfTeam;
-				size_t teamIndex = teamFunc.getByTitle(teams, nameOfTeam);
+				cin >> idOfTeam;
+				size_t teamIndex = teamFunc.getById(teams, idOfTeam);
 				if (projectFunc.checkForAdded(projects[projectIndex], teams[teamIndex].id) == false)
 				{
 					projectFunc.asignToTeam(projects, projectIndex, teamIndex, teams);
@@ -1056,7 +1262,7 @@ void menuUserProject(vector<pm::type::Project>& projects, pm::type::User& curren
 	}
 }
 
-void managementMenuUser(vector<pm::type::Project>& projects, pm::type::User& currentUser, vector<pm::type::Team>& teams, vector<pm::type::User>& users)
+void managementMenuUser(vector<pm::type::Project>& projects, pm::type::User& currentUser, vector<pm::type::Team>& teams, vector<pm::type::User>& users, vector<pm::type::Task> tasks)
 {
 	int Event = 1, n = 1;
 	while (true)
@@ -1136,7 +1342,7 @@ void managementMenuUser(vector<pm::type::Project>& projects, pm::type::User& cur
 			break;
 		case 2:
 			system("CLS");
-			cout << "You are not stupid";
+			menuUserTasks(tasks, currentUser, projects, users, teams);
 			break;
 		case 3:
 			return;
@@ -1153,6 +1359,8 @@ void startMenu()
 	vector<pm::type::Team> teams = teamFunc.getAll();
 	pm::dal::ProjectStore projectFunc;
 	vector<pm::type::Project> projects = projectFunc.getAll();
+	pm::dal::TaskStore tasksFunc;
+	vector<pm::type::Task> tasks = tasksFunc.getAll(); 
 	bool logIn = false, createButton = false;
 	int n = 1;
 	int n1;
@@ -1277,7 +1485,7 @@ void startMenu()
 
 				if (userLogIn)
 				{
-					managementMenuUser(projects, currentUser, teams, users);
+					managementMenuUser(projects, currentUser, teams, users, tasks);
 					logIn = false;
 					createButton = false;
 					userLogIn = false;

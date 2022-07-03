@@ -226,7 +226,7 @@ void pm::dal::ProjectStore::update(std::vector<pm::type::Project>& projects, siz
 	projects = projectFunc.getAll();
 }
 
-void pm::dal::ProjectStore::displayProjects(std::vector<pm::type::Project> projects, pm::type::User currentUser, vector<pm::type::Team> teams)
+void pm::dal::ProjectStore::displayProjects(std::vector<pm::type::Project> projects, pm::type::User currentUser, vector<pm::type::Team> teams,bool ownOrNot)
 {
 	pm::dal::TeamStore teamFunc;
 	cout << "Titles: " << endl << endl;
@@ -234,20 +234,23 @@ void pm::dal::ProjectStore::displayProjects(std::vector<pm::type::Project> proje
 	{
 		if (projects[i].idOfCreator == currentUser.id)
 		{
-			cout << projects[i].Title << endl;
+			cout << projects[i].id<<". "<<projects[i].Title << endl;
 		}
 	}
 
-	for (size_t i = 0; i < projects.size(); i++)
+	if (ownOrNot)
 	{
-		for (size_t j = 0; j < projects[i].idOfTeams.size(); j++)
+		for (size_t i = 0; i < projects.size(); i++)
 		{
-			size_t index = teamFunc.getById(teams, projects[i].idOfTeams[j]);
-			for (size_t k = 0; k < teams[index].idOfUsers.size(); k++)
+			for (size_t j = 0; j < projects[i].idOfTeams.size(); j++)
 			{
-				if (teams[index].idOfUsers[k] == currentUser.id && projects[i].idOfCreator != currentUser.id)
+				size_t index = teamFunc.getById(teams, projects[i].idOfTeams[j]);
+				for (size_t k = 0; k < teams[index].idOfUsers.size(); k++)
 				{
-					cout << projects[i].Title << endl;
+					if (teams[index].idOfUsers[k] == currentUser.id && projects[i].idOfCreator != currentUser.id)
+					{
+						cout << projects[i].id << ". " << projects[i].Title << endl;
+					}
 				}
 			}
 		}
@@ -258,16 +261,16 @@ void pm::dal::ProjectStore::displayProject(pm::type::Project project, vector<pm:
 {
 	pm::dal::TeamStore teamFunc;
 	pm::dal::UserStore userFunc;
-	pm::type::User creator = userFunc.getById(users,project.idOfCreator);
+	pm::type::User creator = userFunc.getById(users, project.idOfCreator);
 	pm::type::User lastChanger = userFunc.getById(users, project.idOfUserChange);
-	cout << "Title: "<<project.Title<<endl;
-	cout << "Description: "<<project.Description << endl;
+	cout << "Title: " << project.Title << endl;
+	cout << "Description: " << project.Description << endl;
 
-	cout << "Created by: "<<creator.FirstName<<" "<<creator.LastName<<endl;
-	cout << "Created on: "<<project.createdOn<<endl;
+	cout << "Created by: " << creator.FirstName << " " << creator.LastName << endl;
+	cout << "Created on: " << project.createdOn << endl;
 
-	cout << "Last changed on: "<<lastChanger.FirstName<<" "<<lastChanger.LastName<<endl;
-	cout << "Last changed by: "<<project.lastChange<<endl << endl;
+	cout << "Last changed on: " << lastChanger.FirstName << " " << lastChanger.LastName << endl;
+	cout << "Last changed by: " << project.lastChange << endl << endl;
 }
 
 void pm::dal::ProjectStore::asignToTeam(std::vector<pm::type::Project>& projects, size_t indexOfProject, size_t indexOfTeam, vector<pm::type::Team> teams)
@@ -318,7 +321,19 @@ size_t pm::dal::ProjectStore::getByTitle(std::vector<pm::type::Project> projects
 	}
 }
 
-bool pm::dal::ProjectStore::checkForAdded(pm::type::Project project,size_t idOfTeam)
+bool pm::dal::ProjectStore::checkId(std::vector<pm::type::Project> projects, size_t id)
+{
+	for (size_t i = 0; i < projects.size(); i++)
+	{
+		if (projects[i].id == id)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+bool pm::dal::ProjectStore::checkForAdded(pm::type::Project project, size_t idOfTeam)
 {
 	for (size_t i = 0; i < project.idOfTeams.size(); i++)
 	{

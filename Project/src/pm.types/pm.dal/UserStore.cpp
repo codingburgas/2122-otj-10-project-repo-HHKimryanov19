@@ -18,6 +18,18 @@ size_t generateNewId(vector<pm::type::User> users)
 	return maxId + 1;
 }
 
+bool checkEmail(vector<pm::type::User> users, string email)
+{
+	for (size_t i = 0; i < users.size(); i++)
+	{
+		if (users[i].email == email)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
 void toFile(vector<pm::type::User> users)
 {
 	ofstream file1("Info.txt", ios::trunc);
@@ -106,6 +118,12 @@ vector<pm::type::User> pm::dal::UserStore::create(vector<pm::type::User> users, 
 		cin >> user.LastName;
 		cout << "Email: ";
 		cin >> user.email;
+		while (checkEmail(users, user.email))
+		{
+			cout << "Sorry, this email is in use. Inter another" << endl;
+			cout << "Email: ";
+			cin >> user.email;
+		}
 		cout << "Password: ";
 		cin >> user.passwordHash;
 		cout << "Age: ";
@@ -218,13 +236,13 @@ pm::type::User pm::dal::UserStore::getById(vector<pm::type::User> user, size_t i
 	}
 }
 
-pm::type::User pm::dal::UserStore::getByEmail(vector<pm::type::User> user, string email)
+size_t pm::dal::UserStore::getByEmail(vector<pm::type::User> user, string email)
 {
 	for (size_t i = 0; i < user.size(); i++)
 	{
 		if (user[i].email == email)
 		{
-			return user[i];
+			return i;
 		}
 	}
 }
