@@ -229,6 +229,18 @@ pm::type::User pm::dal::UserStore::getByEmail(vector<pm::type::User> user, strin
 	}
 }
 
+bool pm::dal::UserStore::checkId(vector<pm::type::User> user, size_t id)
+{
+	for (size_t i = 0; i < user.size(); i++)
+	{
+		if (user[i].id == id)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
 void pm::dal::UserStore::displayUsers(vector<pm::type::User> users)
 {
 	for (int i = 0; i < users.size(); i++)

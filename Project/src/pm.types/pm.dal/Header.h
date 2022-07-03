@@ -15,10 +15,11 @@ namespace pm
 			std::vector<pm::type::Team> remove(std::vector<pm::type::Team> teams, size_t id);
 			std::vector<pm::type::Team> update(std::vector<pm::type::Team> teams, size_t indexOfTeam, size_t currentUserId);
 			size_t  getById(std::vector<pm::type::Team> teams, size_t id);
+			size_t  getByTitle(std::vector<pm::type::Team> teams, std::string name);
 			void displayTeams(std::vector<pm::type::Team> teams);
+			bool checkForAdded(pm::type::Team team, size_t idOfUser);
+			bool checkId(std::vector<pm::type::Team> teams, size_t id);
 			std::vector<pm::type::Team> asignToTeam(std::vector< pm::type::Team> teams, size_t indexOfTeam, size_t idOfUser);
-			//std::vector<std::vector<size_t>> usersInTheTeams();
-			//std::vector<std::vector<size_t>> asignToTeam(std::vector<pm::type::Team> teams, size_t teamId, size_t userId);
 		};
 	}
 }

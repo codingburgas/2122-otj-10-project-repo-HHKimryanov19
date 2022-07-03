@@ -18,6 +18,7 @@ namespace pm
 			void displayProjects(std::vector<pm::type::Project> projects, pm::type::User currentUser, std::vector<pm::type::Team> teams);
 			void displayProject(pm::type::Project project, std::vector<pm::type::User> users);
 			void asignToTeam(std::vector<pm::type::Project>& projects, size_t indexOfProject, size_t indexOfTeam, std::vector<pm::type::Team> teams);
+			bool checkForAdded(pm::type::Project project, size_t idOfTeam);
 			size_t getById(std::vector<pm::type::Project> projects, size_t id);
 			size_t getByTitle(std::vector<pm::type::Project> projects, std::string name);
 		};

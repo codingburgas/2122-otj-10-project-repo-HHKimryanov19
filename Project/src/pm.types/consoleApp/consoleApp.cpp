@@ -201,6 +201,7 @@ void menuAdminUser(vector<pm::type::User>& users, pm::type::User& currentUser) {
 			break;
 		case 5:
 			system("CLS");
+			cout << "\x1b[1;30m";
 			displayUsersButton();
 			buttonCreate();
 			buttonsRemove();
@@ -245,10 +246,17 @@ void menuAdminUser(vector<pm::type::User>& users, pm::type::User& currentUser) {
 				cout << "Which user do you want to see? - ";
 				cin >> userId;
 				cout << endl;
-				pm::type::User wantedUser = userFunc.getById(users, userId);
-				displayUser(wantedUser, userFunc.getById(users, wantedUser.idOfCreater),
-					userFunc.getById(users, wantedUser.idOfUserChange));
-				cout << endl;
+				if (userFunc.checkId(users, userId))
+				{
+					pm::type::User wantedUser = userFunc.getById(users, userId);
+					displayUser(wantedUser, userFunc.getById(users, wantedUser.idOfCreater),
+						userFunc.getById(users, wantedUser.idOfUserChange));
+					cout << endl;
+				}
+				else
+				{
+					cout << "There are not user with that id." << endl;
+				}
 				cout << "Press enter to display another user or escape to go back" << endl;
 				Event = _getch();
 				if (Event == 27)
@@ -289,7 +297,15 @@ void menuAdminUser(vector<pm::type::User>& users, pm::type::User& currentUser) {
 				userFunc.displayUsers(users);
 				cout << endl << "Who user want to delete? - ";
 				cin >> userId;
-				users = userFunc.remove(users, userId);
+				if (userFunc.checkId(users, userId))
+				{
+					users = userFunc.remove(users, userId);
+
+				}
+				else
+				{
+					cout << "There are not user with that id." << endl;
+				}
 				cout << "Press enter to remove another user or escape to go back" << endl;
 				Event = _getch();
 				if (Event == 27)
@@ -310,19 +326,20 @@ void menuAdminUser(vector<pm::type::User>& users, pm::type::User& currentUser) {
 				userFunc.displayUsers(users);
 				cout << endl << "Who user do you want to edit? - ";
 				cin >> updateId;
-				for (int i = 0; i < users.size(); i++)
+				if (userFunc.checkId(users, userId))
 				{
-					if (users[i].id == updateId)
+					for (int i = 0; i < users.size(); i++)
 					{
-						users = userFunc.update(users, i, currentUser.id);
-						string str;
-						updateId = 0;
-						break;
+						if (users[i].id == updateId)
+						{
+							users = userFunc.update(users, i, currentUser.id);
+							break;
+						}
 					}
 				}
-				if (updateId != 0)
+				else
 				{
-					cout << "User with that id hasn't been found" << endl;
+					cout << "There are not user with that id." << endl;
 				}
 				cout << "Press enter to edit another user or escape to go back";
 				Event = _getch();
@@ -490,10 +507,17 @@ void menuAdminTeam(vector<pm::type::Team>& teams, vector<pm::type::User>& users,
 				teamFunc.displayTeams(teams);
 				cout << "Which team do you want to see? - ";
 				cin >> teamId;
-				cout << endl;
-				size_t wantedTeam = teamFunc.getById(teams, teamId);
-				displayTeam(teams, wantedTeam, userFunc.getById(users, teams[wantedTeam].idOfUserChange), userFunc.getById(users, teams[wantedTeam].idOfUserChange));
-				cout << endl;
+				if (teamFunc.checkId(teams, teamId))
+				{
+					cout << endl;
+					size_t wantedTeam = teamFunc.getById(teams, teamId);
+					displayTeam(teams, wantedTeam, userFunc.getById(users, teams[wantedTeam].idOfUserChange), userFunc.getById(users, teams[wantedTeam].idOfUserChange));
+					cout << endl;
+				}
+				else
+				{
+					cout << "There is not team with that id." << endl;
+				}
 				cout << "Press enter to display another team or escape to go back" << endl;
 				Event = _getch();
 				if (Event == 27)
@@ -533,7 +557,14 @@ void menuAdminTeam(vector<pm::type::Team>& teams, vector<pm::type::User>& users,
 				teamFunc.displayTeams(teams);
 				cout << endl << "Who user want to delete? - ";
 				cin >> teamId;
-				teams = teamFunc.remove(teams, teamId);
+				if (teamFunc.checkId(teams, teamId))
+				{
+					teams = teamFunc.remove(teams, teamId);
+				}
+				else
+				{
+					cout << "There is not a team with that id." << endl;
+				}
 				cout << "Press enter to remove another team or escape to go back" << endl;
 				Event = _getch();
 				if (Event == 27)
@@ -554,19 +585,20 @@ void menuAdminTeam(vector<pm::type::Team>& teams, vector<pm::type::User>& users,
 				teamFunc.displayTeams(teams);
 				cout << endl << "Who user do you want to edit? - ";
 				cin >> updateId;
-				for (size_t i = 0; i < teams.size(); i++)
+				if (teamFunc.checkId(teams, updateId))
 				{
-					if (teams[i].id == updateId)
+					for (size_t i = 0; i < teams.size(); i++)
 					{
-						teams = teamFunc.update(teams, i, currentUser.id);
-						string str;
-						updateId = 0;
-						break;
+						if (teams[i].id == updateId)
+						{
+							teams = teamFunc.update(teams, i, currentUser.id);
+							break;
+						}
 					}
 				}
-				if (updateId != 0)
+				else
 				{
-					cout << "User with that id hasn't been found" << endl;
+					cout << "There are not user with that id." << endl;
 				}
 				cout << "Press enter to edit another team or escape to go back";
 				Event = _getch();
@@ -587,7 +619,7 @@ void menuAdminTeam(vector<pm::type::Team>& teams, vector<pm::type::User>& users,
 			{
 				while (true)
 				{
-
+					
 					userFunc.displayUsers(users);
 					int idOfUser;
 					cout << "Choose user by Id: ";
@@ -597,17 +629,31 @@ void menuAdminTeam(vector<pm::type::Team>& teams, vector<pm::type::User>& users,
 					size_t idOfTeam, indexOfTeam = 0;
 					teamFunc.displayTeams(teams);
 					cout << "Choose team by Id: ";
+					
 					cin >> idOfTeam;
-					for (size_t i = 0; i < teams.size(); i++)
+					if (userFunc.checkId(users, idOfUser) && teamFunc.checkId(teams, idOfTeam))
 					{
-						if (teams[i].id == idOfTeam)
+						for (size_t i = 0; i < teams.size(); i++)
 						{
-							indexOfTeam = i;
+							if (teams[i].id == idOfTeam)
+							{
+								indexOfTeam = i;
+							}
+						}
+						system("CLS");
+						if (teamFunc.checkForAdded(teams[indexOfTeam], idOfUser) == false)
+						{
+							teams = teamFunc.asignToTeam(teams, indexOfTeam, idOfUser);
+						}
+						else
+						{
+							cout << "Sorry! That user has already been added.";
 						}
 					}
-					system("CLS");
-
-					teams = teamFunc.asignToTeam(teams, indexOfTeam, idOfUser);
+					else
+					{
+						cout << "There is not user or team with those ids." << endl;
+					}
 					cout << "Press enter to assign another user or escape to go back";
 					Event = _getch();
 					if (Event == 27)
@@ -955,13 +1001,15 @@ void menuUserProject(vector<pm::type::Project>& projects, pm::type::User& curren
 			while (true)
 			{
 				projectFunc.displayProjects(projects, currentUser, teams);
-				string nameOfProject;
+				string nameOfProject, nameOfTeam;
+
+				cout << "Choose project: ";
 				cin >> nameOfProject;
 				size_t projectIndex = projectFunc.getByTitle(projects, nameOfProject);
 
-				int idOfTeam;
 				system("CLS");
-				cin >> idOfTeam;
+				cout << "Teams: " << endl << endl;
+
 				for (size_t i = 0; i < projects.size(); i++)
 				{
 					for (size_t j = 0; j < projects[i].idOfTeams.size(); j++)
@@ -969,15 +1017,24 @@ void menuUserProject(vector<pm::type::Project>& projects, pm::type::User& curren
 						size_t index = teamFunc.getById(teams, projects[i].idOfTeams[j]);
 						for (size_t k = 0; k < teams[index].idOfUsers.size(); k++)
 						{
-							if (teams[index].idOfUsers[k] == currentUser.id && projects[index].idOfCreator != currentUser.id)
+							if (teams[index].idOfUsers[k] == currentUser.id)
 							{
-								cout << "Title: " << projects[i].Title << endl;
+								cout << teams[index].Title << endl;
 							}
 						}
 					}
 				}
-				size_t teamIndex = teamFunc.getById(teams, idOfTeam);
-				projectFunc.asignToTeam(projects, projectIndex, teamIndex, teams);
+				cout << "Choose project: ";
+				cin >> nameOfTeam;
+				size_t teamIndex = teamFunc.getByTitle(teams, nameOfTeam);
+				if (projectFunc.checkForAdded(projects[projectIndex], teams[teamIndex].id) == false)
+				{
+					projectFunc.asignToTeam(projects, projectIndex, teamIndex, teams);
+				}
+				else
+				{
+					cout << "Sorry! This team has already been added" << endl << endl;
+				}
 				cout << "Press enter to assign another team or escape to go back";
 				Event = _getch();
 				if (Event == 27)

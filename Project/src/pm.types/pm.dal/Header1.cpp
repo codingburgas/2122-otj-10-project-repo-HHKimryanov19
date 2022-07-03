@@ -317,3 +317,15 @@ size_t pm::dal::ProjectStore::getByTitle(std::vector<pm::type::Project> projects
 		}
 	}
 }
+
+bool pm::dal::ProjectStore::checkForAdded(pm::type::Project project,size_t idOfTeam)
+{
+	for (size_t i = 0; i < project.idOfTeams.size(); i++)
+	{
+		if (project.idOfTeams[i] == idOfTeam)
+		{
+			return true;
+		}
+	}
+	return false;
+}

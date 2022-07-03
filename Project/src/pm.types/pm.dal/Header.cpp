@@ -195,3 +195,38 @@ size_t pm::dal::TeamStore::getById(std::vector<pm::type::Team> teams, size_t id)
 		}
 	}
 }
+
+size_t pm::dal::TeamStore::getByTitle(std::vector<pm::type::Team> teams, string name)
+{
+	for (size_t i = 0; i < teams.size(); i++)
+	{
+		if (teams[i].Title == name)
+		{
+			return i;
+		}
+	}
+}
+
+bool pm::dal::TeamStore::checkId(vector<pm::type::Team> teams, size_t id)
+{
+	for (size_t i = 0; i < teams.size(); i++)
+	{
+		if (teams[i].id == id)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+bool pm::dal::TeamStore::checkForAdded(pm::type::Team team, size_t idOfUser)
+{
+	for (size_t i = 0; i < team.idOfUsers.size(); i++)
+	{
+		if (team.idOfUsers[i] == idOfUser)
+		{
+			return true;
+		}
+	}
+	return false;
+}
